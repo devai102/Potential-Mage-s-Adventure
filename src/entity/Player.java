@@ -26,9 +26,11 @@ public class Player extends Entity {
     }
 
     void setDefaultValues(){
+        solidArea = new Rectangle(8, 12, 32, 32);
         worldX = gp.tileSize * 5;
         worldY = gp.tileSize * 10;
         speed = gp.tileSize / 4;
+        direction = "right";
     }
 
     void setImage(){
@@ -49,14 +51,26 @@ public class Player extends Entity {
     }
 
     public void update(){
-        if(keyH.upPressed == true || keyH.downPressed == true || keyH.leftPressed == true || keyH.rightPressed == true){
+        if(keyH.leftPressed == true || keyH.rightPressed == true){
             if(keyH.leftPressed == true){
                 direction = "left";
-                worldX -= speed;
             }
             else if(keyH.rightPressed == true){
                 direction = "right";
-                worldX += speed;
+            }
+            
+            collisionOn = false;
+            gp.cChecker.checkTile(this);
+
+            if(collisionOn == false){
+                switch(direction){
+                    case "left":
+                        worldX -= speed;
+                        break;
+                    case "right":
+                        worldX += speed;
+                        break;    
+                }
             }
         }
 

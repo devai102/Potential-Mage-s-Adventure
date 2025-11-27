@@ -9,8 +9,8 @@ import src.core.GamePanel;
 
 public class TileManager extends Tile {
     GamePanel gp;
-    Tile[] tile;
-    int mapTileNum[][];
+    public Tile[] tile;
+    public int mapTileNum[][];
 
     public TileManager(GamePanel gp){
         this.gp = gp;
@@ -48,9 +48,11 @@ public class TileManager extends Tile {
         try{
             tile[0] = new Tile();
             tile[0].image = javax.imageio.ImageIO.read(getClass().getResourceAsStream("/rsc/image/grass.png"));
+            tile[0].collision = false;
 
             tile[1] = new Tile();
             tile[1].image = javax.imageio.ImageIO.read(getClass().getResourceAsStream("/rsc/image/rock.png"));
+            tile[1].collision = true;
         }catch(Exception e){
             e.printStackTrace();
         }    
@@ -74,7 +76,7 @@ public class TileManager extends Tile {
                worldY - gp.tileSize < gp.player.worldY + gp.player.screenY){
             g2.drawImage(tile[tileNum].image, screenX, screenY, gp.tileSize, gp.tileSize, null);
             }
-            
+
             worldCol++;
             if(worldCol == gp.maxWorldCol){
                 worldCol = 0;
