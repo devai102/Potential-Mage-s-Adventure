@@ -1,9 +1,7 @@
 package src.entity;
 
 import java.awt.*;
-import java.awt.RenderingHints.Key;
 import java.awt.image.BufferedImage;
-import java.util.logging.Handler;
 import javax.imageio.ImageIO;
 
 import src.core.GamePanel;
@@ -24,23 +22,23 @@ public class Player extends Entity {
     }
 
     void setDefaultValues(){
-        worldX = gp.tileSize * 23;
-        worldY = gp.tileSize * 21;
+        worldX = 100;
+        worldY = 100;
         speed = gp.tileSize / 4;
     }
 
     void setImage(){
         try{
-            right1 = ImageIO.read(getClass().getResourceAsStream("/player/right1.png"));
-            right2 = ImageIO.read(getClass().getResourceAsStream("/player/right2.png"));
-            right3 = ImageIO.read(getClass().getResourceAsStream("/player/right3.png"));
-            right4 = ImageIO.read(getClass().getResourceAsStream("/player/right4.png"));
-            right5 = ImageIO.read(getClass().getResourceAsStream("/player/right5.png"));
-            left1 = ImageIO.read(getClass().getResourceAsStream("/player/left1.png"));
-            left2 = ImageIO.read(getClass().getResourceAsStream("/player/left2.png"));
-            left3 = ImageIO.read(getClass().getResourceAsStream("/player/left3.png"));
-            left4 = ImageIO.read(getClass().getResourceAsStream("/player/left4.png"));
-            left5 = ImageIO.read(getClass().getResourceAsStream("/player/left5.png"));
+            right1 = ImageIO.read(getClass().getResourceAsStream("/rsc/image/right1.png"));
+            right2 = ImageIO.read(getClass().getResourceAsStream("/rsc/image/right2.png"));
+            right3 = ImageIO.read(getClass().getResourceAsStream("/rsc/image/right3.png"));
+            right4 = ImageIO.read(getClass().getResourceAsStream("/rsc/image/right4.png"));
+            right5 = ImageIO.read(getClass().getResourceAsStream("/rsc/image/right5.png"));
+            left1 = ImageIO.read(getClass().getResourceAsStream("/rsc/image/left1.png"));
+            left2 = ImageIO.read(getClass().getResourceAsStream("/rsc/image/left2.png"));
+            left3 = ImageIO.read(getClass().getResourceAsStream("/rsc/image/left3.png"));
+            left4 = ImageIO.read(getClass().getResourceAsStream("/rsc/image/left4.png"));
+            left5 = ImageIO.read(getClass().getResourceAsStream("/rsc/image/left5.png"));
         }catch(Exception e){
             e.printStackTrace();
         }
@@ -56,65 +54,68 @@ public class Player extends Entity {
                 direction = "right";
                 worldX += speed;
             }
+        }
 
-            spriteCounter++;
-            if(spriteCounter > 12){
-                if(spriteNum == 1){
-                    spriteNum = 2;
-                }
-                else if(spriteNum == 2){
-                    spriteNum = 3;
-                }
-                else if(spriteNum == 3){
-                    spriteNum = 4;
-                }
-                else if(spriteNum == 4){
-                    spriteNum = 5;
-                }
-                else if(spriteNum == 5){
-                    spriteNum = 1;
-                }
-                spriteCounter = 0;
+        //sprite animation
+        spriteCounter++;
+        if(spriteCounter > 12){
+            if(spriteNum == 1){
+                spriteNum = 2;
             }
+            else if(spriteNum == 2){
+                spriteNum = 3;
+            }
+            else if(spriteNum == 3){
+                spriteNum = 4;
+            }
+            else if(spriteNum == 4){
+                spriteNum = 5;
+            }
+            else if(spriteNum == 5){
+                spriteNum = 1;
+            }
+            spriteCounter = 0;
         }
     }
 
     public void draw(Graphics g2){
-        switch (direction) {
-            case "left":
-                if(spriteNum == 1){
-                    g2.drawImage(left1, worldX, worldY, gp.tileSize, gp.tileSize, null);
-                }
-                if(spriteNum == 2){
-                    g2.drawImage(left2, worldX, worldY, gp.tileSize, gp.tileSize, null);
-                }
-                if(spriteNum == 3){
-                    g2.drawImage(left3, worldX, worldY, gp.tileSize, gp.tileSize, null);
-                }
-                if(spriteNum == 4){
-                    g2.drawImage(left4, worldX, worldY, gp.tileSize, gp.tileSize, null);
-                }
-                if(spriteNum == 5){
-                    g2.drawImage(left5, worldX, worldY, gp.tileSize, gp.tileSize, null);
-                }
-                break;
+        BufferedImage image = null;
+        switch(direction){
             case "right":
                 if(spriteNum == 1){
-                    g2.drawImage(right1, worldX, worldY, gp.tileSize, gp.tileSize, null);
+                    image = right1;
                 }
-                if(spriteNum == 2){
-                    g2.drawImage(right2, worldX, worldY, gp.tileSize, gp.tileSize, null);
+                else if(spriteNum == 2){
+                    image = right2;
                 }
-                if(spriteNum == 3){
-                    g2.drawImage(right3, worldX, worldY, gp.tileSize, gp.tileSize, null);
+                else if(spriteNum == 3){
+                    image = right3;
                 }
-                if(spriteNum == 4){
-                    g2.drawImage(right4, worldX, worldY, gp.tileSize, gp.tileSize, null);
+                else if(spriteNum == 4){
+                    image = right4;
                 }
-                if(spriteNum == 5){
-                    g2.drawImage(right5, worldX, worldY, gp.tileSize, gp.tileSize, null);
+                else if(spriteNum == 5){
+                    image = right5;
+                }
+                break;
+            case "left":
+                if(spriteNum == 1){
+                    image = left1;
+                }
+                else if(spriteNum == 2){
+                    image = left2;
+                }
+                else if(spriteNum == 3){
+                    image = left3;
+                }
+                else if(spriteNum == 4){
+                    image = left4;
+                }
+                else if(spriteNum == 5){
+                    image = left5;
                 }
                 break;
         }
+        g2.drawImage(image, worldX, worldY, gp.tileSize, gp.tileSize, null);
     }
 }
