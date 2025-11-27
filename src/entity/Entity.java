@@ -1,7 +1,8 @@
 package src.entity;
 
 public class Entity {
-    int worldX, worldY;
+    public int worldX;
+    public int worldY;
     int speed;
 
     String direction = "right";
