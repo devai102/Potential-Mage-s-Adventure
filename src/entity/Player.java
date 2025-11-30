@@ -1,25 +1,30 @@
-package src.entity;
+package entity;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import javax.imageio.ImageIO;
 
-import src.core.GamePanel;
-import src.core.KeyHandler;
+import core.GamePanel;
+import core.KeyHandler;
 
 public class Player extends Entity {
     GamePanel gp;
     KeyHandler keyH;
 
     private boolean shieldOn = false;
-    private int counterJump = 0;
+
+    private int speed;
+
+    private int gravity = 3;
+    private int jumpPower = 15;
+    private boolean Jumping = false;
 
     public final int screenX, screenY; 
 
-    BufferedImage right1,right2,right3,right4,right5;
-    BufferedImage left1,left2,left3,left4,left5;
-    BufferedImage up1;
-    BufferedImage down1;
+    private BufferedImage right1,right2,right3,right4,right5;
+    private BufferedImage left1,left2,left3,left4,left5;
+    private BufferedImage up1;
+    private BufferedImage down1;
 
     public Player(GamePanel gp, KeyHandler keyH){
         this.gp = gp;
@@ -31,11 +36,10 @@ public class Player extends Entity {
     }
 
     void setDefaultValues(){
-        solidArea = new Rectangle(8, 12, 32, 32);
+        solidArea = new Rectangle(8, 16, 32, 32);
         worldX = gp.tileSize * 5;
         worldY = gp.tileSize * 10;
         speed = gp.tileSize / 4;
-        direction = "right";
     }
 
     void setImage(){
@@ -61,59 +65,80 @@ public class Player extends Entity {
         collisionOn = false;
 
         if(keyH.upPressed == true || keyH.downPressed == true || keyH.leftPressed == true || keyH.rightPressed == true){
-            if(keyH.leftPressed == true){
-                direction = "left";
-                gp.cChecker.checkTile(this);
-                if(collisionOn == false){
-                    worldX -= speed;
+            gp.cChecker.isFalling(this);
+            if(Jumping == false){
+                if(keyH.leftPressed == true && keyH.upPressed == true && Falling == false){
+                    directionX= "left";
+                    directionY= "up";
+                    Jumping = true;
                 }
-            }
-            else if(keyH.rightPressed == true){
-                direction = "right";
-                gp.cChecker.checkTile(this);
-                if(collisionOn == false){
-                    worldX += speed;
+                else if(keyH.rightPressed == true && keyH.upPressed == true && Falling == false){
+                    directionX= "right";
+                    directionY= "up";
+                    Jumping = true;
+                }
+                else if(keyH.upPressed == true && Falling == false){
+                    directionY= "up";
+                    directionX= "none";
+                }
+                else if(keyH.leftPressed == true){
+                    directionX= "left";
+                }
+                else if(keyH.rightPressed == true){
+                    directionX= "right";
                 }
             }
 
-            if(keyH.upPressed == true && onGround == true){
-                direction = "up";
-                onGround = false;
+            switch(directionX){
+                case "left":
+                    gp.cChecker.checkTile(this);
+                    if(collisionOn == false){
+                        worldX -= speed;
+                    }
+                    break;
+                case "right":
+                    gp.cChecker.checkTile(this);
+                    if(collisionOn == false){
+                        worldX += speed;
+                    }
+                    break;
             }
         }
 
-        
-        // Apply gravity
-        if(onGround == false){
-            if(counterJump <= 5){
-                direction = "up";
-                gp.cChecker.checkTile(this);
-                worldY -= speed;
-                counterJump++;
+        //Jumping
+        if(Jumping == true){
+            gp.cChecker.checkTile(this);
+            if(collisionOn == false){
+                worldY -= jumpPower;
             }else{
-                direction = "down";
-                collisionOn = false;
-                gp.cChecker.checkTile(this);
-                if(collisionOn == false){
-                    worldY += speed;
-                }
-                else{
-                    onGround = true;
-                    counterJump = 0;
-                }
+                jumpPower = 0;
+                Jumping = false;
+                Falling = true;
+            }
+            jumpPower -= gravity;
+            if(jumpPower <= 0){
+                jumpPower = 15;
+                Jumping = false;
+                Falling = true;
             }
         }
 
-        //Shield toggle
-        if(keyH.downPressed == true && onGround == true){
-            shieldOn = true;
-        }else if(keyH.downPressed == false){
-            shieldOn = false;
+        //Falling
+        if(Falling == true){
+            gp.cChecker.checkTile(this);
+            if(collisionOn == false){
+                worldY += gravity;
+            }else{
+                Falling = false;
+            }
         }
+        
+        
+        
 
-        //sprite animation for moving left and right
+        //Sprite animation
         spriteCounter++;
-        if(spriteCounter > 12){
+        if(spriteCounter > 10){
             if(spriteNum == 1){
                 spriteNum = 2;
             }
@@ -127,6 +152,9 @@ public class Player extends Entity {
                 spriteNum = 5;
             }
             else if(spriteNum == 5){
+                spriteNum = 6;
+            }
+            else if(spriteNum == 6){
                 spriteNum = 1;
             }
             spriteCounter = 0;
@@ -135,7 +163,7 @@ public class Player extends Entity {
 
     public void draw(Graphics g2){
         BufferedImage image = null;
-        switch(direction){
+        switch(directionX){
             case "right":
                 if(spriteNum == 1){
                     image = right1;

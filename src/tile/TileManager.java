@@ -1,11 +1,11 @@
-package src.tile;
+package tile;
 
 import java.awt.Graphics2D;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
-import src.core.GamePanel;
+import core.GamePanel;
 
 public class TileManager extends Tile {
     GamePanel gp;

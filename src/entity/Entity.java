@@ -1,19 +1,30 @@
-package src.entity;
+package entity;
 
 import java.awt.Rectangle;
 
 public class Entity {
     public int worldX;
     public int worldY;
-    public int speed;
 
-    public String direction;
+    public String directionX = "right";
+    public String directionY = "none";
+    protected boolean Falling = false;
 
-    int spriteCounter = 0;
-    int spriteNum = 1;
+    protected int spriteCounter = 0;
+    protected int spriteNum = 1;
 
     public boolean collisionOn = false;
     public Rectangle solidArea;
 
-    public boolean onGround = true;
+    public void isFalling(boolean Falling){
+        this.Falling = Falling;
+    }
+
+    public String getDirectionX(){
+        return this.directionX;
+    }
+
+    public String getDirectionY(){
+        return this.directionY;
+    }
 }

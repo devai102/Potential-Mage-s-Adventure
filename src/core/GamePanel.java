@@ -1,10 +1,10 @@
-package src.core;
+package core;
 
 import javax.swing.*;
 import java.awt.*;
 
-import src.entity.Player;
-import src.tile.TileManager;
+import entity.Player;
+import tile.TileManager;
 
 public class GamePanel extends JPanel implements Runnable{
     
