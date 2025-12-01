@@ -22,16 +22,16 @@ public class Nor extends Mob{
         this.name = "Nor";
     }
 
-    public void setMobImage(){
-        try{
-            left1 = ImageIO.read(getClass().getResourceAsStream(""));
-            left2 = ImageIO.read(getClass().getResourceAsStream(""));
-            right1 = ImageIO.read(getClass().getResourceAsStream(""));
-            right2 = ImageIO.read(getClass().getResourceAsStream(""));
-        }catch(Exception e){
-            e.getStackTrace();
-        }
-    }
+    // public void setMobImage(){
+    //     try{
+    //         left1 = ImageIO.read(getClass().getResourceAsStream(""));
+    //         left2 = ImageIO.read(getClass().getResourceAsStream(""));
+    //         right1 = ImageIO.read(getClass().getResourceAsStream(""));
+    //         right2 = ImageIO.read(getClass().getResourceAsStream(""));
+    //     }catch(Exception e){
+    //         e.getStackTrace();
+    //     }
+    // }
 
     public void update(){
         setAction();

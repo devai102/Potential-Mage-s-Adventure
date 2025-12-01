@@ -36,7 +36,7 @@ public class Player extends Entity {
     }
 
     void setDefaultValues(){
-        solidArea = new Rectangle(8, 16, 32, 32);
+        solidArea = new Rectangle(8, 12, 32, 32);
         worldX = gp.tileSize * 5;
         worldY = gp.tileSize * 10;
         speed = gp.tileSize / 4;
@@ -44,18 +44,18 @@ public class Player extends Entity {
 
     void setImage(){
         try{
-            right1 = ImageIO.read(getClass().getResourceAsStream("/rsc/image/right1.png"));
-            right2 = ImageIO.read(getClass().getResourceAsStream("/rsc/image/right2.png"));
-            right3 = ImageIO.read(getClass().getResourceAsStream("/rsc/image/right3.png"));
-            right4 = ImageIO.read(getClass().getResourceAsStream("/rsc/image/right4.png"));
-            right5 = ImageIO.read(getClass().getResourceAsStream("/rsc/image/right5.png"));
-            left1 = ImageIO.read(getClass().getResourceAsStream("/rsc/image/left1.png"));
-            left2 = ImageIO.read(getClass().getResourceAsStream("/rsc/image/left2.png"));
-            left3 = ImageIO.read(getClass().getResourceAsStream("/rsc/image/left3.png"));
-            left4 = ImageIO.read(getClass().getResourceAsStream("/rsc/image/left4.png"));
-            left5 = ImageIO.read(getClass().getResourceAsStream("/rsc/image/left5.png"));
-            up1 = ImageIO.read(getClass().getResourceAsStream("/rsc/image/up1.png"));
-            down1 = ImageIO.read(getClass().getResourceAsStream("/rsc/image/down1.png"));
+            right1 = ImageIO.read(getClass().getResourceAsStream("/res/image/right1.png"));
+            right2 = ImageIO.read(getClass().getResourceAsStream("/res/image/right2.png"));
+            right3 = ImageIO.read(getClass().getResourceAsStream("/res/image/right3.png"));
+            right4 = ImageIO.read(getClass().getResourceAsStream("/res/image/right4.png"));
+            right5 = ImageIO.read(getClass().getResourceAsStream("/res/image/right5.png"));
+            left1 = ImageIO.read(getClass().getResourceAsStream("/res/image/left1.png"));
+            left2 = ImageIO.read(getClass().getResourceAsStream("/res/image/left2.png"));
+            left3 = ImageIO.read(getClass().getResourceAsStream("/res/image/left3.png"));
+            left4 = ImageIO.read(getClass().getResourceAsStream("/res/image/left4.png"));
+            left5 = ImageIO.read(getClass().getResourceAsStream("/res/image/left5.png"));
+            up1 = ImageIO.read(getClass().getResourceAsStream("/res/image/up1.png"));
+            down1 = ImageIO.read(getClass().getResourceAsStream("/res/image/down1.png"));
         }catch(Exception e){
             e.printStackTrace();
         }
@@ -126,6 +126,7 @@ public class Player extends Entity {
         //Falling
         if(Falling == true){
             gp.cChecker.checkTile(this);
+            gp.cChecker.isFalling(this);
             if(collisionOn == false){
                 worldY += gravity;
             }else{

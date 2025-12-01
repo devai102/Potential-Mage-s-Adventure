@@ -5,6 +5,7 @@ import java.awt.Rectangle;
 public class Entity {
     public int worldX;
     public int worldY;
+    public int speed;
 
     public String directionX = "right";
     public String directionY = "none";

@@ -72,13 +72,13 @@ public class CollisionChecker {
 
         int entityLeftCol = entityLeftWorldX / gp.tileSize;
         int entityRightCol = entityRightWorldX / gp.tileSize;
-        int entityBottomRow = (entityBottomWorldY + 1) / gp.tileSize;
+        int entityBottomRow = (entityBottomWorldY + 4) / gp.tileSize;
 
         int tileNum1 = gp.tileM.mapTileNum[entityLeftCol][entityBottomRow];
         int tileNum2 = gp.tileM.mapTileNum[entityRightCol][entityBottomRow];
 
         if(gp.tileM.tile[tileNum1].collision == true || gp.tileM.tile[tileNum2].collision == true){
-            entity.isFalling(true);
+            entity.isFalling(false);
         } else {
             entity.isFalling(true);
         }

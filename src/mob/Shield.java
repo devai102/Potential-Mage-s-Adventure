@@ -18,7 +18,7 @@ public class Shield extends Mob{
 
     public Shield(GamePanel gp, int x, int y){
         super(gp);
-        setMobImage();
+        // setMobImage();
         setDefaultValues();
         solidArea = new Rectangle(8, 16, 32, 32);
     }
@@ -31,17 +31,17 @@ public class Shield extends Mob{
     }
 
     // set image for mob
-    public void setMobImage(){
-        try{
-            left1 = ImageIO.read(getClass().getResourceAsStream(""));
-            left2 = ImageIO.read(getClass().getResourceAsStream(""));
-            right1 = ImageIO.read(getClass().getResourceAsStream(""));
-            right2 = ImageIO.read(getClass().getResourceAsStream(""));
-            skill = ImageIO.read(getClass().getResourceAsStream(""));
-        }catch(Exception e){
-            e.getStackTrace();
-        }
-    }
+    // public void setMobImage(){
+    //     try{
+    //         left1 = ImageIO.read(getClass().getResourceAsStream(""));
+    //         left2 = ImageIO.read(getClass().getResourceAsStream(""));
+    //         right1 = ImageIO.read(getClass().getResourceAsStream(""));
+    //         right2 = ImageIO.read(getClass().getResourceAsStream(""));
+    //         skill = ImageIO.read(getClass().getResourceAsStream(""));
+    //     }catch(Exception e){
+    //         e.getStackTrace();
+    //     }
+    // }
 
     public void setAction(){
         actionLockCounter++;

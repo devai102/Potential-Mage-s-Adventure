@@ -17,7 +17,7 @@ public class TileManager extends Tile {
         tile = new Tile[10];
         mapTileNum = new int[gp.maxWorldCol][gp.maxWorldRow];
         loadTileImage();
-        loadMap("/rsc/map/map01.txt");
+        loadMap("/res/map/map01.txt");
     }
 
     void loadMap(String filePath){
@@ -47,11 +47,11 @@ public class TileManager extends Tile {
     void loadTileImage(){
         try{
             tile[0] = new Tile();
-            tile[0].image = javax.imageio.ImageIO.read(getClass().getResourceAsStream("/rsc/image/grass.png"));
+            tile[0].image = javax.imageio.ImageIO.read(getClass().getResourceAsStream("/res/image/grass.png"));
             tile[0].collision = false;
 
             tile[1] = new Tile();
-            tile[1].image = javax.imageio.ImageIO.read(getClass().getResourceAsStream("/rsc/image/rock.png"));
+            tile[1].image = javax.imageio.ImageIO.read(getClass().getResourceAsStream("/res/image/rock.png"));
             tile[1].collision = true;
         }catch(Exception e){
             e.printStackTrace();
