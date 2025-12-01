@@ -4,6 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 
 import entity.Player;
+import object.SuperObject;
 import tile.TileManager;
 
 public class GamePanel extends JPanel implements Runnable{
@@ -28,6 +29,7 @@ public class GamePanel extends JPanel implements Runnable{
     TileManager tileM = new TileManager(this);
     KeyHandler keyH = new KeyHandler();
     public Player player = new Player(this, keyH);
+    public SuperObject obj[] = new SuperObject[10];
 
     Thread gameThread;
 
@@ -68,6 +70,14 @@ public class GamePanel extends JPanel implements Runnable{
     public void paintComponent(Graphics g){
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g;
+        
+        //draw objects
+        for(int i = 0; i < obj.length; i++){
+            if(obj[i] != null){
+                obj[i].draw(g2, this);
+            }
+        }
+
         // draw tile
         tileM.draw(g2);
         

@@ -8,6 +8,7 @@ import core.GamePanel;
 import core.KeyHandler;
 
 public class Player extends Entity {
+    
     GamePanel gp;
     KeyHandler keyH;
 
@@ -15,8 +16,9 @@ public class Player extends Entity {
 
     private int speed;
 
-    private int gravityPower = 0;
+    
     private int gravity = 3;
+    private int gravityPower = gravity;
     private int jumpPower = 15;
     private boolean Jumping = false;
 
@@ -140,15 +142,12 @@ public class Player extends Entity {
         if(Falling == true){
             gp.cChecker.checkTile(this);
             if(collisionOn == false){
-                worldY += gravity;
+                worldY += gravityPower;
                 gp.cChecker.isFalling(this);
             }else{
                 Falling = false;
             }
         }
-        
-        
-        
 
         //Sprite animation
         spriteCounter++;
