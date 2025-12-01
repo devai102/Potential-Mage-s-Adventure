@@ -7,6 +7,7 @@ public class paralysisPotion extends SuperPotion{
     
     public paralysisPotion(GamePanel gp) {
         super(gp);
+        setImage();
         setDefaultValues();
     }
 
@@ -15,13 +16,13 @@ public class paralysisPotion extends SuperPotion{
         solidArea = new java.awt.Rectangle(8, 16, 32, 32);
     }
 
-    // public void setImage(){
-    //     try{
-    //         image = javax.imageio.ImageIO.read(getClass().getResourceAsStream(""));
-    //     }catch(Exception e){
-    //         e.getStackTrace();
-    //     }
-    // }
+    public void setImage(){
+        try{
+            image = javax.imageio.ImageIO.read(getClass().getResourceAsStream(""));
+        }catch(Exception e){
+            e.getStackTrace();
+        }
+    }
 
     public void draw(java.awt.Graphics2D g2){
         g2.drawImage(image, x, y, gp.tileSize, gp.tileSize, null);

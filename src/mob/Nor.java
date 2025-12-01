@@ -13,6 +13,8 @@ public class Nor extends Mob{
 
     public Nor(GamePanel gp){
         super(gp);
+        setImage();
+        setDefaultValues();
     }
 
     public void setDefaultValues(){
@@ -22,27 +24,30 @@ public class Nor extends Mob{
         this.name = "Nor";
     }
 
-    // public void setMobImage(){
-    //     try{
-    //         left1 = ImageIO.read(getClass().getResourceAsStream(""));
-    //         left2 = ImageIO.read(getClass().getResourceAsStream(""));
-    //         right1 = ImageIO.read(getClass().getResourceAsStream(""));
-    //         right2 = ImageIO.read(getClass().getResourceAsStream(""));
-    //     }catch(Exception e){
-    //         e.getStackTrace();
-    //     }
-    // }
+    public void setImage(){
+        try{
+            left1 = ImageIO.read(getClass().getResourceAsStream(""));
+            left2 = ImageIO.read(getClass().getResourceAsStream(""));
+            right1 = ImageIO.read(getClass().getResourceAsStream(""));
+            right2 = ImageIO.read(getClass().getResourceAsStream(""));
+        }catch(Exception e){
+            e.getStackTrace();
+        }
+    }
 
     public void update(){
         setAction();
         // move mob
-        switch(directionX){
-            case "left":
-                worldX -= speed;
-                break;
-            case "right":
-                worldX += speed;
-                break;
+        gp.cChecker.checkTile(this);
+        if(collisionOn == false){
+            switch(directionX){
+                case "left":
+                    worldX -= speed;
+                    break;
+                case "right":
+                    worldX += speed;
+                    break;
+            }
         }
 
         spriteCounter++;

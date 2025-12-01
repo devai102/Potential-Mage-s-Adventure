@@ -61,10 +61,6 @@ public class CollisionChecker {
         }
     }
 
-    public void checkMove(Entity entity){
-
-    }
-
     public void isFalling(Entity entity){
         int entityLeftWorldX = entity.worldX + entity.solidArea.x;
         int entityRightWorldX = entity.worldX + entity.solidArea.x + entity.solidArea.width;
@@ -82,5 +78,14 @@ public class CollisionChecker {
         } else {
             entity.isFalling(true);
         }
+    }
+
+    public void checkObject(Entity entity){
+    }
+
+    public void checkMob(Entity entity){
+    }
+
+    public void checkPlayer(Entity entity){
     }
 }

@@ -16,6 +16,8 @@ public class Ghost extends Mob{
 
     public Ghost(GamePanel gp){
         super(gp);
+        setImage();
+        setDefaultValues();
     }
 
     public void setDefaultValues(){
@@ -25,28 +27,32 @@ public class Ghost extends Mob{
         this.name = "Ghost";
     }
 
-    // public void setMobImage(){
-    //     try{
-    //         left1 = ImageIO.read(getClass().getResourceAsStream(""));
-    //         left2 = ImageIO.read(getClass().getResourceAsStream(""));
-    //         right1 = ImageIO.read(getClass().getResourceAsStream(""));
-    //         right2 = ImageIO.read(getClass().getResourceAsStream(""));
-    //         skill = ImageIO.read(getClass().getResourceAsStream(""));
-    //     }catch(Exception e){
-    //         e.getStackTrace();
-    //     }
-    // }
+    public void setImage(){
+        try{
+            left1 = ImageIO.read(getClass().getResourceAsStream(""));
+            left2 = ImageIO.read(getClass().getResourceAsStream(""));
+            right1 = ImageIO.read(getClass().getResourceAsStream(""));
+            right2 = ImageIO.read(getClass().getResourceAsStream(""));
+            skill = ImageIO.read(getClass().getResourceAsStream(""));
+        }catch(Exception e){
+            e.getStackTrace();
+        }
+    }
 
     public void update(){
         setAction();
+
         // move mob
-        switch(directionX){
-            case "left":
-                worldX -= speed;
-                break;
-            case "right":
-                worldX += speed;
-                break;
+        gp.cChecker.checkTile(this);
+        if(collisionOn == false){
+            switch(directionX){
+                case "left":
+                    worldX -= speed;
+                    break;
+                case "right":
+                    worldX += speed;
+                    break;
+            }
         }
 
         // set skill time 
@@ -76,25 +82,25 @@ public class Ghost extends Mob{
     }
 
     public void draw(Graphics2D g2){
-        BufferedImage image2 = null;
+        BufferedImage image = null;
         if(skillOn == true){
-            image2 = skill;
+            image = skill;
         }else{
             switch(directionX){
                 case "left":
                     if(spriteNum == 1){
-                        image2 = left1;
+                        image = left1;
                     }
                     if(spriteNum == 2){
-                        image2 = left2;
+                        image = left2;
                     }
                     break;
                 case "right":
                     if(spriteNum == 1){
-                        image2 = right1;
+                        image = right1;
                     }
                     if(spriteNum == 2){
-                        image2 = right2;
+                        image = right2;
                     }
                     break;
             }

@@ -15,6 +15,7 @@ public class Player extends Entity {
 
     private int speed;
 
+    private int gravityPower = 0;
     private int gravity = 3;
     private int jumpPower = 15;
     private boolean Jumping = false;
@@ -81,6 +82,18 @@ public class Player extends Entity {
                     directionY= "up";
                     directionX= "none";
                 }
+                else if(keyH.downPressed == true && Falling == false){
+                    directionY= "down";
+                    directionX= "none";
+                    shieldOn = true;
+                }
+                else if(keyH.downPressed == true && Falling == true){
+                    directionY= "down";
+                    directionX= "none";
+                }
+                else if(keyH.rightPressed == true && Falling == false){
+                    directionX= "right";
+                }
                 else if(keyH.leftPressed == true){
                     directionX= "left";
                 }
@@ -126,9 +139,9 @@ public class Player extends Entity {
         //Falling
         if(Falling == true){
             gp.cChecker.checkTile(this);
-            gp.cChecker.isFalling(this);
             if(collisionOn == false){
                 worldY += gravity;
+                gp.cChecker.isFalling(this);
             }else{
                 Falling = false;
             }

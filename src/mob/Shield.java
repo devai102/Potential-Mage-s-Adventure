@@ -18,9 +18,8 @@ public class Shield extends Mob{
 
     public Shield(GamePanel gp, int x, int y){
         super(gp);
-        // setMobImage();
+        setImage();
         setDefaultValues();
-        solidArea = new Rectangle(8, 16, 32, 32);
     }
 
     public void setDefaultValues(){
@@ -30,18 +29,17 @@ public class Shield extends Mob{
         this.name = "Shield";
     }
 
-    // set image for mob
-    // public void setMobImage(){
-    //     try{
-    //         left1 = ImageIO.read(getClass().getResourceAsStream(""));
-    //         left2 = ImageIO.read(getClass().getResourceAsStream(""));
-    //         right1 = ImageIO.read(getClass().getResourceAsStream(""));
-    //         right2 = ImageIO.read(getClass().getResourceAsStream(""));
-    //         skill = ImageIO.read(getClass().getResourceAsStream(""));
-    //     }catch(Exception e){
-    //         e.getStackTrace();
-    //     }
-    // }
+    public void setImage(){
+        try{
+            left1 = ImageIO.read(getClass().getResourceAsStream(""));
+            left2 = ImageIO.read(getClass().getResourceAsStream(""));
+            right1 = ImageIO.read(getClass().getResourceAsStream(""));
+            right2 = ImageIO.read(getClass().getResourceAsStream(""));
+            skill = ImageIO.read(getClass().getResourceAsStream(""));
+        }catch(Exception e){
+            e.getStackTrace();
+        }
+    }
 
     public void setAction(){
         actionLockCounter++;
@@ -63,6 +61,7 @@ public class Shield extends Mob{
         // check collision random move
         collisionOn = false;
         if(skillOn == false){
+            gp.cChecker.checkTile(this);
             if(collisionOn == false){
                 switch(directionX){
                 case "left":

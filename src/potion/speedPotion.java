@@ -11,6 +11,7 @@ public class speedPotion extends SuperPotion{
     private int buffSpeed = 5;
     public speedPotion(GamePanel gp) {
         super(gp);
+        setImage();
     }  
 
     public void setPosition(int x, int y){
@@ -23,13 +24,13 @@ public class speedPotion extends SuperPotion{
         solidArea = new Rectangle(8, 16, 32, 32);
     }
 
-    // public void setImage(){
-    //     try{
-    //         image = ImageIO.read(getClass().getResourceAsStream(""));
-    //     }catch(Exception e){
-    //         e.getStackTrace();
-    //     }
-    // }
+    public void setImage(){
+        try{
+            image = ImageIO.read(getClass().getResourceAsStream(""));
+        }catch(Exception e){
+            e.getStackTrace();
+        }
+    }
 
     public void draw(Graphics2D g2){
         g2.drawImage(image, x, y, gp.tileSize, gp.tileSize, null);
