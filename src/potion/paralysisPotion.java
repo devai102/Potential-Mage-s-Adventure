@@ -10,25 +10,17 @@ public class paralysisPotion extends SuperPotion{
         setImage();
         setDefaultValues();
     }
-
-    public void setDefaultValues(){
+    
+    void setDefaultValues(){
         name = "Paralysis Potion";
-        solidArea = new java.awt.Rectangle(8, 16, 32, 32);
+        solidArea = new java.awt.Rectangle(0,0,gp.tileSize,gp.tileSize);
     }
 
-    public void setImage(){
+    void setImage(){
         try{
             image = javax.imageio.ImageIO.read(getClass().getResourceAsStream(""));
         }catch(Exception e){
             e.getStackTrace();
         }
-    }
-
-    public void draw(java.awt.Graphics2D g2){
-        g2.drawImage(image, x, y, gp.tileSize, gp.tileSize, null);
-    }
-
-    public int getDuration(){
-        return duration;
     }
 }

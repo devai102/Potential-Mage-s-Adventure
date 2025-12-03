@@ -77,10 +77,12 @@ public class CollisionChecker {
             entity.isFalling(false);
         } else {
             entity.isFalling(true);
+            entity.collisionOn = false;
         }
     }
 
-    public void checkObject(Entity entity){
+    public void checkObject(Entity entity, boolean player){
+        
     }
 
     public void checkMob(Entity entity){

@@ -7,7 +7,7 @@ import javax.imageio.ImageIO;
 public class Chest extends SuperObject{
     public Chest(){
         setImage();
-        solidArea = new Rectangle(8, 16, 32, 32);
+        solidArea = new Rectangle(0,0,48,48);
     }
     
     void setImage(){
@@ -19,6 +19,7 @@ public class Chest extends SuperObject{
     }
 
     void setLoot(){
+        // set loot inside chest at random
 
     }
 }

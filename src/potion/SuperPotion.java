@@ -8,13 +8,12 @@ import core.GamePanel;
 public class SuperPotion {
     GamePanel   gp;
     
-    protected int x, y;
-    
     protected String name;
-    protected BufferedImage image;
+    protected BufferedImage image;    
     protected Rectangle solidArea;
-
+    protected boolean collision = false;
+    
     public SuperPotion(GamePanel gp){
-        this.gp = gp;    
+        this.gp = gp;
     }
 }

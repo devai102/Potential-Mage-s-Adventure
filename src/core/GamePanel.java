@@ -34,8 +34,8 @@ public class GamePanel extends JPanel implements Runnable{
     Thread gameThread;
 
     public GamePanel() {
-        this.setPreferredSize(new java.awt.Dimension(screenWidth, screenHeight));
-        this.setBackground(java.awt.Color.white);
+        this.setPreferredSize(new Dimension(screenWidth, screenHeight));
+        this.setBackground(Color.white);
         this.setDoubleBuffered(true);
         this.addKeyListener(keyH);
         this.setFocusable(true);
@@ -72,11 +72,11 @@ public class GamePanel extends JPanel implements Runnable{
         Graphics2D g2 = (Graphics2D) g;
         
         //draw objects
-        for(int i = 0; i < obj.length; i++){
-            if(obj[i] != null){
-                obj[i].draw(g2, this);
-            }
-        }
+        // for(int i = 0; i < obj.length; i++){
+        //     if(obj[i] != null){
+        //         obj[i].draw(g2, this);
+        //     }
+        // }
 
         // draw tile
         tileM.draw(g2);
