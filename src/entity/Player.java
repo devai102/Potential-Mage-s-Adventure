@@ -12,22 +12,21 @@ public class Player extends Entity {
     GamePanel gp;
     KeyHandler keyH;
 
-    private boolean shieldOn = false;
+    private boolean defenseOn = false;
 
     private int speed;
 
     
     private int gravity = 3;
-    private int gravityPower = gravity;
     private int jumpPower = 15;
     private boolean Jumping = false;
 
     public final int screenX, screenY; 
 
-    private BufferedImage right1,right2,right3,right4,right5;
-    private BufferedImage left1,left2,left3,left4,left5;
-    private BufferedImage up1;
-    private BufferedImage down1;
+    private BufferedImage[] rightImages = new BufferedImage[7];
+    private BufferedImage[] leftImages = new BufferedImage[7];
+    private BufferedImage standingImage;
+    private BufferedImage defenseOnImage;
 
     public Player(GamePanel gp, KeyHandler keyH){
         this.gp = gp;
@@ -43,32 +42,31 @@ public class Player extends Entity {
         worldX = gp.tileSize * 5;
         worldY = gp.tileSize * 10;
         speed = gp.tileSize / 4;
+        solidAreaDefaultX = solidArea.x;
+        solidAreaDefaultY = solidArea.y;
     }
 
     void setImage(){
         try{
-            right1 = ImageIO.read(getClass().getResourceAsStream("/res/image/right1.png"));
-            right2 = ImageIO.read(getClass().getResourceAsStream("/res/image/right2.png"));
-            right3 = ImageIO.read(getClass().getResourceAsStream("/res/image/right3.png"));
-            right4 = ImageIO.read(getClass().getResourceAsStream("/res/image/right4.png"));
-            right5 = ImageIO.read(getClass().getResourceAsStream("/res/image/right5.png"));
-            left1 = ImageIO.read(getClass().getResourceAsStream("/res/image/left1.png"));
-            left2 = ImageIO.read(getClass().getResourceAsStream("/res/image/left2.png"));
-            left3 = ImageIO.read(getClass().getResourceAsStream("/res/image/left3.png"));
-            left4 = ImageIO.read(getClass().getResourceAsStream("/res/image/left4.png"));
-            left5 = ImageIO.read(getClass().getResourceAsStream("/res/image/left5.png"));
-            up1 = ImageIO.read(getClass().getResourceAsStream("/res/image/up1.png"));
-            down1 = ImageIO.read(getClass().getResourceAsStream("/res/image/down1.png"));
+            for(int i = 0; i < 7; i++){
+                rightImages[i] = ImageIO.read(getClass().getResourceAsStream("/res/image/right/" + (i+1) + ".png"));
+            }
+
+            for(int i = 0; i < 7; i++){
+                leftImages[i] = ImageIO.read(getClass().getResourceAsStream("/res/image/left/" + (i+1) + ".png"));
+            }
+
+            defenseOnImage = ImageIO.read(getClass().getResourceAsStream("/res/image/defenseOn/defenseOn.png"));
+
+            standingImage = ImageIO.read(getClass().getResourceAsStream("/res/image/standing.png"));
         }catch(Exception e){
             e.printStackTrace();
         }
     }
 
     public void update(){
-        collisionOn = false;
-
         if(keyH.upPressed == true || keyH.downPressed == true || keyH.leftPressed == true || keyH.rightPressed == true){
-            gp.cChecker.isFalling(this);
+            gp.cChecker.checkTile(this);
             if(Jumping == false){
                 if(keyH.leftPressed == true && keyH.upPressed == true && Falling == false){
                     directionX= "left";
@@ -87,14 +85,11 @@ public class Player extends Entity {
                 else if(keyH.downPressed == true && Falling == false){
                     directionY= "down";
                     directionX= "none";
-                    shieldOn = true;
+                    defenseOn = true;
                 }
                 else if(keyH.downPressed == true && Falling == true){
                     directionY= "down";
                     directionX= "none";
-                }
-                else if(keyH.rightPressed == true && Falling == false){
-                    directionX= "right";
                 }
                 else if(keyH.leftPressed == true){
                     directionX= "left";
@@ -103,7 +98,8 @@ public class Player extends Entity {
                     directionX= "right";
                 }
             }
-
+            
+            // move along X axis
             switch(directionX){
                 case "left":
                     gp.cChecker.checkTile(this);
@@ -118,6 +114,10 @@ public class Player extends Entity {
                     }
                     break;
             }
+        }
+        else if(keyH.downPressed == false && keyH.upPressed == false && keyH.leftPressed == false && keyH.rightPressed == false){
+            directionX = "none";
+            directionY = "none";
         }
 
         //Jumping
@@ -139,19 +139,20 @@ public class Player extends Entity {
         }
 
         //Falling
+        gp.cChecker.isFalling(this);
         if(Falling == true){
-            gp.cChecker.checkTile(this);
             if(collisionOn == false){
-                worldY += gravityPower;
+                this.worldY += gravity;
                 gp.cChecker.isFalling(this);
             }else{
                 Falling = false;
             }
         }
+        
 
-        //Sprite animation
+        //Sprite running animation
         spriteCounter++;
-        if(spriteCounter > 10){
+        if(spriteCounter > 4){
             if(spriteNum == 1){
                 spriteNum = 2;
             }
@@ -168,6 +169,9 @@ public class Player extends Entity {
                 spriteNum = 6;
             }
             else if(spriteNum == 6){
+                spriteNum = 7;
+            }
+            else if(spriteNum == 7){
                 spriteNum = 1;
             }
             spriteCounter = 0;
@@ -176,48 +180,40 @@ public class Player extends Entity {
 
     public void draw(Graphics g2){
         BufferedImage image = null;
-        switch(directionX){
-            case "right":
-                if(spriteNum == 1){
-                    image = right1;
+        if(directionY.equals("none")){
+            if(directionX.equals("right")){
+                switch(spriteNum){
+                    case 1: image = rightImages[0]; break;
+                    case 2: image = rightImages[1]; break;
+                    case 3: image = rightImages[2]; break;
+                    case 4: image = rightImages[3]; break;
+                    case 5: image = rightImages[4]; break;
+                    case 6: image = rightImages[5]; break;
+                    case 7: image = rightImages[6]; break;
                 }
-                else if(spriteNum == 2){
-                    image = right2;
+            }
+            else if(directionX.equals("left")){
+                switch(spriteNum){
+                    case 1: image = leftImages[0]; break;
+                    case 2: image = leftImages[1]; break;
+                    case 3: image = leftImages[2]; break;
+                    case 4: image = leftImages[3]; break;
+                    case 5: image = leftImages[4]; break;
+                    case 6: image = leftImages[5]; break;
+                    case 7: image = leftImages[6]; break;
                 }
-                else if(spriteNum == 3){
-                    image = right3;
-                }
-                else if(spriteNum == 4){
-                    image = right4;
-                }
-                else if(spriteNum == 5){
-                    image = right5;
-                }
-                break;
-            case "left":
-                if(spriteNum == 1){
-                    image = left1;
-                }
-                else if(spriteNum == 2){
-                    image = left2;
-                }
-                else if(spriteNum == 3){
-                    image = left3;
-                }
-                else if(spriteNum == 4){
-                    image = left4;
-                }
-                else if(spriteNum == 5){
-                    image = left5;
-                }
-                break;
-            case "up":
-                image = up1;
-                break;
-            case "down":
-                image = down1;
-                break;
+            }
+            else if(directionX.equals("none")){
+                image = standingImage;
+            }
         }
+        // else if(directionY.equals("up")){
+            
+        // }
+        // else if(directionY.equals("down")){
+        //     if(defenseOn == true){
+        //         image = defenseOnImage;
+        //     }
         g2.drawImage(image, screenX, screenY, gp.tileSize, gp.tileSize, null);
     }
 }

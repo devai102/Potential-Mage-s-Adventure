@@ -1,6 +1,5 @@
 package potion;
 
-import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import javax.imageio.ImageIO;
 
@@ -12,19 +11,15 @@ public class speedPotion extends SuperPotion{
     public speedPotion(GamePanel gp) {
         super(gp);
         setImage();
-    }  
-
-    public void setPosition(int x, int y){
-        this.x = x;
-        this.y = y;
+        setDefaultValues();
     }
 
-    public void setDefaultValues(){
+    void setDefaultValues(){
         name = "Healing Potion";
-        solidArea = new Rectangle(8, 16, 32, 32);
+        solidArea = new Rectangle(0,0,gp.tileSize,gp.tileSize);
     }
 
-    public void setImage(){
+    void setImage(){
         try{
             image = ImageIO.read(getClass().getResourceAsStream(""));
         }catch(Exception e){
@@ -32,15 +27,8 @@ public class speedPotion extends SuperPotion{
         }
     }
 
-    public void draw(Graphics2D g2){
-        g2.drawImage(image, x, y, gp.tileSize, gp.tileSize, null);
-    }
-
     public int getDuration(){
         return duration;
     }
     
-    // public void effect(){
-    //     gp.player.speed += buffSpeed;
-    // }
 }  
