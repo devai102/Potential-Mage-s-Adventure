@@ -10,6 +10,7 @@ public class Entity {
     public String directionX = "right";
     public String directionY = "none";
     protected boolean Falling = false;
+    protected boolean Jumping = false;
 
     protected int spriteCounter = 0;
     protected int spriteNum = 1;
