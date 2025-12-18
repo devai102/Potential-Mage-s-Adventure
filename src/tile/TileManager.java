@@ -15,7 +15,7 @@ public class TileManager {
 
     public TileManager(GamePanel gp){
         this.gp = gp;
-        tile = new Tile[10];
+        tile = new Tile[20];
         mapTileNum = new int[gp.maxWorldCol][gp.maxWorldRow];
         loadTileImage();
         loadMap("/res/map/map01.txt");
@@ -65,39 +65,55 @@ public class TileManager {
         try{
             //NEN TRONG
             tile[0] = new Tile();
-            tile[0].image = javax.imageio.ImageIO.read((Objects.requireNonNull(getClass().getResourceAsStream("/res/image/map/Ground/Ground1.png"))));
-            tile[0].collision = true;
+            tile[0].image = javax.imageio.ImageIO.read((Objects.requireNonNull(getClass().getResourceAsStream("/res/image/map/Sky/Sky1.png"))));
+            tile[0].collision = false;
+
+            tile[4] = new Tile();
+            tile[4].image = javax.imageio.ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("res/image/map/Sky/Sky2.png")));
+            tile[4].collision = false;
+
+            tile[9] = new Tile();
+            tile[9].image = javax.imageio.ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("res/image/map/Sky/Sky3.png")));
+            tile[9].collision = false;
+
+            tile[10] = new Tile();
+            tile[10].image = javax.imageio.ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("res/image/map/Sky/Sky4.png")));
+            tile[10].collision = false;
+
+            tile[11] = new Tile();
+            tile[11].image = javax.imageio.ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("res/image/map/Tree/SkyTree1.png")));
+            tile[11].collision = false;
+
+            tile[12] = new Tile();
+            tile[12].image = javax.imageio.ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("res/image/map/Tree/SkyTree2.png")));
+            tile[12].collision = false;
             //DAT1
             tile[1] = new Tile();
-            tile[1].image = javax.imageio.ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/image/map/Ground/Ground2.png")));
+            tile[1].image = javax.imageio.ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/image/map/Ground/Ground1.png")));
             tile[1].collision = true;
             //DAT2
             tile[2] = new Tile();
-            tile[2].image = javax.imageio.ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/image/map/Ground/Ground3.png")));
+            tile[2].image = javax.imageio.ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/image/map/Ground/Ground2.png")));
             tile[2].collision = true;
 
             tile[3] = new Tile();
-            tile[3].image = javax.imageio.ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/image/map/Ground/UpGround1.png")));
+            tile[3].image = javax.imageio.ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/image/map/Ground/Ground3.png")));
             tile[3].collision = true;
-
-            tile[4] = new Tile();
-            tile[4].image = javax.imageio.ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/image/map/Ground/UpGround2.png")));
-            tile[4].collision = true;
 
             tile[5] = new Tile();
             tile[5].image = javax.imageio.ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/image/map/Ground/UpGround1.png")));
             tile[5].collision = true;
 
             tile[6] = new Tile();
-            tile[6].image = javax.imageio.ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/image/map/Ground/UnderGround1.png")));
+            tile[6].image = javax.imageio.ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/image/map/Ground/UpGround2.png")));
             tile[6].collision = false;
 
             tile[7] = new Tile();
-            tile[7].image = javax.imageio.ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/image/map/Ground/UnderGround2.png")));
+            tile[7].image = javax.imageio.ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/image/map/Ground/UnderGround1.png")));
             tile[7].collision = false;
 
             tile[8] = new Tile();
-            tile[8].image = javax.imageio.ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/image/map/Sky/Sky1.png")));
+            tile[8].image = javax.imageio.ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/image/map/Ground/UnderGround2.png")));
             tile[8].collision = false;
         }catch(Exception e){
             e.printStackTrace();
