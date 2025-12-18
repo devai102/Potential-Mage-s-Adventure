@@ -65,7 +65,7 @@ public class TileManager {
         try{
             //NEN TRONG
             tile[0] = new Tile();
-            tile[0].image = javax.imageio.ImageIO.read((getClass().getResourceAsStream("/res/image/map/Ground/Ground1.png")));
+            tile[0].image = javax.imageio.ImageIO.read((Objects.requireNonNull(getClass().getResourceAsStream("/res/image/map/Ground/Ground1.png"))));
             tile[0].collision = true;
             //DAT1
             tile[1] = new Tile();
