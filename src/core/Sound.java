@@ -11,7 +11,8 @@ public class Sound {
     URL soundURL[] = new URL[30];
 
     public Sound(){
-        soundURL[0] = getClass().getResource("/sound/background.wav");
+        soundURL[0] = getClass().getResource("/res/sound/Play_Song.wav");
+        soundURL[1] = getClass().getResource("/res/sound/Intro_Song.wav");
     }
 
     public void setFile(int i){
@@ -20,7 +21,7 @@ public class Sound {
             clip = AudioSystem.getClip();
             clip.open(ais);
         }catch(Exception e){
-
+            e.printStackTrace();
         }
     }
 
@@ -35,4 +36,6 @@ public class Sound {
     public void loop(){
         clip.loop(Clip.LOOP_CONTINUOUSLY);
     }
+
+    
 }

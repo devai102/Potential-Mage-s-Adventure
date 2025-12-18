@@ -17,8 +17,7 @@ public class Heart extends SuperObject{
     void setImage(){
         try{
             for(int i=0;i<3;i++){
-                images[i] = javax.imageio.ImageIO.read(getClass().getResourceAsStream("/res/image/object/heart_"+i+".png"));
-                uTool.scaleImage(images[i], gp.tileSize, gp.tileSize);
+                images[i] = javax.imageio.ImageIO.read(getClass().getResourceAsStream("/res/image/object/heart_" + i + ".png"));
             }
         }catch(Exception e){
             e.getStackTrace();

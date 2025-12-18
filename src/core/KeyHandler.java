@@ -21,6 +21,38 @@ public class KeyHandler implements KeyListener{
     @Override
     public void keyPressed(KeyEvent e) {
         int code = e.getKeyCode();
+        if(gp.gameState == gp.tileScreenState){
+            if(code == KeyEvent.VK_S){
+                gp.ui.commandNumber--;
+                if(gp.ui.commandNumber < 0){
+                    gp.ui.commandNumber = 3;
+                }
+            }
+            if(code == KeyEvent.VK_W){
+                gp.ui.commandNumber++;
+                if(gp.ui.commandNumber > 3){
+                    gp.ui.commandNumber = 0;
+                }
+            }
+            if(code == KeyEvent.VK_ENTER){
+                if(gp.ui.commandNumber == 0){
+                    gp.gameState = gp.playState;
+                }
+                if(gp.ui.commandNumber == 1){
+                    gp.gameState = gp.leaderboardState;
+                }
+                if(gp.ui.commandNumber == 2){
+                    gp.gameState = gp.helpState;
+                }
+                if(gp.ui.commandNumber == 3){
+                    System.exit(0);
+                }
+                if(gp.gameState == gp.winState || gp.gameState == gp.gameOverState){
+                    gp.setupGame();
+                }
+            }
+        }
+
         if(code == KeyEvent.VK_W){
             upPressed = true;
         }

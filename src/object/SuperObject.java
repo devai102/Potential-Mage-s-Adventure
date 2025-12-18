@@ -17,8 +17,6 @@ public class SuperObject {
     public int solidAreaDefaultX = 0;
     public int solidAreaDefaultY = 0;
     public boolean collision = false;
-    public Utilities uTool = new Utilities();
-
 
     public void setLocation(int worldX, int worldY){
         this.worldX = worldX;

@@ -11,7 +11,7 @@ public class GamePanel extends JPanel implements Runnable {
 
     // SCREEN SETTINGS
     final int originalTile = 16;
-    final int scale = 3;
+    final int scale = 4;
     public final int tileSize = originalTile * scale;
     public final int maxScreenCol = 20;
     public final int maxScreenRow = 12;
@@ -45,6 +45,8 @@ public class GamePanel extends JPanel implements Runnable {
     public final int winState = 2;
     public final int gameOverState = 3;
     public final int tileScreenState = 4;
+    public final int leaderboardState = 5;
+    public final int helpState = 6;
 
     public CollisionChecker cChecker = new CollisionChecker(this);
     public AssetSetter aSetter = new AssetSetter(this);
@@ -66,13 +68,14 @@ public class GamePanel extends JPanel implements Runnable {
     public void setupGame(){
         aSetter.setObject();
         gameState = 4;
+        playMusic(1);
     }
 
     public void startGameThread() {
         gameThread = new Thread(this);
         gameThread.start();
     }
-
+    
     @Override
     public void run() {
         // Sử dụng biến FPS đã khai báo thay vì số 10
@@ -99,6 +102,9 @@ public class GamePanel extends JPanel implements Runnable {
             player.update();
         }
         if(gameState == pauseState){
+        }
+        if(gameState == tileScreenState){
+            ui.update();
         }
     }
 
