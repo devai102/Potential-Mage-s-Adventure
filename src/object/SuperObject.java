@@ -4,17 +4,21 @@ import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 
+import javax.swing.text.Utilities;
+
 import core.GamePanel;
 
 public class SuperObject {
     public String name;
     public int worldX, worldY;
-    public BufferedImage image;
+    public BufferedImage image1, image2, image3;
 
     public Rectangle solidArea = new Rectangle(0,0,48,48);
     public int solidAreaDefaultX = 0;
     public int solidAreaDefaultY = 0;
     public boolean collision = false;
+    public Utilities uTool = new Utilities();
+
 
     public void setLocation(int worldX, int worldY){
         this.worldX = worldX;
@@ -29,7 +33,7 @@ public class SuperObject {
             worldX - gp.tileSize < gp.player.worldX + gp.player.screenX &&
             worldY + gp.tileSize > gp.player.worldY - gp.player.screenY &&
             worldY - gp.tileSize < gp.player.worldY + gp.player.screenY){
-        g2.drawImage(image, screenX, screenY, gp.tileSize, gp.tileSize, null);
+        g2.drawImage(image1, screenX, screenY, gp.tileSize, gp.tileSize, null);
         }
     }
 }

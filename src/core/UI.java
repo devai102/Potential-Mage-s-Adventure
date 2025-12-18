@@ -17,12 +17,24 @@ public class UI {
 
     Graphics2D g2;
 
+    BufferedImage[] playerImages = new BufferedImage[2];
     BufferedImage heart_full, heart_half, heart_blank;
 
     public UI(GamePanel gp){
         this.gp = gp;
 
         TNR_40 = new Font("Times New Roman", Font.PLAIN, 40);
+    }
+
+    void setImages(){
+        // Load images here
+        try{
+            for(int i = 0; i < 2; i++) {
+                playerImages[i] = javax.imageio.ImageIO.read(getClass().getResourceAsStream("/res/image/player/standing/" + (i+1) + ".png"));
+            }
+        }catch(Exception e){
+            e.printStackTrace();
+        }
     }
 
     public void showMessage(String text){
@@ -130,13 +142,23 @@ public class UI {
         
         String text2 = "Start Game";
         int x2 = getXForCenteredText(text2);
-        int y2 = gp.tileSize * 5;
-
+        int y2 = gp.tileSize * 6;
         g2.setColor(Color.gray);
         g2.drawString(text2, x2 + 2, y2 + 2);
-
         g2.setColor(Color.black);
         g2.drawString(text2, x2, y2);
 
+        // Quit game button
+        g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 30F));
+        String text3 = "Quit Game";
+        int x3 = getXForCenteredText(text3);
+        int y3 = gp.tileSize * 7 + 40;
+        g2.setColor(Color.gray);
+        g2.drawString(text3, x3 + 2, y3 + 2);
+        g2.setColor(Color.black);
+        g2.drawString(text3, x3, y3);
+
+        // Player image
+        g2.drawImage(playerImages[0], gp.screenWidth/2 - gp.tileSize, gp.tileSize *4, gp.tileSize, gp.tileSize, null);
     }
 }

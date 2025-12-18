@@ -1,8 +1,12 @@
 package object;
 
+import java.awt.image.BufferedImage;
+
 import javax.imageio.ImageIO;
 
 public class Chest extends SuperObject{
+    BufferedImage image;
+
     public Chest(){
         name = "Chest";
         setImage();
@@ -11,7 +15,7 @@ public class Chest extends SuperObject{
     
     void setImage(){
         try{
-            image = ImageIO.read(getClass().getResourceAsStream("/res/image/object/chest.png"));
+            image1 = ImageIO.read(getClass().getResourceAsStream("/res/image/object/chest.png"));
         }catch(Exception e){
             e.getStackTrace();
         }

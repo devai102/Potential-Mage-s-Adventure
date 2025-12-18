@@ -12,7 +12,7 @@ public class Player extends Entity {
     GamePanel gp;
     KeyHandler keyH;
 
-    public int hp;
+    private int hp;
 
     private int gravity = 3;
     private int jumpPower = 15;
@@ -115,22 +115,18 @@ public class Player extends Entity {
         // 4. ANIMATION LOGIC
         if(directionX.equals("none")) {
             spriteNum = 1;
-        } else {
+        }else {
             spriteCounter++;
             if(spriteCounter > 12) {
-                if(spriteNum == 1){
+                if(spriteNum == 1) {
                     spriteNum = 2;
-                }
-                else if(spriteNum == 2){
+                } else if(spriteNum == 2) {
                     spriteNum = 3;
-                }
-                else if(spriteNum == 3 && defenseOn == false){
+                } else if(spriteNum == 3 && !defenseOn) {
                     spriteNum = 4;
-                }
-                else if(spriteNum == 4){
+                } else if(spriteNum == 4) {
                     spriteNum = 5;
-                }
-                else if(spriteNum == 5){
+                } else if(spriteNum == 5) {
                     spriteNum = 1;
                 }
                 spriteCounter = 0;
@@ -168,8 +164,15 @@ public class Player extends Entity {
             }
         }
             
-        
         g2.drawImage(image, screenX, screenY, gp.tileSize, gp.tileSize, null);
         }
+    }
+
+    public int getHp() {
+        return hp;
+    }
+
+    public void setHp(int hp) {
+        this.hp = hp;
     }
 }    
