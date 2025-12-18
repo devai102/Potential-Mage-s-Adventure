@@ -38,6 +38,9 @@ public class GamePanel extends JPanel implements Runnable {
     public int gameState;
     public final int playState = 0;
     public final int pauseState = 1;
+    public final int winState = 2;
+    public final int gameOverState = 3;
+    public final int tileScreenState = 4;
 
     public CollisionChecker cChecker = new CollisionChecker(this);
     public AssetSetter aSetter = new AssetSetter(this);
@@ -58,9 +61,7 @@ public class GamePanel extends JPanel implements Runnable {
 
     public void setupGame(){
         aSetter.setObject();
-        playMusic(0);
-        stopMusic();
-        gameState = 0;
+        gameState = 4;
     }
 
     public void startGameThread() {
@@ -108,13 +109,19 @@ public class GamePanel extends JPanel implements Runnable {
                 obj[i].draw(g2, this);
             }
         }
-        // draw tile
-        tileM.draw(g2);
-        // draw player
-        player.draw(g2);
-        //draw UI
-        ui.draw(g2);
 
+        if(gameState == tileScreenState){
+            
+        }else{
+            // draw tile
+            tileM.draw(g2);
+
+            // draw player
+            player.draw(g2);
+
+            //draw UI
+            ui.draw(g2);
+        }
         g2.dispose();
     }
 

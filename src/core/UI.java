@@ -46,6 +46,9 @@ public class UI {
             case 3:
                 drawPauseScreen(g2);
                 break;
+            case 4:
+                drawTitleScreen(g2);
+                break;
         }
     }
     
@@ -54,10 +57,14 @@ public class UI {
         int x = getXForCenteredText(text);
         int y = gp.screenHeight / 2;
 
-        g2.setColor(new Color(0,0,0,150));
+        g2.setColor(Color.black);
         g2.fillRect(0, 0, gp.screenWidth, gp.screenHeight);
+
         g2.setColor(Color.white);
         g2.drawString(text, x, y);
+
+        g2.setColor(Color.gray);
+        g2.drawString(text, x+5, y+5);
     }
 
     void drawGameOverScreen(Graphics2D g2){
@@ -80,6 +87,7 @@ public class UI {
 
         g2.setColor(new Color(0,0,0,150));
         g2.fillRect(0, 0, gp.screenWidth, gp.screenHeight);
+
         g2.setColor(Color.white);
         g2.drawString(text, x, y);
 
@@ -98,5 +106,21 @@ public class UI {
         int length = (int)g2.getFontMetrics().getStringBounds(text, g2).getWidth();
         int x = gp.screenWidth / 2 - length / 2;
         return x;
+    }
+
+    void drawTitleScreen(Graphics2D g2){
+        g2.setColor(new Color(0,0,0));
+        g2.fillRect(0, 0, gp.screenWidth, gp.screenHeight);
+
+        g2.setFont(g2.getFont().deriveFont(Font.BOLD, 96F));   
+        String text = "POTENTIAL MAGE'S ADVENTURE";
+        int x = getXForCenteredText(text);
+        int y = gp.tileSize * 3;
+
+        g2.setColor(Color.white);
+        g2.drawString(text, x, y);
+
+        g2.setColor(Color.black);
+        g2.drawString(text, x+5, y+5);
     }
 }
