@@ -109,18 +109,34 @@ public class UI {
     }
 
     void drawTitleScreen(Graphics2D g2){
-        g2.setColor(new Color(0,0,0));
+        // Background
+        g2.setColor(Color.white);
         g2.fillRect(0, 0, gp.screenWidth, gp.screenHeight);
 
-        g2.setFont(g2.getFont().deriveFont(Font.BOLD, 96F));   
-        String text = "POTENTIAL MAGE'S ADVENTURE";
-        int x = getXForCenteredText(text);
-        int y = gp.tileSize * 3;
+        // Title name
+        g2.setFont(g2.getFont().deriveFont(Font.BOLD, 40F));   
+        String text1 = "POTENTIAL MAGE'S ADVENTURE";
+        int x1 = getXForCenteredText(text1);
+        int y1 = gp.tileSize * 3;
 
-        g2.setColor(Color.white);
-        g2.drawString(text, x, y);
+        g2.setColor(Color.gray);
+        g2.drawString(text1, x1 + 3, y1 + 3);
 
         g2.setColor(Color.black);
-        g2.drawString(text, x+5, y+5);
+        g2.drawString(text1, x1, y1);
+
+        // Start game button
+        g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 30F));
+        
+        String text2 = "Start Game";
+        int x2 = getXForCenteredText(text2);
+        int y2 = gp.tileSize * 5;
+
+        g2.setColor(Color.gray);
+        g2.drawString(text2, x2 + 2, y2 + 2);
+
+        g2.setColor(Color.black);
+        g2.drawString(text2, x2, y2);
+
     }
 }

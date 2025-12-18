@@ -45,7 +45,7 @@ public class Player extends Entity {
         worldX = gp.tileSize * 5;
         worldY = gp.tileSize * 10;
         speed = gp.tileSize / 4;
-        
+
         worldX = gp.tileSize * 5;
         worldY = gp.tileSize * 10;
         speed = 4;
@@ -74,7 +74,7 @@ public class Player extends Entity {
             directionX = "left";
         } else if(keyH.rightPressed) {
             directionX = "right";
-        } else {
+        } else if(!keyH.leftPressed && !keyH.rightPressed) {
             directionX = "none";
         }
 

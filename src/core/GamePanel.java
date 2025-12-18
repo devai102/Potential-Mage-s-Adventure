@@ -13,14 +13,18 @@ public class GamePanel extends JPanel implements Runnable {
     final int originalTile = 16;
     final int scale = 3;
     public final int tileSize = originalTile * scale;
-    public final int maxScreenCol = 16;
+    public final int maxScreenCol = 20;
     public final int maxScreenRow = 12;
-    public final int screenWidth = tileSize * maxScreenCol;  // 768px
+    public final int screenWidth = tileSize * maxScreenCol;  // 960px
     public final int screenHeight = tileSize * maxScreenRow; // 576px
-    
+
     // WORLD SETTINGS (Nên tăng maxWorldRow để thế giới rộng hơn)
     public final int maxWorldCol = 64;
     public final int maxWorldRow = 50;
+
+    // Full Screen
+    int screenHeight2 = screenHeight;
+    int screenWidth2 = screenWidth;
 
     // FPS
     private final int FPS = 60;
@@ -109,18 +113,14 @@ public class GamePanel extends JPanel implements Runnable {
             }
         }
 
-        if(gameState == tileScreenState){
-            
-        }else{
-            // draw tile
-            tileM.draw(g2);
+        // draw tile
+        tileM.draw(g2);
 
-            // draw player
-            player.draw(g2);
+        // draw player
+        player.draw(g2);
 
-            //draw UI
-            ui.draw(g2);
-        }
+        //draw UI
+        ui.draw(g2);
         g2.dispose();
     }
 
