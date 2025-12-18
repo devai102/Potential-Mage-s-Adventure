@@ -25,11 +25,25 @@ public class GamePanel extends JPanel implements Runnable {
     // FPS
     final int FPS = 20;
 
-    // SYSTEM
+    //Systems
+    TileManager tileM = new TileManager(this);
+    KeyHandler keyH = new KeyHandler(this);
+
+    Sound musicSound = new Sound();
+    Sound se = new Sound();
+
+    UI ui = new UI(this);
+
+    //Game state
+    public int gameState;
+    public final int playState = 0;
+    public final int pauseState = 1;
+    public final int winState = 2;
+    public final int gameOverState = 3;
+    public final int tileScreenState = 4;
+
     public CollisionChecker cChecker = new CollisionChecker(this);
-    public KeyHandler keyH = new KeyHandler(); // Đã chuyển sang public để Main hoặc lớp khác truy cập nếu cần
-    public TileManager tileM = new TileManager(this);
-    public AssetSetter aSetter = new AssetSetter(this); // Giả định bạn dùng class này để đặt object
+    public AssetSetter aSetter = new AssetSetter(this);
 
     Thread gameThread;
 
@@ -45,9 +59,9 @@ public class GamePanel extends JPanel implements Runnable {
         this.setFocusable(true);
     }
 
-    // Hàm này nên được gọi trong Main trước khi khởi động Thread
-    public void setupGame() {
+    public void setupGame(){
         aSetter.setObject();
+        gameState = 4;
     }
 
     public void startGameThread() {
@@ -76,28 +90,53 @@ public class GamePanel extends JPanel implements Runnable {
         }
     }
 
-    public void update() {
-        player.update();
+    public void update(){
+        if(gameState == playState){
+            player.update();
+        }
+        if(gameState == pauseState){
+
+        }
     }
 
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g;
-
-        // --- LAYER 1: TILES (NỀN) ---
-        tileM.draw(g2);
-
-        // --- LAYER 2: OBJECTS (VẬT PHẨM) ---
-        for(int i = 0; i < obj.length; i++) {
-            if(obj[i] != null) {
+        // draw objects
+        for(int i = 0; i < obj.length; i++){
+            if(obj[i] != null){
                 obj[i].draw(g2, this);
             }
         }
 
-        // --- LAYER 3: ENTITIES (NGƯỜI CHƠI, QUÁI VẬT) ---
-        player.draw(g2);
+        if(gameState == tileScreenState){
+            
+        }else{
+            // draw tile
+            tileM.draw(g2);
 
+            // draw player
+            player.draw(g2);
+
+            //draw UI
+            ui.draw(g2);
+        }
         g2.dispose();
+    }
+
+    public void playMusic(int i){
+        musicSound.setFile(i);
+        musicSound.play();
+        musicSound.loop();
+    }
+
+    public void stopMusic(){
+        musicSound.stop();
+    }
+
+    public void playSE(int i){
+        se.setFile(i);
+        se.play();
     }
 }

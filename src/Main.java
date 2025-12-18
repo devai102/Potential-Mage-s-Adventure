@@ -32,7 +32,6 @@ public class Main {
         // 6. Bắt đầu logic Game (Setup các Object trước khi chạy Thread)
         // Lưu ý: Nếu bạn có hàm setupGame() trong GamePanel, hãy gọi nó ở đây
         gamePanel.setupGame();
-
         gamePanel.startGameThread();
     }
 }

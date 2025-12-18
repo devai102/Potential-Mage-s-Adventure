@@ -12,22 +12,27 @@ public class Player extends Entity {
     GamePanel gp;
     KeyHandler keyH;
 
-    public final int screenX, screenY;
-    private int speed;
-    private int gravity = 1;      // Giảm trọng lực để nhảy mượt hơn
-    private int jumpPower = 10;
-    private int currentJumpSpeed;// Biến tạm để xử lý lực nhảy
+    public int hp;
+
+    private int gravity = 3;
+    private int jumpPower = 15;
+    private boolean Jumping = false;
+    private int currentJumpSpeed = jumpPower;
+
     private boolean defenseOn = false;
 
-    private BufferedImage[] rightImages = new BufferedImage[7];
-    private BufferedImage[] leftImages = new BufferedImage[7];
-    private BufferedImage standingImage, defenseOnImage;
+    public final int screenX, screenY; 
+
+    private BufferedImage[] rightImages = new BufferedImage[5];
+    private BufferedImage[] leftImages = new BufferedImage[5];
+    private BufferedImage standingImage;
+    private BufferedImage[] defenseOnImage = new BufferedImage[5];
+    private BufferedImage[] jumpRightImages = new BufferedImage[5];
+    private BufferedImage[] jumpLeftImages = new BufferedImage[5];
 
     public Player(GamePanel gp, KeyHandler keyH){
         this.gp = gp;
         this.keyH = keyH;
-
-        // Luôn giữ nhân vật ở giữa màn hình (Camera focus)
         this.screenX = gp.screenWidth / 2 - (gp.tileSize / 2);
         this.screenY = gp.screenHeight / 2 - (gp.tileSize / 2);
 
@@ -36,7 +41,11 @@ public class Player extends Entity {
     }
 
     void setDefaultValues(){
-        solidArea = new Rectangle(12, 16, 24, 32); // Thu nhỏ vùng va chạm để mượt hơn
+        hp = 6;
+        solidArea = new Rectangle(8, 12, 32, 32);
+        worldX = gp.tileSize * 5;
+        worldY = gp.tileSize * 10;
+        speed = gp.tileSize / 4;
         solidAreaDefaultX = solidArea.x;
         solidAreaDefaultY = solidArea.y;
 
@@ -49,11 +58,13 @@ public class Player extends Entity {
 
     void getPlayerImage(){
         try {
-            for(int i = 0; i < 7; i++) {
+            for(int i = 0; i < 5; i++) {
                 rightImages[i] = ImageIO.read(getClass().getResourceAsStream("/image/right/" + (i+1) + ".png"));
                 leftImages[i] = ImageIO.read(getClass().getResourceAsStream("/image/left/" + (i+1) + ".png"));
+                defenseOnImage[i] = ImageIO.read(getClass().getResourceAsStream("/image/defenseOn/" + (i+1) + ".png"));
+                jumpRightImages[i] = ImageIO.read(getClass().getResourceAsStream("/image/jumpRight/" + (i+1) + ".png"));
+                jumpLeftImages[i] = ImageIO.read(getClass().getResourceAsStream("/image/jumpLeft/" + (i+1) + ".png"));
             }
-//            defenseOnImage = ImageIO.read(getClass().getResourceAsStream("/image/defenseOn.png"));
             standingImage = ImageIO.read(getClass().getResourceAsStream("/image/standing.png"));
         } catch(Exception e) {
             e.printStackTrace();
@@ -61,7 +72,7 @@ public class Player extends Entity {
     }
 
     public void update() {
-        // 1. XỬ LÝ DI CHUYỂN NGANG (X-AXIS)
+        // 1. XỬ LÝ DI CHUYỂN (X-AXIS)
         if(keyH.leftPressed) {
             directionX = "left";
         } else if(keyH.rightPressed) {
@@ -81,22 +92,25 @@ public class Player extends Entity {
         // 2. XỬ LÝ NHẢY & TRỌNG LỰC (Y-AXIS)
         if(keyH.upPressed && !Jumping && !Falling) {
             Jumping = true;
+            directionY = "up";
             currentJumpSpeed = jumpPower;
         }
 
-        if(Jumping) {
+        if(Jumping){
             worldY -= currentJumpSpeed;
             currentJumpSpeed -= gravity;
             if(currentJumpSpeed <= 0) {
                 Jumping = false;
                 Falling = true;
+                directionY = "down";
             }
         }
 
-        // 3. XỬ LÝ RƠI (FALLING)
-        gp.cChecker.isFalling(this); // Hàm này nên set Falling = true nếu ko có gạch dưới chân
+        gp.cChecker.isFalling(this);
         if(Falling && !Jumping) {
-            worldY += gravity * 4; // Tốc độ rơi
+            worldY += gravity * 4;
+        }else{
+            directionY = "none";
         }
 
         // 4. ANIMATION LOGIC
@@ -104,34 +118,59 @@ public class Player extends Entity {
             spriteNum = 1;
         } else {
             spriteCounter++;
-            if(spriteCounter > 5) {
-                spriteNum = (spriteNum % 7) + 1; // Tự động xoay vòng từ 1-7
+            if(spriteCounter > 12) {
+                if(spriteNum == 1){
+                    spriteNum = 2;
+                }
+                else if(spriteNum == 2){
+                    spriteNum = 3;
+                }
+                else if(spriteNum == 3 && defenseOn == false){
+                    spriteNum = 4;
+                }
+                else if(spriteNum == 4){
+                    spriteNum = 5;
+                }
+                else if(spriteNum == 5){
+                    spriteNum = 1;
+                }
                 spriteCounter = 0;
             }
         }
     }
 
-public void draw(Graphics g2) {
-    BufferedImage image = null;
-
-    // Ưu tiên hiển thị ảnh di chuyển
-    if (directionX.equals("right")) {
-        image = rightImages[spriteNum - 1];
-    } else if (directionX.equals("left")) {
-        image = leftImages[spriteNum - 1];
-    }
-    // Nếu không di chuyển ngang, kiểm tra đứng yên hoặc thủ
-    else {
-        if (defenseOn) {
-            image = defenseOnImage;
-        } else {
-            image = standingImage;
+    public void draw(Graphics g2) {
+        BufferedImage image = null;
+        if(!Falling && !Jumping) {
+            if (directionX.equals("right")) {
+                image = rightImages[spriteNum - 1];
+            } else if (directionX.equals("left")) {
+                image = leftImages[spriteNum - 1];
+            } else if (directionX.equals("none")) {
+                image = standingImage;
+            } else if (defenseOn) {
+                image = defenseOnImage[spriteNum - 1];
+            }
+        else if (Jumping) {
+            if (directionX.equals("right")) {
+                image = rightImages[2];
+            } else if (directionX.equals("left")) {
+                image = leftImages[2];
+            } else {
+                image = standingImage;
+            }
+        } else if (Falling) {
+            if (directionX.equals("right")) {
+                image = rightImages[3];
+            } else if (directionX.equals("left")) {
+                image = leftImages[3];
+            } else {
+                image = standingImage;
+            }
+        }
+            
+        
+        g2.drawImage(image, screenX, screenY, gp.tileSize, gp.tileSize, null);
         }
     }
-
-    // KIỂM TRA CUỐI CÙNG
-    if (image != null) {
-        g2.drawImage(image, screenX, screenY, gp.tileSize, gp.tileSize, null);
-    }
-}
-}
+}    
