@@ -27,12 +27,17 @@ public class GamePanel extends JPanel implements Runnable{
 
     //Systems
     TileManager tileM = new TileManager(this);
-    KeyHandler keyH = new KeyHandler();
+    KeyHandler keyH = new KeyHandler(this);
 
     Sound musicSound = new Sound();
     Sound se = new Sound();
 
     UI ui = new UI(this);
+
+    //Game state
+    public int gameState;
+    public final int playState = 0;
+    public final int pauseState = 1;
 
     public CollisionChecker cChecker = new CollisionChecker(this);
     public AssetSetter aSetter = new AssetSetter(this);
@@ -55,6 +60,8 @@ public class GamePanel extends JPanel implements Runnable{
     public void setupGame(){
         aSetter.setObject();
         playMusic(0);
+        stopMusic();
+        gameState = 0;
     }
 
     public void startGameThread() {
@@ -80,7 +87,12 @@ public class GamePanel extends JPanel implements Runnable{
     }
 
     public void update(){
-        player.update();
+        if(gameState == playState){
+            player.update();
+        }
+        if(gameState == pauseState){
+
+        }
     }
 
     public void paintComponent(Graphics g){
@@ -96,6 +108,9 @@ public class GamePanel extends JPanel implements Runnable{
         tileM.draw(g2);
         // draw player
         player.draw(g2);
+        //draw UI
+        ui.draw(g2);
+
         g2.dispose();
     }
 
@@ -108,7 +123,7 @@ public class GamePanel extends JPanel implements Runnable{
     public void stopMusic(){
         musicSound.stop();
     }
-    
+
     public void playSE(int i){
         se.setFile(i);
         se.play();

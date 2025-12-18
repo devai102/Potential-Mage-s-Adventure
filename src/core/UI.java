@@ -15,8 +15,9 @@ public class UI {
     double playTime = 0;
     DecimalFormat dFormat = new DecimalFormat("#0.00");
 
+    Graphics2D g2;
+
     BufferedImage heart_full, heart_half, heart_blank;
-    int gameState; 
 
     public UI(GamePanel gp){
         this.gp = gp;
@@ -30,10 +31,11 @@ public class UI {
     }
 
     public void draw(Graphics2D g2){
-        g2.setFont(TNR_40);
-        switch(gameState){
+        this.g2 = g2;
+        g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 30F));
+        switch(gp.gameState){
             case 0:
-                drawDialogueScreen(g2);
+                drawPlayScreen(g2);
                 break;
             case 1:
                 drawWinScreen(g2);
@@ -48,27 +50,23 @@ public class UI {
     }
     
     void drawPauseScreen(Graphics2D g2){
-        g2.setColor(new Color(0,0,0,150));
-        g2.fillRect(0, 0, gp.screenWidth, gp.screenHeight);
-
-        g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 80F));
         String text = "PAUSED";
-        int x = gp.screenWidth / 2 - g2.getFontMetrics().stringWidth(text) / 2;
+        int x = getXForCenteredText(text);
         int y = gp.screenHeight / 2;
 
+        g2.setColor(new Color(0,0,0,150));
+        g2.fillRect(0, 0, gp.screenWidth, gp.screenHeight);
         g2.setColor(Color.white);
         g2.drawString(text, x, y);
     }
 
     void drawGameOverScreen(Graphics2D g2){
-        g2.setColor(new Color(0,0,0,150));
-        g2.fillRect(0, 0, gp.screenWidth, gp.screenHeight);
-
-        g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 80F));
         String text = "GAME OVER";
-        int x = gp.screenWidth / 2 - g2.getFontMetrics().stringWidth(text) / 2;
+        int x = getXForCenteredText(text);
         int y = gp.screenHeight / 2;
 
+        g2.setColor(new Color(0,0,0,150));
+        g2.fillRect(0, 0, gp.screenWidth, gp.screenHeight);
         g2.setColor(Color.white);
         g2.drawString(text, x, y);
 
@@ -76,26 +74,29 @@ public class UI {
     }
 
     void drawWinScreen(Graphics2D g2){
-        g2.setColor(new Color(0,0,0,150));
-        g2.fillRect(0, 0, gp.screenWidth, gp.screenHeight);
-
-        g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 80F));
         String text = "YOU WIN!";
-        int x = gp.screenWidth / 2 - g2.getFontMetrics().stringWidth(text) / 2;
+        int x = getXForCenteredText(text);
         int y = gp.screenHeight / 2;
 
+        g2.setColor(new Color(0,0,0,150));
+        g2.fillRect(0, 0, gp.screenWidth, gp.screenHeight);
         g2.setColor(Color.white);
         g2.drawString(text, x, y);
 
         gp.gameThread = null;
     }
 
-    void drawDialogueScreen(Graphics2D g2){
+    void drawPlayScreen(Graphics2D g2){
         //Timing
         playTime += (double)1/60;
-        g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 30F));
         g2.setColor(Color.white);
 
         g2.drawString("Time: " + dFormat.format(playTime), 30, 50);
+    }
+
+    int getXForCenteredText(String text){
+        int length = (int)g2.getFontMetrics().getStringBounds(text, g2).getWidth();
+        int x = gp.screenWidth / 2 - length / 2;
+        return x;
     }
 }
