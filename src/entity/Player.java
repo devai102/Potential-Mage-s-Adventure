@@ -8,10 +8,9 @@ import core.GamePanel;
 import core.KeyHandler;
 
 public class Player extends Entity {
-    
+
     GamePanel gp;
     KeyHandler keyH;
-    private boolean defenseOn = false;
 
     public int hp;
 
@@ -29,10 +28,13 @@ public class Player extends Entity {
     public Player(GamePanel gp, KeyHandler keyH){
         this.gp = gp;
         this.keyH = keyH;
+
+        // Luôn giữ nhân vật ở giữa màn hình (Camera focus)
         this.screenX = gp.screenWidth / 2 - (gp.tileSize / 2);
         this.screenY = gp.screenHeight / 2 - (gp.tileSize / 2);
+
         setDefaultValues();
-        setImage();
+        getPlayerImage();
     }
 
     void setDefaultValues(){
@@ -43,189 +45,93 @@ public class Player extends Entity {
         speed = gp.tileSize / 4;
         solidAreaDefaultX = solidArea.x;
         solidAreaDefaultY = solidArea.y;
+
+        worldX = gp.tileSize * 5;
+        worldY = gp.tileSize * 10;
+        speed = 4;
+        directionX = "none";
+        directionY = "none";
     }
 
-    void setImage(){
-        try{
-            for(int i = 0; i < 5; i++){
-                rightImages[i] = ImageIO.read(getClass().getResourceAsStream("/res/image/right/" + (i+1) + ".png"));
+    void getPlayerImage(){
+        try {
+            for(int i = 0; i < 7; i++) {
+                rightImages[i] = ImageIO.read(getClass().getResourceAsStream("/image/right/" + (i+1) + ".png"));
+                leftImages[i] = ImageIO.read(getClass().getResourceAsStream("/image/left/" + (i+1) + ".png"));
             }
-
-            for(int i = 0; i < 5; i++){
-                leftImages[i] = ImageIO.read(getClass().getResourceAsStream("/res/image/left/" + (i+1) + ".png"));
-            }
-
-            for(int i = 0; i < 5; i++){
-                defenseOnImage[i] = ImageIO.read(getClass().getResourceAsStream("/res/image/defenseOn/" + (i+1) + ".png"));
-            }
-
-            standingImage = ImageIO.read(getClass().getResourceAsStream("/res/image/standing.png"));
-        }catch(Exception e){
+//            defenseOnImage = ImageIO.read(getClass().getResourceAsStream("/image/defenseOn.png"));
+            standingImage = ImageIO.read(getClass().getResourceAsStream("/image/standing.png"));
+        } catch(Exception e) {
             e.printStackTrace();
         }
     }
 
-    public void update(){
-        if(keyH.upPressed == true || keyH.downPressed == true || keyH.leftPressed == true || keyH.rightPressed == true){
-            gp.cChecker.checkTile(this);
-            if(Jumping == false){
-                if(keyH.leftPressed == true && keyH.upPressed == true && Falling == false){
-                    directionX= "left";
-                    directionY= "up";
-                    Jumping = true;
-                }
-                else if(keyH.rightPressed == true && keyH.upPressed == true && Falling == false){
-                    directionX= "right";
-                    directionY= "up";
-                    Jumping = true;
-                }
-                else if(keyH.upPressed == true && Falling == false){
-                    directionY= "up";
-                    directionX= "none";
-                }
-                else if(keyH.downPressed == true && Falling == false){
-                    directionX = "none";
-                    directionY = "down";
-                    defenseOn = true;
-                }
-                else if(keyH.downPressed == true && Falling == true){
-                    directionY= "down";
-                    directionX= "none";
-                }
-                else if(keyH.leftPressed == true){
-                    directionX= "left";
-                }
-                else if(keyH.rightPressed == true){
-                    directionX= "right";
-                }
-            }
-            
-            // move along X axis
-            collisionOn = false;
-            gp.cChecker.checkTile(this);
-
-            // check object collision
-            int objIndex = gp.cChecker.checkObject(this, true);
-
-            if(collisionOn == false){
-                switch(directionX){
-                    case "left": worldX -= speed; break;
-                    case "right": worldX += speed; break;
-                }
-            }
-
-        }
-        else if(keyH.downPressed == false && keyH.upPressed == false && keyH.leftPressed == false && keyH.rightPressed == false){
+    public void update() {
+        // 1. XỬ LÝ DI CHUYỂN NGANG (X-AXIS)
+        if(keyH.leftPressed) {
+            directionX = "left";
+        } else if(keyH.rightPressed) {
+            directionX = "right";
+        } else {
             directionX = "none";
-            directionY = "none";
         }
 
-        //Jumping
-        if(Jumping == true){
-            gp.cChecker.checkTile(this);
-            if(collisionOn == false){
-                worldY -= jumpPower;
-            }else{
-                jumpPower = 0;
+        // Kiểm tra va chạm trục X
+        collisionOn = false;
+        gp.cChecker.checkTile(this);
+        if(!collisionOn) {
+            if(directionX.equals("left")) worldX -= speed;
+            if(directionX.equals("right")) worldX += speed;
+        }
+
+        // 2. XỬ LÝ NHẢY & TRỌNG LỰC (Y-AXIS)
+        if(keyH.upPressed && !Jumping && !Falling) {
+            Jumping = true;
+            currentJumpSpeed = jumpPower;
+        }
+
+        if(Jumping) {
+            worldY -= currentJumpSpeed;
+            currentJumpSpeed -= gravity;
+            if(currentJumpSpeed <= 0) {
                 Jumping = false;
                 Falling = true;
             }
-            jumpPower -= gravity;
-            if(jumpPower <= 0){
-                jumpPower = 15;
-                Jumping = false;
-                Falling = true;
-            }
         }
 
-        //Falling
-        gp.cChecker.isFalling(this);
-        if(Falling == true){
-            if(collisionOn == false){
-                this.worldY += gravity;
-                gp.cChecker.isFalling(this);
-            }else{
-                Falling = false;
-            }
+        // 3. XỬ LÝ RƠI (FALLING)
+        gp.cChecker.isFalling(this); // Hàm này nên set Falling = true nếu ko có gạch dưới chân
+        if(Falling && !Jumping) {
+            worldY += gravity * 4; // Tốc độ rơi
         }
-        
 
-        //Sprite running animation
-        spriteCounter++;
-        if(spriteCounter > 4){
-            if(spriteNum == 1){
-                spriteNum = 2;
+        // 4. ANIMATION LOGIC
+        if(directionX.equals("none")) {
+            spriteNum = 1;
+        } else {
+            spriteCounter++;
+            if(spriteCounter > 5) {
+                spriteNum = (spriteNum % 7) + 1; // Tự động xoay vòng từ 1-7
+                spriteCounter = 0;
             }
-            else if(spriteNum == 2){
-                spriteNum = 3;
-            }
-            else if(spriteNum == 3 && defenseOn == false){
-                spriteNum = 4;
-            }
-            else if(spriteNum == 4){
-                spriteNum = 5;
-            }
-            else if(spriteNum == 5){
-                spriteNum = 1;
-            }
-            spriteCounter = 0;
         }
     }
 
-    public void draw(Graphics g2){
-        BufferedImage image = null;
-        if(directionY.equals("none")){
-            if(directionX.equals("right")){
-                switch(spriteNum){
-                    case 1: image = rightImages[0]; break;
-                    case 2: image = rightImages[1]; break;
-                    case 3: image = rightImages[2]; break;
-                    case 4: image = rightImages[3]; break;
-                    case 5: image = rightImages[4]; break;
-                }
-            }
-            else if(directionX.equals("left")){
-                switch(spriteNum){
-                    case 1: image = leftImages[0]; break;
-                    case 2: image = leftImages[1]; break;
-                    case 3: image = leftImages[2]; break;
-                    case 4: image = leftImages[3]; break;
-                    case 5: image = leftImages[4]; break;
-                }
-            }
-            else if(directionX.equals("none") && directionY.equals("none")){
-                image = standingImage;
-            }
-        }
-        else if(directionY.equals("down") && defenseOn == true){
-            switch(spriteNum){
-                case 1: image = defenseOnImage[0]; break;
-                case 2: image = defenseOnImage[1]; break;
-                case 3: image = defenseOnImage[2]; break;
-                case 4: image = defenseOnImage[3]; break;
-                case 5: image = defenseOnImage[4]; break;
-            }
-            if(spriteNum == 5){
-                defenseOn = false;
-            }
-        }
-    
+public void draw(Graphics g2) {
+    BufferedImage image = null;
 
-        g2.drawImage(image, screenX, screenY, gp.tileSize, gp.tileSize, null);
+    // Ưu tiên hiển thị ảnh di chuyển
+    if (directionX.equals("right")) {
+        image = rightImages[spriteNum - 1];
+    } else if (directionX.equals("left")) {
+        image = leftImages[spriteNum - 1];
     }
-
-    public void pickUpObject(int index){
-        if(index != 999){
-            String objectName = gp.obj[index].name;
-
-            switch(objectName){
-                case "Chest":
-                    gp.obj[index] = null;
-                    break;
-                case "Hidden Block":
-                    gp.obj[index] = null;
-                    break;
-            }
+    // Nếu không di chuyển ngang, kiểm tra đứng yên hoặc thủ
+    else {
+        if (defenseOn) {
+            image = defenseOnImage;
+        } else {
+            image = standingImage;
         }
     }
 }

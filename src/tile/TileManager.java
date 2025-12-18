@@ -4,13 +4,14 @@ import java.awt.Graphics2D;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.Objects;
 
 import core.GamePanel;
 
-public class TileManager extends Tile {
+public class TileManager {
     GamePanel gp;
     public Tile[] tile;
-    public int mapTileNum[][];
+    public int[][] mapTileNum;
 
     public TileManager(GamePanel gp){
         this.gp = gp;
@@ -20,39 +21,92 @@ public class TileManager extends Tile {
         loadMap("/res/map/map01.txt");
     }
 
-    void loadMap(String filePath){
+//    void loadMap(String filePath){
+//        InputStream is = getClass().getResourceAsStream(filePath);
+//        BufferedReader br = new BufferedReader(new InputStreamReader(is));
+//        try{
+//            int col = 0;
+//            int row = 0;
+//            while(col < gp.maxWorldCol && row < gp.maxWorldRow){
+//                String line = br.readLine();
+//                while(col < gp.maxWorldCol){
+//                    String[] numbers = line.split(" ");
+//                    int num = Integer.parseInt(numbers[col]);
+//                    mapTileNum[col][row] = num;
+//                    col++;
+//                }
+//                if(col == gp.maxWorldCol){
+//                    col = 0;
+//                    row++;
+//                }
+//            }
+//        }catch(Exception e){
+//            e.printStackTrace();
+//        }
+//    }
+public void loadMap(String filePath) {
+    try {
         InputStream is = getClass().getResourceAsStream(filePath);
         BufferedReader br = new BufferedReader(new InputStreamReader(is));
-        try{
-            int col = 0;
-            int row = 0;
-            while(col < gp.maxWorldCol && row < gp.maxWorldRow){
-                String line = br.readLine();
-                while(col < gp.maxWorldCol){
-                    String numbers[] = line.split(" ");
+
+        int col = 0;
+        int row = 0;
+
+        // Vòng lặp an toàn: Dừng lại nếu HẾT FILE hoặc ĐỦ ROW
+        while (row < gp.maxWorldRow) {
+            String line = br.readLine();
+
+            // NẾU HẾT DÒNG ĐỂ ĐỌC -> THOÁT VÒNG LẶP NGAY
+            if (line == null) {
+                break;
+            }
+
+            // Dùng \\s+ để xử lý nếu giữa các số có nhiều hơn 1 dấu cách
+            String numbers[] = line.trim().split("\\s+");
+
+            while (col < gp.maxWorldCol) {
+                // Đảm bảo không đọc quá số lượng phần tử thực tế của mảng numbers
+                if (col < numbers.length) {
                     int num = Integer.parseInt(numbers[col]);
                     mapTileNum[col][row] = num;
-                    col++;
                 }
-                if(col == gp.maxWorldCol){
-                    col = 0;
-                    row++;
-                }
+                col++;
             }
-        }catch(Exception e){
-            e.printStackTrace();
+
+            if (col == gp.maxWorldCol) {
+                col = 0;
+                row++;
+            }
         }
+        br.close();
+    } catch (Exception e) {
+        System.out.println("Lỗi tại dòng: ");
+        e.printStackTrace();
     }
+}
 
     void loadTileImage(){
         try{
+            //NEN TRONG
             tile[0] = new Tile();
-            tile[0].image = javax.imageio.ImageIO.read(getClass().getResourceAsStream("/res/image/grass.png"));
+            tile[0].image = javax.imageio.ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/image/Nen3.jpg")));
             tile[0].collision = false;
-
+            //DAT1
             tile[1] = new Tile();
-            tile[1].image = javax.imageio.ImageIO.read(getClass().getResourceAsStream("/res/image/rock.png"));
+            tile[1].image = javax.imageio.ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/image/Dat1.jpg")));
             tile[1].collision = true;
+            //DAT2
+            tile[2] = new Tile();
+            tile[2].image = javax.imageio.ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/image/Tuong1.png")));
+            tile[2].collision = true;
+
+            tile[3] = new Tile();
+            tile[3].image = javax.imageio.ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/image/Tuong2.png")));
+            tile[3].collision = true;
+//
+//            tile[1] = new Tile();
+//            tile[1].image = javax.imageio.ImageIO.read(getClass().getResourceAsStream("/res/image/Dat1.jpg"));
+//            tile[1].collision = true;
         }catch(Exception e){
             e.printStackTrace();
         }    
