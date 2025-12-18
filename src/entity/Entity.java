@@ -16,8 +16,9 @@ public class Entity {
     protected int spriteNum = 1;
 
     public boolean collisionOn = false;
-    public int solidAreaDefaultX, solidAreaDefaultY;
     public Rectangle solidArea;
+    public int solidAreaDefaultX = solidArea.x;
+    public int solidAreaDefaultY = solidArea.y;
 
     public void isFalling(boolean Falling){
         this.Falling = Falling;

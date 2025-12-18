@@ -1,13 +1,12 @@
 package object;
 
-import java.awt.Rectangle;
-
 import javax.imageio.ImageIO;
 
 public class Chest extends SuperObject{
     public Chest(){
+        name = "Chest";
         setImage();
-        solidArea = new Rectangle(0,0,48,48);
+        collision = true;
     }
     
     void setImage(){

@@ -7,10 +7,14 @@ import java.awt.image.BufferedImage;
 import core.GamePanel;
 
 public class SuperObject {
-    protected int worldX, worldY;
-    protected Rectangle solidArea;
-    protected BufferedImage image;
-    protected boolean collision = false;
+    public String name;
+    public int worldX, worldY;
+    public BufferedImage image;
+
+    public Rectangle solidArea = new Rectangle(0,0,48,48);
+    public int solidAreaDefaultX = 0;
+    public int solidAreaDefaultY = 0;
+    public boolean collision = false;
 
     public void setLocation(int worldX, int worldY){
         this.worldX = worldX;
