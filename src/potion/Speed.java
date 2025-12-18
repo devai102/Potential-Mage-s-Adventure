@@ -7,7 +7,7 @@ import core.GamePanel;
 
 public class Speed extends SuperPotion{
     private int duration = 300;
-    private int buffSpeed = 5;
+    // private int buffSpeed = 5;
     public Speed(GamePanel gp) {
         super(gp);
         setImage();

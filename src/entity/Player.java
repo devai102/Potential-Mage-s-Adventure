@@ -42,13 +42,10 @@ public class Player extends Entity {
 
     void setDefaultValues(){
         hp = 6;
-        solidArea = new Rectangle(8, 12, 32, 32);
         worldX = gp.tileSize * 5;
         worldY = gp.tileSize * 10;
         speed = gp.tileSize / 4;
-        solidAreaDefaultX = solidArea.x;
-        solidAreaDefaultY = solidArea.y;
-
+        
         worldX = gp.tileSize * 5;
         worldY = gp.tileSize * 10;
         speed = 4;

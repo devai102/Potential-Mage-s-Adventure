@@ -3,7 +3,7 @@ package potion;
 import core.GamePanel;
 
 public class Stunning extends SuperPotion{
-    private int duration; // duration of paralysis effect in seconds
+    // private int duration; // duration of paralysis effect in seconds
     
     public Stunning(GamePanel gp) {
         super(gp);

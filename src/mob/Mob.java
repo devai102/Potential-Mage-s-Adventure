@@ -1,7 +1,5 @@
 package mob;
 
-import java.awt.image.BufferedImage;
-
 import core.GamePanel;
 import entity.Entity;
 

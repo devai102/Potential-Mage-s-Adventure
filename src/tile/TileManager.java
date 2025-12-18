@@ -57,7 +57,6 @@ public void loadMap(String filePath) {
         }
         br.close();
     } catch (Exception e) {
-        System.out.println("Lỗi tại dòng: ");
         e.printStackTrace();
     }
 }
@@ -66,39 +65,39 @@ public void loadMap(String filePath) {
         try{
             //NEN TRONG
             tile[0] = new Tile();
-            tile[0].image = javax.imageio.ImageIO.read((getClass().getResourceAsStream("image/Ground/Ground1.png")));
+            tile[0].image = javax.imageio.ImageIO.read((getClass().getResourceAsStream("/res/image/Ground/Ground1.png")));
             tile[0].collision = true;
             //DAT1
             tile[1] = new Tile();
-            tile[1].image = javax.imageio.ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("image/Ground/Ground2.png")));
+            tile[1].image = javax.imageio.ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/image/Ground/Ground2.png")));
             tile[1].collision = true;
             //DAT2
             tile[2] = new Tile();
-            tile[2].image = javax.imageio.ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("image/Ground/Ground3.png")));
+            tile[2].image = javax.imageio.ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/image/Ground/Ground3.png")));
             tile[2].collision = true;
 
             tile[3] = new Tile();
-            tile[3].image = javax.imageio.ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("image/Ground/UpGround1.png")));
+            tile[3].image = javax.imageio.ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/image/Ground/UpGround1.png")));
             tile[3].collision = true;
 
             tile[4] = new Tile();
-            tile[4].image = javax.imageio.ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("image/Ground/UpGround2.png")));
+            tile[4].image = javax.imageio.ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/image/Ground/UpGround2.png")));
             tile[4].collision = true;
 
             tile[5] = new Tile();
-            tile[5].image = javax.imageio.ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("image/Ground/UpGround1.png")));
+            tile[5].image = javax.imageio.ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/image/Ground/UpGround1.png")));
             tile[5].collision = true;
 
             tile[6] = new Tile();
-            tile[6].image = javax.imageio.ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("image/Ground/UnderGround1.png")));
+            tile[6].image = javax.imageio.ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/image/Ground/UnderGround1.png")));
             tile[6].collision = false;
 
             tile[7] = new Tile();
-            tile[7].image = javax.imageio.ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("image/Ground/UnderGround12.png")));
+            tile[7].image = javax.imageio.ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/image/Ground/UnderGround2.png")));
             tile[7].collision = false;
 
             tile[8] = new Tile();
-            tile[8].image = javax.imageio.ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("image/Sky/Sky1.png")));
+            tile[8].image = javax.imageio.ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/image/Sky/Sky1.png")));
             tile[8].collision = false;
         }catch(Exception e){
             e.printStackTrace();

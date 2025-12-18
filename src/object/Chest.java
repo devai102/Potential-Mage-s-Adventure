@@ -18,7 +18,7 @@ public class Chest extends SuperObject{
     }
 
     void setLoot(){
-        // set loot inside chest at random
+        
 
     }
 }

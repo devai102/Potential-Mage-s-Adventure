@@ -1,7 +1,6 @@
 package core;
 
 import entity.Entity;
-import object.SuperObject;
 
 public class CollisionChecker {
     GamePanel gp;
@@ -59,6 +58,8 @@ public class CollisionChecker {
                     entity.collisionOn = true;
                 }
                 break;
+            case "none":
+                break;
         }
     }
 
@@ -86,11 +87,9 @@ public class CollisionChecker {
         int index = 999;
         for(int i = 0; i < gp.obj.length; i++){
             if(gp.obj[i] != null){
-                //get entity solid area position
                 entity.solidArea.x = entity.worldX + entity.solidArea.x;
                 entity.solidArea.y = entity.worldY + entity.solidArea.y;
 
-                //get the object solid area position
                 gp.obj[i].solidArea.x = gp.obj[i].worldX + gp.obj[i].solidArea.x;
                 gp.obj[i].solidArea.y = gp.obj[i].worldY + gp.obj[i].solidArea.y;
 

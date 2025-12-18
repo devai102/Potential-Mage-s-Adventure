@@ -17,13 +17,13 @@ public class GamePanel extends JPanel implements Runnable {
     public final int maxScreenRow = 12;
     public final int screenWidth = tileSize * maxScreenCol;  // 768px
     public final int screenHeight = tileSize * maxScreenRow; // 576px
-
+    
     // WORLD SETTINGS (Nên tăng maxWorldRow để thế giới rộng hơn)
     public final int maxWorldCol = 64;
     public final int maxWorldRow = 50;
 
     // FPS
-    final int FPS = 20;
+    private final int FPS = 60;
 
     //Systems
     TileManager tileM = new TileManager(this);
@@ -95,7 +95,6 @@ public class GamePanel extends JPanel implements Runnable {
             player.update();
         }
         if(gameState == pauseState){
-
         }
     }
 

@@ -2,6 +2,8 @@ package mob;
 
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
+import java.util.Random;
+
 import javax.imageio.ImageIO;
 
 import core.GamePanel;
@@ -12,7 +14,10 @@ public class Golem extends Mob{
     private int actionLockCounter;
     private BufferedImage[] leftImages = new BufferedImage[5];
     private BufferedImage[] rightImages = new BufferedImage[5];
-    
+    private BufferedImage skillImage;
+    private boolean skillOn = false;
+    private int skillDuration = 0;
+
     public Golem(GamePanel gp){
         super(gp);
         setImage();
@@ -20,10 +25,10 @@ public class Golem extends Mob{
     }
 
     public void setDefaultValues(){
-        this.health = 20;
-        this.attack = 7;
+        this.health = 3;
+        this.attack = 1;
         this.speed = gp.tileSize / 12;
-        this.name = "Nor";
+        this.name = "Golem";
     }
 
     public void setImage(){
@@ -41,21 +46,23 @@ public class Golem extends Mob{
 
     public void update(){
         setAction();
-        // move mob
-        gp.cChecker.checkTile(this);
-        if(collisionOn == false){
-            switch(directionX){
-                case "left":
-                    worldX -= speed;
-                    break;
-                case "right":
-                    worldX += speed;
-                    break;
+
+        if(!skillOn){
+            gp.cChecker.checkTile(this);
+            if(collisionOn == false){
+                switch(directionX){
+                    case "left":
+                        worldX -= speed;
+                        break;
+                    case "right":
+                        worldX += speed;
+                        break;
+                }
             }
         }
-
+    
         spriteCounter++;
-        if(spriteCounter > 15){
+        if(spriteCounter > 12 && skillOn == false){
             if(spriteNum == 1){
                 spriteNum = 2;
             }
@@ -77,27 +84,43 @@ public class Golem extends Mob{
 
     public void draw(Graphics2D g2){
         BufferedImage image = null;
-        if(directionX == "left"){
-            image = leftImages[spriteNum -1];
+        if(skillOn){
+            image = skillImage;
+        }else{
+            if(directionX == "left"){
+                image = leftImages[spriteNum -1];
+            }
+            else if(directionX == "right"){
+                image = rightImages[spriteNum -1];
+            }
         }
-        else if(directionX == "right"){
-            image = rightImages[spriteNum -1];
-        }
-    
         g2.drawImage(image, worldX, worldY, gp.tileSize, gp.tileSize, null);
     }
 
     public void setAction(){
         actionLockCounter++;
-        if(actionLockCounter >= 120){
-            int rd = new java.util.Random().nextInt(100)+1;
+        if(actionLockCounter >= 120 && skillOn == false){
+            int rd = new Random().nextInt(100)+1;
             if (rd <=50) {
                 directionX = "left";
             }
             else {
                 directionX = "right";
             }
+
+            int rd2 = new Random().nextInt(100)+1;
+            if (rd2 > 90 && skillOn == false) {
+                skillOn = true;
+            }
             actionLockCounter = 0;
+        }
+        if(skillOn == true){
+            skillDuration++;
+            if (skillDuration > 90){
+                skillOn = false;
+                skillDuration = 0;
+                spriteNum = 1;
+            }
         }
     }
 }
