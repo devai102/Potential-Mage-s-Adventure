@@ -14,7 +14,8 @@ public class Golem extends Mob{
     private int actionLockCounter;
     private BufferedImage[] leftImages = new BufferedImage[5];
     private BufferedImage[] rightImages = new BufferedImage[5];
-    private BufferedImage skillImage;
+    private BufferedImage[] skillImages = new BufferedImage[2];
+    private BufferedImage[] dieImages = new BufferedImage[5];
     private boolean skillOn = false;
     private int skillDuration = 0;
 
@@ -34,10 +35,12 @@ public class Golem extends Mob{
     public void setImage(){
         try{
             for(int i = 0; i < 5; i++){
-                leftImages[i] = ImageIO.read(getClass().getResourceAsStream("/res/mob/golem/left/" + (i+1) + ".png"));
+                leftImages[i] = ImageIO.read(getClass().getResourceAsStream("/res/image/mob/golem/left/" + (i+1) + ".png"));
+                rightImages[i] = ImageIO.read(getClass().getResourceAsStream("/res/image/mob/golem/right/" + (i+1) + ".png"));
+                dieImages[i] = ImageIO.read(getClass().getResourceAsStream("/res/image/mob/golem/die/" + (i+1) + ".png"));
             }
-            for(int i = 0; i < 5; i++){
-                rightImages[i] = ImageIO.read(getClass().getResourceAsStream("/res/mob/golem/right/" + (i+1) + ".png"));
+            for(int i = 0 ; i < 2; i++){
+                skillImages[i] = ImageIO.read(getClass().getResourceAsStream("/res/image/mob/golem/skill/" + (i+1) + ".png"));
             }
         }catch(Exception e){
             e.getStackTrace();
@@ -85,7 +88,8 @@ public class Golem extends Mob{
     public void draw(Graphics2D g2){
         BufferedImage image = null;
         if(skillOn){
-            image = skillImage;
+            int rd = new Random().nextInt(2);
+            image = skillImages[rd];
         }else{
             if(directionX == "left"){
                 image = leftImages[spriteNum -1];

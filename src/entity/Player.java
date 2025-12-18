@@ -25,7 +25,7 @@ public class Player extends Entity {
 
     private BufferedImage[] rightImages = new BufferedImage[5];
     private BufferedImage[] leftImages = new BufferedImage[5];
-    private BufferedImage standingImage;
+    private BufferedImage[] standingImages = new BufferedImage[2];
     private BufferedImage[] defenseOnImage = new BufferedImage[5];
     private BufferedImage[] jumpRightImages = new BufferedImage[5];
     private BufferedImage[] jumpLeftImages = new BufferedImage[5];
@@ -37,7 +37,7 @@ public class Player extends Entity {
         this.screenY = gp.screenHeight / 2 - (gp.tileSize / 2);
 
         setDefaultValues();
-        getPlayerImage();
+        setPlayerImage();
     }
 
     void setDefaultValues(){
@@ -53,16 +53,18 @@ public class Player extends Entity {
         directionY = "none";
     }
 
-    void getPlayerImage(){
+    void setPlayerImage(){
         try {
             for(int i = 0; i < 5; i++) {
-                rightImages[i] = ImageIO.read(getClass().getResourceAsStream("/image/right/" + (i+1) + ".png"));
-                leftImages[i] = ImageIO.read(getClass().getResourceAsStream("/image/left/" + (i+1) + ".png"));
-                defenseOnImage[i] = ImageIO.read(getClass().getResourceAsStream("/image/defenseOn/" + (i+1) + ".png"));
-                jumpRightImages[i] = ImageIO.read(getClass().getResourceAsStream("/image/jumpRight/" + (i+1) + ".png"));
-                jumpLeftImages[i] = ImageIO.read(getClass().getResourceAsStream("/image/jumpLeft/" + (i+1) + ".png"));
+                rightImages[i] = ImageIO.read(getClass().getResourceAsStream("/res/image/player/right/" + (i+1) + ".png"));
+                leftImages[i] = ImageIO.read(getClass().getResourceAsStream("/res/image/player/left/" + (i+1) + ".png"));
+                defenseOnImage[i] = ImageIO.read(getClass().getResourceAsStream("/res/image/player/defenseOn/" + (i+1) + ".png"));
+                jumpRightImages[i] = ImageIO.read(getClass().getResourceAsStream("/res/image/player/jumpRight/" + (i+1) + ".png"));
+                jumpLeftImages[i] = ImageIO.read(getClass().getResourceAsStream("/res/image/player/jumpLeft/" + (i+1) + ".png"));
             }
-            standingImage = ImageIO.read(getClass().getResourceAsStream("/image/standing.png"));
+            for(int i = 0; i < 2; i++) {
+                standingImages[i] = ImageIO.read(getClass().getResourceAsStream("/res/image/player/standing/" + (i+1) + ".png"));
+            }
         } catch(Exception e) {
             e.printStackTrace();
         }
@@ -144,7 +146,7 @@ public class Player extends Entity {
             } else if (directionX.equals("left")) {
                 image = leftImages[spriteNum - 1];
             } else if (directionX.equals("none")) {
-                image = standingImage;
+                image = standingImages[0];
             } else if (defenseOn) {
                 image = defenseOnImage[spriteNum - 1];
             }
@@ -154,7 +156,7 @@ public class Player extends Entity {
             } else if (directionX.equals("left")) {
                 image = leftImages[2];
             } else {
-                image = standingImage;
+                image = standingImages[1];
             }
         } else if (Falling) {
             if (directionX.equals("right")) {
@@ -162,7 +164,7 @@ public class Player extends Entity {
             } else if (directionX.equals("left")) {
                 image = leftImages[3];
             } else {
-                image = standingImage;
+                image = standingImages[1];
             }
         }
             
