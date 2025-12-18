@@ -12,16 +12,18 @@ public class Player extends Entity {
     GamePanel gp;
     KeyHandler keyH;
 
-    public final int screenX, screenY;
-    private int speed;
-    private int gravity = 1;      // Giảm trọng lực để nhảy mượt hơn
-    private int jumpPower = 10;
-    private int currentJumpSpeed;// Biến tạm để xử lý lực nhảy
-    private boolean defenseOn = false;
+    public int hp;
 
-    private BufferedImage[] rightImages = new BufferedImage[7];
-    private BufferedImage[] leftImages = new BufferedImage[7];
-    private BufferedImage standingImage, defenseOnImage;
+    private int gravity = 3;
+    private int jumpPower = 15;
+    private boolean Jumping = false;
+
+    public final int screenX, screenY; 
+
+    private BufferedImage[] rightImages = new BufferedImage[5];
+    private BufferedImage[] leftImages = new BufferedImage[5];
+    private BufferedImage standingImage;
+    private BufferedImage[] defenseOnImage = new BufferedImage[5];
 
     public Player(GamePanel gp, KeyHandler keyH){
         this.gp = gp;
@@ -36,7 +38,11 @@ public class Player extends Entity {
     }
 
     void setDefaultValues(){
-        solidArea = new Rectangle(12, 16, 24, 32); // Thu nhỏ vùng va chạm để mượt hơn
+        hp = 6;
+        solidArea = new Rectangle(8, 12, 32, 32);
+        worldX = gp.tileSize * 5;
+        worldY = gp.tileSize * 10;
+        speed = gp.tileSize / 4;
         solidAreaDefaultX = solidArea.x;
         solidAreaDefaultY = solidArea.y;
 
@@ -128,10 +134,4 @@ public void draw(Graphics g2) {
             image = standingImage;
         }
     }
-
-    // KIỂM TRA CUỐI CÙNG
-    if (image != null) {
-        g2.drawImage(image, screenX, screenY, gp.tileSize, gp.tileSize, null);
-    }
-}
 }

@@ -33,6 +33,7 @@ public class Main {
         // Lưu ý: Nếu bạn có hàm setupGame() trong GamePanel, hãy gọi nó ở đây
         gamePanel.setupGame();
 
+        gamePanel.setupGame();
         gamePanel.startGameThread();
     }
 }
