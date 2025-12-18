@@ -6,12 +6,14 @@ import javax.imageio.ImageIO;
 
 import core.GamePanel;
 
-public class Nor extends Mob{
+public class Golem extends Mob{
     GamePanel gp;
     
     private int actionLockCounter;
-
-    public Nor(GamePanel gp){
+    private BufferedImage[] leftImages = new BufferedImage[5];
+    private BufferedImage[] rightImages = new BufferedImage[5];
+    
+    public Golem(GamePanel gp){
         super(gp);
         setImage();
         setDefaultValues();
@@ -26,10 +28,12 @@ public class Nor extends Mob{
 
     public void setImage(){
         try{
-            left1 = ImageIO.read(getClass().getResourceAsStream(""));
-            left2 = ImageIO.read(getClass().getResourceAsStream(""));
-            right1 = ImageIO.read(getClass().getResourceAsStream(""));
-            right2 = ImageIO.read(getClass().getResourceAsStream(""));
+            for(int i = 0; i < 5; i++){
+                leftImages[i] = ImageIO.read(getClass().getResourceAsStream("/res/mob/golem/left/" + (i+1) + ".png"));
+            }
+            for(int i = 0; i < 5; i++){
+                rightImages[i] = ImageIO.read(getClass().getResourceAsStream("/res/mob/golem/right/" + (i+1) + ".png"));
+            }
         }catch(Exception e){
             e.getStackTrace();
         }
@@ -55,7 +59,16 @@ public class Nor extends Mob{
             if(spriteNum == 1){
                 spriteNum = 2;
             }
-            else{
+            else if(spriteNum == 2){
+                spriteNum = 3;
+            }
+            else if(spriteNum == 3){
+                spriteNum = 4;
+            }
+            else if(spriteNum == 4){
+                spriteNum = 5;
+            }
+            else if(spriteNum == 5){
                 spriteNum = 1;
             }
             spriteCounter = 0;
@@ -64,24 +77,13 @@ public class Nor extends Mob{
 
     public void draw(Graphics2D g2){
         BufferedImage image = null;
-        switch(directionX){
-            case "left":
-                if(spriteNum == 1){
-                    image = left1;
-                }
-                if(spriteNum == 2){
-                    image = left2;
-                }
-                break;
-            case "right":
-                if(spriteNum == 1){
-                    image = right1;
-                }
-                if(spriteNum == 2){
-                    image = right2;
-                }
-                break;
+        if(directionX == "left"){
+            image = leftImages[spriteNum -1];
         }
+        else if(directionX == "right"){
+            image = rightImages[spriteNum -1];
+        }
+    
         g2.drawImage(image, worldX, worldY, gp.tileSize, gp.tileSize, null);
     }
 

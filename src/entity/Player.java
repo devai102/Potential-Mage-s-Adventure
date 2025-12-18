@@ -11,7 +11,6 @@ public class Player extends Entity {
     
     GamePanel gp;
     KeyHandler keyH;
-
     private boolean defenseOn = false;
 
     private int speed;
@@ -23,10 +22,10 @@ public class Player extends Entity {
 
     public final int screenX, screenY; 
 
-    private BufferedImage[] rightImages = new BufferedImage[7];
-    private BufferedImage[] leftImages = new BufferedImage[7];
+    private BufferedImage[] rightImages = new BufferedImage[5];
+    private BufferedImage[] leftImages = new BufferedImage[5];
     private BufferedImage standingImage;
-    private BufferedImage defenseOnImage;
+    private BufferedImage[] defenseOnImage = new BufferedImage[5];
 
     public Player(GamePanel gp, KeyHandler keyH){
         this.gp = gp;
@@ -48,15 +47,17 @@ public class Player extends Entity {
 
     void setImage(){
         try{
-            for(int i = 0; i < 7; i++){
+            for(int i = 0; i < 5; i++){
                 rightImages[i] = ImageIO.read(getClass().getResourceAsStream("/res/image/right/" + (i+1) + ".png"));
             }
 
-            for(int i = 0; i < 7; i++){
+            for(int i = 0; i < 5; i++){
                 leftImages[i] = ImageIO.read(getClass().getResourceAsStream("/res/image/left/" + (i+1) + ".png"));
             }
 
-            defenseOnImage = ImageIO.read(getClass().getResourceAsStream("/res/image/defenseOn/defenseOn.png"));
+            for(int i = 0; i < 5; i++){
+                defenseOnImage[i] = ImageIO.read(getClass().getResourceAsStream("/res/image/defenseOn/" + (i+1) + ".png"));
+            }
 
             standingImage = ImageIO.read(getClass().getResourceAsStream("/res/image/standing.png"));
         }catch(Exception e){
@@ -83,8 +84,8 @@ public class Player extends Entity {
                     directionX= "none";
                 }
                 else if(keyH.downPressed == true && Falling == false){
-                    directionY= "down";
-                    directionX= "none";
+                    directionX = "none";
+                    directionY = "down";
                     defenseOn = true;
                 }
                 else if(keyH.downPressed == true && Falling == true){
@@ -100,20 +101,19 @@ public class Player extends Entity {
             }
             
             // move along X axis
-            switch(directionX){
-                case "left":
-                    gp.cChecker.checkTile(this);
-                    if(collisionOn == false){
-                        worldX -= speed;
-                    }
-                    break;
-                case "right":
-                    gp.cChecker.checkTile(this);
-                    if(collisionOn == false){
-                        worldX += speed;
-                    }
-                    break;
+            collisionOn = false;
+            gp.cChecker.checkTile(this);
+
+            // check object collision
+            int objIndex = gp.cChecker.checkObject(this, true);
+
+            if(collisionOn == false){
+                switch(directionX){
+                    case "left": worldX -= speed; break;
+                    case "right": worldX += speed; break;
+                }
             }
+
         }
         else if(keyH.downPressed == false && keyH.upPressed == false && keyH.leftPressed == false && keyH.rightPressed == false){
             directionX = "none";
@@ -159,19 +159,13 @@ public class Player extends Entity {
             else if(spriteNum == 2){
                 spriteNum = 3;
             }
-            else if(spriteNum == 3){
+            else if(spriteNum == 3 && defenseOn == false){
                 spriteNum = 4;
             }
             else if(spriteNum == 4){
                 spriteNum = 5;
             }
             else if(spriteNum == 5){
-                spriteNum = 6;
-            }
-            else if(spriteNum == 6){
-                spriteNum = 7;
-            }
-            else if(spriteNum == 7){
                 spriteNum = 1;
             }
             spriteCounter = 0;
@@ -188,8 +182,6 @@ public class Player extends Entity {
                     case 3: image = rightImages[2]; break;
                     case 4: image = rightImages[3]; break;
                     case 5: image = rightImages[4]; break;
-                    case 6: image = rightImages[5]; break;
-                    case 7: image = rightImages[6]; break;
                 }
             }
             else if(directionX.equals("left")){
@@ -199,21 +191,43 @@ public class Player extends Entity {
                     case 3: image = leftImages[2]; break;
                     case 4: image = leftImages[3]; break;
                     case 5: image = leftImages[4]; break;
-                    case 6: image = leftImages[5]; break;
-                    case 7: image = leftImages[6]; break;
                 }
             }
-            else if(directionX.equals("none")){
+            else if(directionX.equals("none") && directionY.equals("none")){
                 image = standingImage;
             }
         }
-        // else if(directionY.equals("up")){
-            
-        // }
-        // else if(directionY.equals("down")){
-        //     if(defenseOn == true){
-        //         image = defenseOnImage;
-        //     }
+        else if(directionY.equals("down") && defenseOn == true){
+            switch(spriteNum){
+                case 1: image = defenseOnImage[0]; break;
+                case 2: image = defenseOnImage[1]; break;
+                case 3: image = defenseOnImage[2]; break;
+                case 4: image = defenseOnImage[3]; break;
+                case 5: image = defenseOnImage[4]; break;
+            }
+            if(spriteNum == 5){
+                defenseOn = false;
+            }
+        }
+    
+
         g2.drawImage(image, screenX, screenY, gp.tileSize, gp.tileSize, null);
     }
+
+    public void pickUpObject(int index){
+        if(index != 999){
+            String objectName = gp.obj[index].name;
+
+            switch(objectName){
+                case "Chest":
+                    gp.obj[index] = null;
+                    break;
+                case "Hidden Block":
+                    gp.obj[index] = null;
+                    break;
+            }
+        }
+    }
+
+    
 }

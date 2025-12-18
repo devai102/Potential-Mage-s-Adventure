@@ -15,6 +15,4 @@ public class Mob extends Entity{
     public Mob(GamePanel gp){
         this.gp = gp;
     }
-
-    BufferedImage left1, left2, right1, right2;
 }
