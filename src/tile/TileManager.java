@@ -87,6 +87,14 @@ public class TileManager {
             tile[12] = new Tile();
             tile[12].image = javax.imageio.ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("res/image/map/Tree/SkyTree2.png")));
             tile[12].collision = false;
+
+            tile[13] = new Tile();
+            tile[13].image = javax.imageio.ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("res/image/map/Ground/GroundRia1.png")));
+            tile[13].collision = false;
+
+            tile[14] = new Tile();
+            tile[14].image = javax.imageio.ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("res/image/map/Ground/GroundRia2.png")));
+            tile[14].collision = false;
             //DAT1
             tile[1] = new Tile();
             tile[1].image = javax.imageio.ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/image/map/Ground/Ground1.png")));
