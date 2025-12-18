@@ -13,9 +13,8 @@ public class Player extends Entity {
     KeyHandler keyH;
     private boolean defenseOn = false;
 
-    private int speed;
+    public int hp;
 
-    
     private int gravity = 3;
     private int jumpPower = 15;
     private boolean Jumping = false;
@@ -37,6 +36,7 @@ public class Player extends Entity {
     }
 
     void setDefaultValues(){
+        hp = 6;
         solidArea = new Rectangle(8, 12, 32, 32);
         worldX = gp.tileSize * 5;
         worldY = gp.tileSize * 10;
@@ -228,6 +228,4 @@ public class Player extends Entity {
             }
         }
     }
-
-    
 }

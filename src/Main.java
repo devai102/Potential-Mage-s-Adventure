@@ -15,6 +15,7 @@ public class Main {
         frame.pack();
         frame.setLocationRelativeTo(null);
 
+        gamePanel.setupGame();
         gamePanel.startGameThread();
     }
 }
