@@ -11,7 +11,7 @@ public class Player extends Entity {
     KeyHandler keyH;
 
     private int gravity = 3;
-    private int jumpPower = 30 ;
+    private int jumpPower = 27 ;
     private boolean Jumping = false;
     private int currentJumpSpeed = jumpPower;
 
@@ -40,8 +40,8 @@ public class Player extends Entity {
         maxHealth = 6;
         health = maxHealth;
         attack = 1;
-        worldX = gp.tileSize ;
-        worldY = gp.tileSize * 5;
+        worldX = gp.tileSize * 2;
+        worldY = gp.tileSize * 4;
         speed = 4;
         directionX = "none";
         directionY = "none";
