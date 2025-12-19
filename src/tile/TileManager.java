@@ -29,20 +29,16 @@ public class TileManager {
             int col = 0;
             int row = 0;
 
-            // Vòng lặp an toàn: Dừng lại nếu HẾT FILE hoặc ĐỦ ROW
             while (row < gp.maxWorldRow) {
                 String line = br.readLine();
 
-                // NẾU HẾT DÒNG ĐỂ ĐỌC -> THOÁT VÒNG LẶP NGAY
                 if (line == null) {
                     break;
                 }
 
-                // Dùng \\s+ để xử lý nếu giữa các số có nhiều hơn 1 dấu cách
                 String numbers[] = line.trim().split("\\s+");
 
                 while (col < gp.maxWorldCol) {
-                    // Đảm bảo không đọc quá số lượng phần tử thực tế của mảng numbers
                     if (col < numbers.length) {
                         int num = Integer.parseInt(numbers[col]);
                         mapTileNum[col][row] = num;
@@ -63,7 +59,6 @@ public class TileManager {
 
     void loadTileImage(){
         try{
-            //NEN TRONG
             tile[0] = new Tile();
             tile[0].image = javax.imageio.ImageIO.read((Objects.requireNonNull(getClass().getResourceAsStream("/res/image/map/Sky/Sky1.png"))));
             tile[0].collision = false;

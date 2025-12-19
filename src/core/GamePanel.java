@@ -9,32 +9,25 @@ import object.SuperObject;
 import tile.TileManager;
 
 public class GamePanel extends JPanel implements Runnable {
-
-    // SCREEN SETTINGS
     final int originalTile = 16;
     final int scale = 4;
     public final int tileSize = originalTile * scale;
     public final int maxScreenCol = 20;
     public final int maxScreenRow = 12;
-    public final int screenWidth = tileSize * maxScreenCol;  // 960px
-    public final int screenHeight = tileSize * maxScreenRow; // 576px
+    public final int screenWidth = tileSize * maxScreenCol; 
+    public final int screenHeight = tileSize * maxScreenRow; 
 
-    // WORLD SETTINGS (Nên tăng maxWorldRow để thế giới rộng hơn)
     public final int maxWorldCol = 74;
     public final int maxWorldRow = 50;
 
-    // Full Screen
     int screenHeight2 = screenHeight;
     int screenWidth2 = screenWidth;
 
-    // FPS
     private final int FPS = 60;
 
-    //Systems
     TileManager tileM = new TileManager(this);
     KeyHandler keyH = new KeyHandler(this);
 
-    //sound
     Sound musicSound = new Sound();
     Sound se = new Sound();
 
@@ -43,7 +36,6 @@ public class GamePanel extends JPanel implements Runnable {
     public WinSession winSession = new WinSession();
     public double playTime = 0;
 
-    //Game state
     public int gameState;
     public final int playState = 0;
     public final int pauseState = 1;
@@ -58,9 +50,8 @@ public class GamePanel extends JPanel implements Runnable {
 
     Thread gameThread;
 
-    // ENTITY AND OBJECT
     public Player player = new Player(this, keyH);
-    public SuperObject[] obj = new SuperObject[20]; // Tăng số lượng object lên nếu cần
+    public SuperObject[] obj = new SuperObject[20];
     public Entity[] monsters = new Entity[20];
 
     public GamePanel() {
@@ -117,7 +108,6 @@ public class GamePanel extends JPanel implements Runnable {
     }
 
     private void checkWinCondition(){
-        // Target win tile: x = tileSize * 63, y = tileSize * 6
         int targetX = tileSize * 63;
         int targetY = tileSize * 8;
         java.awt.Rectangle targetTile = new java.awt.Rectangle(targetX, targetY, tileSize, tileSize);
@@ -146,13 +136,10 @@ public class GamePanel extends JPanel implements Runnable {
             }
         }
 
-        // draw tile
         tileM.draw(g2);
 
-        // draw player
         player.draw(g2);
 
-        //draw UI
         ui.draw(g2);
         g2.dispose();
     }
