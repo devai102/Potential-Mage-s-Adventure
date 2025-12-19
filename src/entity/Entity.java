@@ -2,9 +2,19 @@ package entity;
 
 import java.awt.Rectangle;
 
+import core.GamePanel;
+
 public class Entity {
+    protected GamePanel gp;
+
     public int worldX;
     public int worldY;
+
+    //status
+    public String name;
+    public int maxHealth;
+    public int health;
+    public int attack;
     public int speed;
 
     public String directionX = "right";
@@ -16,7 +26,7 @@ public class Entity {
     protected int spriteNum = 1;
 
     public boolean collisionOn = false;
-    public Rectangle solidArea = new Rectangle(8,12,32,32);
+    public Rectangle solidArea = new Rectangle(8,16,32,32);
     public int solidAreaDefaultX = solidArea.x;
     public int solidAreaDefaultY = solidArea.y;
 

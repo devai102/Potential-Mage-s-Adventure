@@ -3,6 +3,7 @@ package core;
 import javax.swing.*;
 import java.awt.*;
 
+import entity.Entity;
 import entity.Player;
 import object.SuperObject;
 import tile.TileManager;
@@ -56,6 +57,7 @@ public class GamePanel extends JPanel implements Runnable {
     // ENTITY AND OBJECT
     public Player player = new Player(this, keyH);
     public SuperObject[] obj = new SuperObject[20]; // Tăng số lượng object lên nếu cần
+    public Entity[] monsters = new Entity[20];
 
     public GamePanel() {
         this.setPreferredSize(new Dimension(screenWidth, screenHeight));
@@ -67,6 +69,7 @@ public class GamePanel extends JPanel implements Runnable {
 
     public void setupGame(){
         aSetter.setObject();
+        aSetter.setMonster();
         gameState = 4;
         playMusic(1);
     }

@@ -7,8 +7,9 @@ import java.util.Random;
 import javax.imageio.ImageIO;
 
 import core.GamePanel;
+import entity.Entity;
 
-public class Golem extends Mob{
+public class Golem extends Entity{
     GamePanel gp;
     
     private int actionLockCounter;
@@ -20,7 +21,7 @@ public class Golem extends Mob{
     private int skillDuration = 0;
 
     public Golem(GamePanel gp){
-        super(gp);
+        this.gp = gp;
         setImage();
         setDefaultValues();
     }

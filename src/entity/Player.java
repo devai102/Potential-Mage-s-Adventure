@@ -12,8 +12,6 @@ public class Player extends Entity {
     GamePanel gp;
     KeyHandler keyH;
 
-    private int hp;
-
     private int gravity = 3;
     private int jumpPower = 15;
     private boolean Jumping = false;
@@ -35,19 +33,16 @@ public class Player extends Entity {
         this.keyH = keyH;
         this.screenX = gp.screenWidth / 2 - (gp.tileSize / 2);
         this.screenY = gp.screenHeight / 2 - (gp.tileSize / 2);
-
         setDefaultValues();
         setPlayerImage();
     }
 
     void setDefaultValues(){
-        hp = 6;
-        worldX = gp.tileSize * 5;
-        worldY = gp.tileSize * 10;
-        speed = gp.tileSize / 4;
-
-        worldX = gp.tileSize * 5;
-        worldY = gp.tileSize * 10;
+        maxHealth = 6;
+        health = maxHealth;
+        attack = 1;
+        worldX = gp.tileSize ;
+        worldY = gp.tileSize * 5;
         speed = 4;
         directionX = "none";
         directionY = "none";
@@ -169,10 +164,14 @@ public class Player extends Entity {
     }
 
     public int getHp() {
-        return hp;
+        return health;
+    }
+
+    public int getMaxHp() {
+        return maxHealth;
     }
 
     public void setHp(int hp) {
-        this.hp = hp;
+        this.health = hp;
     }
 }    

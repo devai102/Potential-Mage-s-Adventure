@@ -57,9 +57,11 @@ public class UI {
         this.g2 = g2;
         g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 30F));
         if(gp.gameState == gp.playState){
+            drawPlayerLife();
             drawPlayScreen(g2);
         }
         else if(gp.gameState == gp.pauseState){
+            drawPlayerLife();
             drawPauseScreen(g2);
         }
         else if(gp.gameState == gp.gameOverState){
@@ -242,5 +244,34 @@ public class UI {
 
         g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 30F));
         g2.drawString("Have a good moment!", gp.tileSize * 3, gp.tileSize * 4);
+    }
+
+    void drawPlayerLife(){
+        int x = gp.tileSize / 2;
+        int y = gp.tileSize / 2;
+        int i = 0;
+
+        // Draw max life
+        while(i < gp.player.getMaxHp() / 2){
+            g2.drawImage(heartImages[0], x, y,gp.tileSize ,gp.tileSize , null);
+            i++;
+            x += gp.tileSize;
+        }
+
+        // Reset
+        x = gp.tileSize / 2;
+        y = gp.tileSize / 2;
+        i = 0;
+
+        // Draw current life
+        while(i < gp.player.getHp()){
+            g2.drawImage(heartImages[1], x, y,gp.tileSize ,gp.tileSize , null);
+            i++;
+            if(i < gp.player.getHp()){
+                g2.drawImage(heartImages[2], x, y,gp.tileSize ,gp.tileSize , null);
+            }
+            i++;
+            x += gp.tileSize;
+        }
     }
 }
