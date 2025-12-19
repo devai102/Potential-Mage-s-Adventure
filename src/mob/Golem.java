@@ -21,7 +21,7 @@ public class Golem extends Entity{
     private int skillDuration = 0;
 
     public Golem(GamePanel gp){
-        this.gp = gp;
+        super(gp);
         setImage();
         setDefaultValues();
     }
@@ -64,6 +64,8 @@ public class Golem extends Entity{
                 }
             }
         }
+        gp.cChecker.checkPlayer(this);
+        gp.cChecker.checkObject(this, false);
     
         spriteCounter++;
         if(spriteCounter > 12 && skillOn == false){

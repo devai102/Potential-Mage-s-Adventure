@@ -26,10 +26,16 @@ public class Entity {
     protected int spriteNum = 1;
 
     public boolean collisionOn = false;
+    public boolean invincible = false;
+    public int invincibleCounter = 0;
     public Rectangle solidArea = new Rectangle(8,16,32,32);
     public int solidAreaDefaultX = solidArea.x;
     public int solidAreaDefaultY = solidArea.y;
+    public void setAction(){}
 
+    public Entity(GamePanel gp){
+        this.gp = gp;
+    }
     public void isFalling(boolean Falling){
         this.Falling = Falling;
     }
