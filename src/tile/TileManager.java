@@ -15,7 +15,7 @@ public class TileManager {
 
     public TileManager(GamePanel gp){
         this.gp = gp;
-        tile = new Tile[20];
+        tile = new Tile[14];
         mapTileNum = new int[gp.maxWorldCol][gp.maxWorldRow];
         loadTileImage();
         loadMap("/res/map/map01.txt");
@@ -125,7 +125,7 @@ public class TileManager {
             tile[8].collision = false;
         }catch(Exception e){
             e.printStackTrace();
-        }    
+        }
     }
 
     public void draw(Graphics2D g2){
@@ -136,7 +136,7 @@ public class TileManager {
             int tileNum = mapTileNum[worldCol][worldRow];
 
             int worldX = worldCol * gp.tileSize;
-            int worldY = worldRow * gp.tileSize; 
+            int worldY = worldRow * gp.tileSize;
             int screenX = worldX - gp.player.worldX + gp.player.screenX;
             int screenY = worldY - gp.player.worldY + gp.player.screenY;
 
