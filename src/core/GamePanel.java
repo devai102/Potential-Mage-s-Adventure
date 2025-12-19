@@ -20,7 +20,7 @@ public class GamePanel extends JPanel implements Runnable {
     public final int screenHeight = tileSize * maxScreenRow; // 576px
 
     // WORLD SETTINGS (Nên tăng maxWorldRow để thế giới rộng hơn)
-    public final int maxWorldCol = 64;
+    public final int maxWorldCol = 74;
     public final int maxWorldRow = 50;
 
     // Full Screen
@@ -38,6 +38,9 @@ public class GamePanel extends JPanel implements Runnable {
     Sound se = new Sound();
 
     UI ui = new UI(this);
+    public LeaderboardStorage leaderboard = new LeaderboardManager();
+    public WinSession winSession = new WinSession();
+    public double playTime = 0;
 
     //Game state
     public int gameState;
@@ -81,7 +84,6 @@ public class GamePanel extends JPanel implements Runnable {
     
     @Override
     public void run() {
-        // Sử dụng biến FPS đã khai báo thay vì số 10
         double drawInterval = (double) 1000000000 / FPS;
         double delta = 0;
         long lastTime = System.nanoTime();
@@ -102,12 +104,33 @@ public class GamePanel extends JPanel implements Runnable {
 
     public void update(){
         if(gameState == playState){
+            playTime += (double)1/60;
             player.update();
+            checkWinCondition();
         }
         if(gameState == pauseState){
         }
         if(gameState == tileScreenState){
             ui.update();
+        }
+    }
+
+    private void checkWinCondition(){
+        // Target win tile: x = tileSize * 63, y = tileSize * 6
+        int targetX = tileSize * 63;
+        int targetY = tileSize * 8;
+        java.awt.Rectangle targetTile = new java.awt.Rectangle(targetX, targetY, tileSize, tileSize);
+        java.awt.Rectangle playerRect = new java.awt.Rectangle(
+            player.worldX + player.solidArea.x,
+            player.worldY + player.solidArea.y,
+            player.solidArea.width,
+            player.solidArea.height
+        );
+        if(playerRect.intersects(targetTile)){
+            if(gameState != winState){
+                gameState = winState;
+                winSession.start(playTime);
+            }
         }
     }
 

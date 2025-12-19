@@ -91,14 +91,16 @@ public class KeyHandler implements KeyListener{
             }
             if(code == KeyEvent.VK_ENTER){
                 String name = gp.winSession.finish();
-                if(!name.isEmpty()){
-                    gp.leaderboard.add(name, gp.winSession.getTimeSeconds());
-                    gp.playTime = 0;
-                    gp.gameState = gp.leaderboardState;
-                } else {
-                    // If empty, keep active for more input
+                // Only proceed if name is non-empty (validation guard)
+                if(name.isEmpty()){
+                    // Reset session for retry without changing state
                     gp.winSession.start(gp.playTime);
+                    return;
                 }
+                // Save to leaderboard and navigate
+                gp.leaderboard.add(name, gp.winSession.getTimeSeconds());
+                gp.playTime = 0;
+                gp.gameState = gp.leaderboardState;
             }
         }
     }

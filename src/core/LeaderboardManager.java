@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class LeaderboardManager {
+public class LeaderboardManager implements LeaderboardStorage {
     private final Path storagePath;
 
     public LeaderboardManager() {
