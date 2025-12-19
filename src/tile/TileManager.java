@@ -78,7 +78,7 @@ public class TileManager {
 
             tile[10] = new Tile();
             tile[10].image = javax.imageio.ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/image/map/Sky/Sky4.png")));
-            tile[10].collision = false;
+            tile[10].collision = true;
 
             tile[11] = new Tile();
             tile[11].image = javax.imageio.ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/image/map/Tree/SkyTree1.png")));
@@ -95,6 +95,10 @@ public class TileManager {
             tile[14] = new Tile();
             tile[14].image = javax.imageio.ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/image/map/Ground/GroundRia2.png")));
             tile[14].collision = false;
+
+            tile[15] = new Tile();
+            tile[15].image = javax.imageio.ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/image/map/Ground/UpGround3.png")));
+            tile[15].collision = false;
             //DAT1
             tile[1] = new Tile();
             tile[1].image = javax.imageio.ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/image/map/Ground/Ground1.png")));
@@ -114,15 +118,15 @@ public class TileManager {
 
             tile[6] = new Tile();
             tile[6].image = javax.imageio.ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/image/map/Ground/UpGround2.png")));
-            tile[6].collision = false;
+            tile[6].collision = true;
 
             tile[7] = new Tile();
             tile[7].image = javax.imageio.ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/image/map/Ground/UnderGround1.png")));
-            tile[7].collision = false;
+            tile[7].collision = true;
 
             tile[8] = new Tile();
             tile[8].image = javax.imageio.ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/image/map/Ground/UnderGround2.png")));
-            tile[8].collision = false;
+            tile[8].collision = true;
         }catch(Exception e){
             e.printStackTrace();
         }
