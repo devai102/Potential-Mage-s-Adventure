@@ -1,5 +1,6 @@
 package entity;
 
+import java.awt.Graphics2D;
 import java.awt.Rectangle;
 
 import core.GamePanel;
@@ -11,11 +12,12 @@ public class Entity {
     public int worldY;
 
     //status
-    protected String name;
     protected int maxHealth;
     protected int health;
     protected int attack;
     protected int speed;
+    protected int name;
+
     protected String directionX = "right";
     protected String directionY = "none";
     protected int spriteCounter = 0;
@@ -32,8 +34,6 @@ public class Entity {
         this.gp = gp;
     }
 
-    public void setAction(){}
-    
     public String getDirectionX(){
         return this.directionX;
     }
@@ -44,5 +44,14 @@ public class Entity {
 
     public int getSpeed(){
         return this.speed;
+    }
+
+    public void draw(Graphics2D g2, GamePanel gp){
+    }
+
+    public void update(){
+    }
+
+    public void setAction(){
     }
 }

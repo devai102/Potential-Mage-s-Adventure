@@ -7,7 +7,7 @@ import javax.imageio.ImageIO;
 import core.GamePanel;
 import core.KeyHandler;
 
-public class Player extends Entity {
+public class Player extends Entity{
     KeyHandler keyH;
     private boolean Falling = false;
     private int gravity = 2;
@@ -42,6 +42,7 @@ public class Player extends Entity {
         maxHealth = 6;
         health = maxHealth;
         attack = 1;
+        // can set up lai vi tri spawn
         worldX = gp.tileSize * 7;
         worldY = gp.tileSize * 9;
         speed = 4;
