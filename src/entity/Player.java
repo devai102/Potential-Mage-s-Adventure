@@ -9,9 +9,9 @@ import core.KeyHandler;
 
 public class Player extends Entity {
     KeyHandler keyH;
-
-    private int gravity = 3;
-    private int jumpPower = 30;
+    private boolean Falling = false;
+    private int gravity = 2;
+    private int jumpPower = 20;
     private boolean Jumping = false;
     private int currentJumpSpeed = jumpPower;
 
@@ -19,6 +19,7 @@ public class Player extends Entity {
 
     public final int screenX, screenY; 
 
+    // image
     private BufferedImage[] rightImages = new BufferedImage[5];
     private BufferedImage[] leftImages = new BufferedImage[5];
     private BufferedImage standingImages;
@@ -27,6 +28,7 @@ public class Player extends Entity {
     private BufferedImage[] jumpLeftImages = new BufferedImage[5];
     private BufferedImage[] fallingLeftImages = new BufferedImage[5];
     private BufferedImage[] fallingRightImages = new BufferedImage[5];
+
     public Player(GamePanel gp, KeyHandler keyH){
         super(gp);
         this.keyH = keyH;
@@ -91,7 +93,10 @@ public class Player extends Entity {
             if(directionX.equals("left")) worldX -= speed;
             if(directionX.equals("right")) worldX += speed;
         }
-        gp.cChecker.checkObject(this, true);
+
+        // Check object collision
+        int objectIndex = gp.cChecker.checkObject(this, true);
+        pickUpObject(objectIndex);
 
         // Check monster collision
         int monsterIndex = gp.cChecker.checkEntity(this, gp.monsters);
@@ -183,13 +188,23 @@ public class Player extends Entity {
     }
 
 
-    void contactMonster(int i) {
+    private void contactMonster(int i) {
         if(i != 999) {
             if(defenseOn == false && invincible == false) {
                 health -= gp.monsters[i].attack;
                 if(health < 0) health = 0;
                 invincible = true;
             }
+        }
+    }
+
+    private void pickUpObject(int i) {
+        if(i != 999) {
+            switch (gp.obj[i].name) {
+                case "":
+                    break;
+            }
+            gp.obj[i] = null;
         }
     }
 
@@ -203,5 +218,13 @@ public class Player extends Entity {
 
     public void setHp(int hp) {
         this.health = hp;
+    }
+
+    public boolean isDefending() {
+        return defenseOn;
+    }
+
+    public void setFalling(boolean Falling) {
+        this.Falling = Falling;
     }
 }    
