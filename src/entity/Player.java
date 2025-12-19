@@ -8,8 +8,6 @@ import core.GamePanel;
 import core.KeyHandler;
 
 public class Player extends Entity {
-
-    GamePanel gp;
     KeyHandler keyH;
 
     private int gravity = 3;
@@ -23,13 +21,14 @@ public class Player extends Entity {
 
     private BufferedImage[] rightImages = new BufferedImage[5];
     private BufferedImage[] leftImages = new BufferedImage[5];
-    private BufferedImage[] standingImages = new BufferedImage[2];
-    private BufferedImage[] defenseOnImage = new BufferedImage[5];
+    private BufferedImage standingImages;
+    private BufferedImage defenseOnImage;
     private BufferedImage[] jumpRightImages = new BufferedImage[5];
     private BufferedImage[] jumpLeftImages = new BufferedImage[5];
-
+    private BufferedImage[] fallingLeftImages = new BufferedImage[5];
+    private BufferedImage[] fallingRightImages = new BufferedImage[5];
     public Player(GamePanel gp, KeyHandler keyH){
-        this.gp = gp;
+        super(gp);
         this.keyH = keyH;
         this.screenX = gp.screenWidth / 2 - (gp.tileSize / 2);
         this.screenY = gp.screenHeight / 2 - (gp.tileSize / 2);
@@ -53,26 +52,38 @@ public class Player extends Entity {
             for(int i = 0; i < 5; i++) {
                 rightImages[i] = ImageIO.read(getClass().getResourceAsStream("/res/image/player/right/" + (i+1) + ".png"));
                 leftImages[i] = ImageIO.read(getClass().getResourceAsStream("/res/image/player/left/" + (i+1) + ".png"));
-                defenseOnImage[i] = ImageIO.read(getClass().getResourceAsStream("/res/image/player/defenseOn/" + (i+1) + ".png"));
                 jumpRightImages[i] = ImageIO.read(getClass().getResourceAsStream("/res/image/player/jumpRight/" + (i+1) + ".png"));
                 jumpLeftImages[i] = ImageIO.read(getClass().getResourceAsStream("/res/image/player/jumpLeft/" + (i+1) + ".png"));
+                fallingRightImages[i] = ImageIO.read(getClass().getResourceAsStream("/res/image/player/fallingRight/" + (i+1) + ".png"));
+                fallingLeftImages[i] = ImageIO.read(getClass().getResourceAsStream("/res/image/player/fallingLeft/" + (i+1) + ".png"));
             }
-            for(int i = 0; i < 2; i++) {
-                standingImages[i] = ImageIO.read(getClass().getResourceAsStream("/res/image/player/standing/" + (i+1) + ".png"));
-            }
+            defenseOnImage = ImageIO.read(getClass().getResourceAsStream("/res/image/player/defenseOn/defense.png"));
+
+            standingImages = ImageIO.read(getClass().getResourceAsStream("/res/image/player/standing/standing.png"));
         } catch(Exception e) {
             e.printStackTrace();
         }
     }
 
     public void update() {
-        if(keyH.leftPressed) {
-            directionX = "left";
-        } else if(keyH.rightPressed) {
-            directionX = "right";
-        } else if(!keyH.leftPressed && !keyH.rightPressed) {
+        // Check defense first
+        if(keyH.downPressed && !Jumping && !Falling) {
+            defenseOn = true;
             directionX = "none";
+        } else {
+            defenseOn = false;
         }
+
+        if(!defenseOn){
+            if(keyH.leftPressed) {
+                directionX = "left";
+            } else if(keyH.rightPressed) {
+                directionX = "right";
+            } else if(!keyH.leftPressed && !keyH.rightPressed) {
+                directionX = "none";
+            }
+        }
+        
 
         collisionOn = false;
         gp.cChecker.checkTile(this);
@@ -80,13 +91,25 @@ public class Player extends Entity {
             if(directionX.equals("left")) worldX -= speed;
             if(directionX.equals("right")) worldX += speed;
         }
+        gp.cChecker.checkObject(this, true);
 
+        // Check monster collision
+        int monsterIndex = gp.cChecker.checkEntity(this, gp.monsters);
+        contactMonster(monsterIndex);
+        if (invincible){
+            invincibleCounter++;
+            if (invincibleCounter > 60){
+                invincible = false;
+                invincibleCounter = 0;
+            }
+        }
+
+        // gravity and jumping mechanics
         if(keyH.upPressed && !Jumping && !Falling) {
             Jumping = true;
             directionY = "up";
             currentJumpSpeed = jumpPower;
         }
-
         if(Jumping){
             worldY -= currentJumpSpeed;
             currentJumpSpeed -= gravity;
@@ -104,7 +127,7 @@ public class Player extends Entity {
             directionY = "none";
         }
 
-        // 4. ANIMATION LOGIC
+        // animation
         if(directionX.equals("none")) {
             spriteNum = 1;
         }else {
@@ -114,7 +137,7 @@ public class Player extends Entity {
                     spriteNum = 2;
                 } else if(spriteNum == 2) {
                     spriteNum = 3;
-                } else if(spriteNum == 3 && !defenseOn) {
+                } else if(spriteNum == 3) {
                     spriteNum = 4;
                 } else if(spriteNum == 4) {
                     spriteNum = 5;
@@ -129,34 +152,44 @@ public class Player extends Entity {
     public void draw(Graphics g2) {
         BufferedImage image = null;
         if(!Falling && !Jumping) {
-            if (directionX.equals("right")) {
+            if (defenseOn) {
+                image = defenseOnImage;
+            } else if (directionX.equals("right")) {
                 image = rightImages[spriteNum - 1];
             } else if (directionX.equals("left")) {
                 image = leftImages[spriteNum - 1];
             } else if (directionX.equals("none")) {
-                image = standingImages[0];
-            } else if (defenseOn) {
-                image = defenseOnImage[spriteNum - 1];
+                image = standingImages;
             }
+        }
         else if (Jumping) {
             if (directionX.equals("right")) {
-                image = rightImages[2];
+                image = jumpRightImages[spriteNum - 1];
             } else if (directionX.equals("left")) {
-                image = leftImages[2];
+                image = jumpLeftImages[spriteNum - 1];
             } else {
-                image = standingImages[1];
+                image = standingImages;
             }
         } else if (Falling) {
             if (directionX.equals("right")) {
-                image = rightImages[3];
+                image = fallingRightImages[spriteNum - 1];
             } else if (directionX.equals("left")) {
-                image = leftImages[3];
+                image = fallingLeftImages[spriteNum - 1];
             } else {
-                image = standingImages[1];
+                image = standingImages;
             }
-        }
-            
+        } 
         g2.drawImage(image, screenX, screenY, gp.tileSize, gp.tileSize, null);
+    }
+
+
+    void contactMonster(int i) {
+        if(i != 999) {
+            if(defenseOn == false && invincible == false) {
+                health -= gp.monsters[i].attack;
+                if(health < 0) health = 0;
+                invincible = true;
+            }
         }
     }
 
