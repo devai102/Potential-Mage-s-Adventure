@@ -104,6 +104,11 @@ public class GamePanel extends JPanel implements Runnable {
         if(gameState == playState){
             player.update();
         }
+        if (player.worldX*2 > tileSize * 42) {
+            gameState = winState; // Chuyển sang màn hình thắng
+            stopMusic();          // Tắt nhạc nền
+            playSE(2);            // Chơi âm thanh chiến thắng (nếu có)
+        }
         if(gameState == pauseState){
         }
         if(gameState == tileScreenState){
