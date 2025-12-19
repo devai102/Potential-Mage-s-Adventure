@@ -15,7 +15,7 @@ public class TileManager {
 
     public TileManager(GamePanel gp){
         this.gp = gp;
-        tile = new Tile[15];
+        tile = new Tile[16];
         mapTileNum = new int[gp.maxWorldCol][gp.maxWorldRow];
         loadTileImage();
         loadMap("/res/map/map01.txt");
@@ -148,6 +148,9 @@ public class TileManager {
                worldX - gp.tileSize < gp.player.worldX + gp.player.screenX &&
                worldY + gp.tileSize > gp.player.worldY - gp.player.screenY &&
                worldY - gp.tileSize < gp.player.worldY + gp.player.screenY){
+                if (tile[tileNum] == null) {
+                    System.out.println("LỖI: Tìm thấy số tile chưa được khởi tạo: " + tileNum);
+                }
             g2.drawImage(tile[tileNum].image, screenX, screenY, gp.tileSize, gp.tileSize, null);
             }
 
