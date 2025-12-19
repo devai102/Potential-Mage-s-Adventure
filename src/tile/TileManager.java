@@ -90,15 +90,15 @@ public class TileManager {
 
             tile[13] = new Tile();
             tile[13].image = javax.imageio.ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/image/map/Ground/GroundRia1.png")));
-            tile[13].collision = false;
+            tile[13].collision = true;
 
             tile[14] = new Tile();
             tile[14].image = javax.imageio.ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/image/map/Ground/GroundRia2.png")));
-            tile[14].collision = false;
+            tile[14].collision = true;
 
             tile[15] = new Tile();
             tile[15].image = javax.imageio.ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/image/map/Ground/UpGround3.png")));
-            tile[15].collision = false;
+            tile[15].collision = true;
             //DAT1
             tile[1] = new Tile();
             tile[1].image = javax.imageio.ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/image/map/Ground/Ground1.png")));
