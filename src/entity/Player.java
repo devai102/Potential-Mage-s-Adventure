@@ -40,8 +40,8 @@ public class Player extends Entity {
         maxHealth = 6;
         health = maxHealth;
         attack = 1;
-        worldX = gp.tileSize ;
-        worldY = gp.tileSize * 5;
+        worldX = gp.tileSize * 7;
+        worldY = gp.tileSize * 4;
         speed = 4;
         directionX = "none";
         directionY = "none";

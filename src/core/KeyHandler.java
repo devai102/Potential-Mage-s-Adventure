@@ -15,7 +15,10 @@ public class KeyHandler implements KeyListener{
 
     @Override
     public void keyTyped(KeyEvent e) {
-        
+        if(gp.gameState == gp.winState && gp.winSession.isActive()){
+            gp.winSession.appendChar(e.getKeyChar());
+            gp.repaint();
+        }
     }
 
     @Override
@@ -37,6 +40,7 @@ public class KeyHandler implements KeyListener{
             if(code == KeyEvent.VK_ENTER){
                 if(gp.ui.commandNumber == 0){
                     gp.gameState = gp.playState;
+                    gp.playTime = 0; // reset timer at start
                 }
                 if(gp.ui.commandNumber == 1){
                     gp.gameState = gp.leaderboardState;
@@ -73,6 +77,28 @@ public class KeyHandler implements KeyListener{
                 gp.gameState = gp.playState;
             }else if(gp.gameState == gp.leaderboardState || gp.gameState == gp.helpState){
                 gp.gameState = gp.tileScreenState;
+            }else if(gp.gameState == gp.winState){
+                gp.winSession.cancel();
+                gp.gameState = gp.tileScreenState;
+            }
+        }
+
+        // Win screen controls
+        if(gp.gameState == gp.winState && gp.winSession.isActive()){
+            if(code == KeyEvent.VK_BACK_SPACE){
+                gp.winSession.backspace();
+                gp.repaint();
+            }
+            if(code == KeyEvent.VK_ENTER){
+                String name = gp.winSession.finish();
+                if(!name.isEmpty()){
+                    gp.leaderboard.add(name, gp.winSession.getTimeSeconds());
+                    gp.playTime = 0;
+                    gp.gameState = gp.leaderboardState;
+                } else {
+                    // If empty, keep active for more input
+                    gp.winSession.start(gp.playTime);
+                }
             }
         }
     }
