@@ -22,7 +22,6 @@ public class UI {
    BufferedImage[] playerImages = new BufferedImage[5];
    BufferedImage[] heartImages = new BufferedImage[3];
    BufferedImage[] buttonImages = new BufferedImage[4];
-   BufferedImage backgroundImage;
    public int commandNumber = 0;
 
    public UI(GamePanel var1) {
@@ -44,8 +43,6 @@ public class UI {
          for(var1 = 0; var1 < 4; ++var1) {
             this.buttonImages[var1] = ImageIO.read(this.getClass().getResourceAsStream("/res/image/object/button/button" + (var1 + 1) + ".png"));
          }
-
-         this.backgroundImage = ImageIO.read(this.getClass().getResourceAsStream("/res/image/object/background.png"));
       } catch (Exception var2) {
          var2.printStackTrace();
       }
