@@ -11,7 +11,7 @@ public class Player extends Entity {
     KeyHandler keyH;
 
     private int gravity = 3;
-    private int jumpPower = 30 ;
+    private int jumpPower = 30;
     private boolean Jumping = false;
     private int currentJumpSpeed = jumpPower;
 
