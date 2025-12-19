@@ -9,7 +9,7 @@ public class WinFlag extends SuperObject {
         name = "Flag";
 
         try {
-            image1 = ImageIO.read(getClass().getResourceAsStream("/objects/flag.png"));
+            image1 = ImageIO.read(getClass().getResourceAsStream("res/image/object/Win Flag/teddy.png"));
         } catch (IOException e) {
             e.printStackTrace();
         }
