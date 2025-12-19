@@ -1,7 +1,5 @@
 package core;
 
-import object.Chest;
-
 public class AssetSetter {
     GamePanel gp;
 

@@ -4,8 +4,6 @@ import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 
-import javax.swing.text.Utilities;
-
 import core.GamePanel;
 
 public class SuperObject {

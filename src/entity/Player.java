@@ -13,7 +13,7 @@ public class Player extends Entity {
     KeyHandler keyH;
 
     private int gravity = 3;
-    private int jumpPower = 15;
+    private int jumpPower = 30 ;
     private boolean Jumping = false;
     private int currentJumpSpeed = jumpPower;
 
@@ -66,7 +66,6 @@ public class Player extends Entity {
     }
 
     public void update() {
-        // 1. XỬ LÝ DI CHUYỂN (X-AXIS)
         if(keyH.leftPressed) {
             directionX = "left";
         } else if(keyH.rightPressed) {
@@ -75,7 +74,6 @@ public class Player extends Entity {
             directionX = "none";
         }
 
-        // Kiểm tra va chạm trục X
         collisionOn = false;
         gp.cChecker.checkTile(this);
         if(!collisionOn) {
@@ -83,7 +81,6 @@ public class Player extends Entity {
             if(directionX.equals("right")) worldX += speed;
         }
 
-        // 2. XỬ LÝ NHẢY & TRỌNG LỰC (Y-AXIS)
         if(keyH.upPressed && !Jumping && !Falling) {
             Jumping = true;
             directionY = "up";
@@ -102,7 +99,7 @@ public class Player extends Entity {
 
         gp.cChecker.isFalling(this);
         if(Falling && !Jumping) {
-            worldY += gravity * 4;
+            worldY += gravity;
         }else{
             directionY = "none";
         }

@@ -71,6 +71,8 @@ public class KeyHandler implements KeyListener{
             }
             else if(gp.gameState == gp.pauseState){
                 gp.gameState = gp.playState;
+            }else if(gp.gameState == gp.leaderboardState || gp.gameState == gp.helpState){
+                gp.gameState = gp.tileScreenState;
             }
         }
     }
