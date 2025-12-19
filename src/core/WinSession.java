@@ -32,7 +32,6 @@ public class WinSession {
             if (Character.isLetterOrDigit(var1) || Character.isSpaceChar(var1) || var1 == '-' || var1 == '_') {
                this.nameBuffer.append(var1);
             }
-
          }
       }
    }

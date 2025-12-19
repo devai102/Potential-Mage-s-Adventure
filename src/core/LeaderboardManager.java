@@ -23,7 +23,6 @@ public class LeaderboardManager implements LeaderboardStorage {
         List<LeaderboardEntry> entries = loadAll();
         entries.add(new LeaderboardEntry(sanitize(name), timeSeconds));
         Collections.sort(entries);
-        // keep only top 5 entries stored
         if (entries.size() > 5) entries = new ArrayList<>(entries.subList(0, 5));
         saveAll(entries);
     }

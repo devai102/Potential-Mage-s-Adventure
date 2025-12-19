@@ -83,7 +83,6 @@ public class KeyHandler implements KeyListener{
             }
         }
 
-        // Win screen controls
         if(gp.gameState == gp.winState && gp.winSession.isActive()){
             if(code == KeyEvent.VK_BACK_SPACE){
                 gp.winSession.backspace();
@@ -91,13 +90,10 @@ public class KeyHandler implements KeyListener{
             }
             if(code == KeyEvent.VK_ENTER){
                 String name = gp.winSession.finish();
-                // Only proceed if name is non-empty (validation guard)
                 if(name.isEmpty()){
-                    // Reset session for retry without changing state
                     gp.winSession.start(gp.playTime);
                     return;
                 }
-                // Save to leaderboard and navigate
                 gp.leaderboard.add(name, gp.winSession.getTimeSeconds());
                 gp.playTime = 0;
                 gp.gameState = gp.leaderboardState;

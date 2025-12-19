@@ -11,40 +11,38 @@ public class Entity {
     public int worldY;
 
     //status
-    public String name;
-    public int maxHealth;
-    public int health;
-    public int attack;
-    public int speed;
-
-    public String directionX = "right";
-    public String directionY = "none";
-    protected boolean Falling = false;
-    protected boolean Jumping = false;
-
+    protected String name;
+    protected int maxHealth;
+    protected int health;
+    protected int attack;
+    protected int speed;
+    protected String directionX = "right";
+    protected String directionY = "none";
     protected int spriteCounter = 0;
     protected int spriteNum = 1;
-
     public boolean collisionOn = false;
-    public boolean invincible = false;
-    public int invincibleCounter = 0;
+    protected boolean invincible = false;
+    protected int invincibleCounter = 0;
     public Rectangle solidArea = new Rectangle(8,16,32,32);
     public int solidAreaDefaultX = solidArea.x;
     public int solidAreaDefaultY = solidArea.y;
-    public void setAction(){}
+    protected int type; // 1 = player, 2 = mob, 3 = object
 
     public Entity(GamePanel gp){
         this.gp = gp;
     }
-    public void isFalling(boolean Falling){
-        this.Falling = Falling;
-    }
 
+    public void setAction(){}
+    
     public String getDirectionX(){
         return this.directionX;
     }
 
     public String getDirectionY(){
         return this.directionY;
+    }
+
+    public int getSpeed(){
+        return this.speed;
     }
 }
