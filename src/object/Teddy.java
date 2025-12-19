@@ -1,35 +1,30 @@
 package object;
 
 import java.awt.image.BufferedImage;
-import javax.imageio.ImageIO;
-
 import core.GamePanel;
 import entity.Entity;
 
-public class Chest extends Entity{
+public class Teddy extends Entity{
     BufferedImage image;
-    public Chest(GamePanel gp){
+    public Teddy(GamePanel gp){
         super(gp);
         setDefaultValues();
         setImage();
     }
+
     @Override
     public void setDefaultValues(){
-        name = "Chest";
+        name = "Teddy";
         type = 3;
         collisionOn = true;
-        
     }
 
     @Override
     public void setImage(){
         try{
-            image = ImageIO.read(getClass().getResourceAsStream("/res/image/object/chest.png"));
+            image = javax.imageio.ImageIO.read(getClass().getResourceAsStream("/res/image/object/teddy.png"));
         }catch(Exception e){
             e.getStackTrace();
         }
-    }
-    void loot(){
-
     }
 }

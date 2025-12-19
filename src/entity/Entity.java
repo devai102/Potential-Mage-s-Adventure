@@ -16,7 +16,7 @@ public class Entity {
     protected int health;
     protected int attack;
     protected int speed;
-    protected int name;
+    protected String name;
 
     protected String directionX = "right";
     protected String directionY = "none";
@@ -50,8 +50,23 @@ public class Entity {
     }
 
     public void update(){
+        gp.cChecker.checkTile(this);
+        gp.cChecker.checkObject(this, false);
+        gp.cChecker.checkEntity(this, gp.monsters);
+        gp.cChecker.checkPlayer(this);
     }
 
     public void setAction(){
+    }
+
+    public void setDefaultValues(){
+    }
+
+    public void setImage(){
+    }
+    
+    public void setLocation(int worldX, int worldY){
+        this.worldX = worldX;
+        this.worldY = worldY;
     }
 }

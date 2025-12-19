@@ -199,7 +199,7 @@ public class UI {
       int x = 64 * 17 - 50;
       int y = 64;
       Objects.requireNonNull(this.gp);
-      g2.drawString(text, x, 64);
+      g2.drawString(text, x, y);
    }
 
    int getXForCenteredText(String g2) {
@@ -425,6 +425,5 @@ public class UI {
          ++var3;
          Objects.requireNonNull(this.gp);
       }
-
    }
 }

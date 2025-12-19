@@ -35,10 +35,11 @@ public class Player extends Entity{
         this.screenX = gp.screenWidth / 2 - (gp.tileSize / 2);
         this.screenY = gp.screenHeight / 2 - (gp.tileSize / 2);
         setDefaultValues();
-        setPlayerImage();
+        setImage();
     }
 
-    void setDefaultValues(){
+    @Override
+    public void setDefaultValues(){
         maxHealth = 6;
         health = maxHealth;
         attack = 1;
@@ -50,7 +51,8 @@ public class Player extends Entity{
         directionY = "none";
     }
 
-    void setPlayerImage(){
+    @Override
+    public void setImage(){
         try {
             for(int i = 0; i < 5; i++) {
                 rightImages[i] = ImageIO.read(getClass().getResourceAsStream("/res/image/player/right/" + (i+1) + ".png"));
@@ -68,6 +70,7 @@ public class Player extends Entity{
         }
     }
 
+    @Override
     public void update() {
         // Check defense first
         if(keyH.downPressed && !Jumping && !Falling) {
@@ -87,7 +90,6 @@ public class Player extends Entity{
             }
         }
         
-
         collisionOn = false;
         gp.cChecker.checkTile(this);
         if(!collisionOn) {
@@ -155,7 +157,8 @@ public class Player extends Entity{
         }
     }
 
-    public void draw(Graphics g2) {
+    @Override
+    public void draw(Graphics2D g2, GamePanel gp) {
         BufferedImage image = null;
         if(!Falling && !Jumping) {
             if (defenseOn) {
@@ -202,10 +205,17 @@ public class Player extends Entity{
     private void pickUpObject(int i) {
         if(i != 999) {
             switch (gp.obj[i].name) {
-                case "":
+                case "Teddy":
+                    gp.playSE(1);
+                    gp.obj[i] = null;
+                    gp.gameState = gp.winState;
+                    gp.winSession.start(gp.playTime);
+                    break;
+                case "Chest":
+                    gp.playSE(2);
+                    gp.obj[i] = null;
                     break;
             }
-            gp.obj[i] = null;
         }
     }
 

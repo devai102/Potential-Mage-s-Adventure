@@ -5,7 +5,6 @@ import java.awt.*;
 
 import entity.Entity;
 import entity.Player;
-import object.SuperObject;
 import tile.TileManager;
 
 public class GamePanel extends JPanel implements Runnable {
@@ -51,7 +50,7 @@ public class GamePanel extends JPanel implements Runnable {
     Thread gameThread;
 
     public Player player = new Player(this, keyH);
-    public SuperObject[] obj = new SuperObject[20];
+    public Entity[] obj = new Entity[20];
     public Entity[] monsters = new Entity[20];
 
     public GamePanel() {
@@ -138,7 +137,7 @@ public class GamePanel extends JPanel implements Runnable {
 
         tileM.draw(g2);
 
-        player.draw(g2);
+        player.draw(g2,this);
 
         ui.draw(g2);
         g2.dispose();
