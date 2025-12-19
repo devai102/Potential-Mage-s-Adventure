@@ -59,7 +59,7 @@ public class Player extends Entity {
             }
             defenseOnImage = ImageIO.read(getClass().getResourceAsStream("/res/image/player/defenseOn/defense.png"));
 
-            standingImages = ImageIO.read(getClass().getResourceAsStream("/res/image/player/standing/standing.png"));
+            standingImages = ImageIO.read(getClass().getResourceAsStream("/res/image/player/standing/1.png"));
         } catch(Exception e) {
             e.printStackTrace();
         }
@@ -160,7 +160,7 @@ public class Player extends Entity {
                 image = leftImages[spriteNum - 1];
             } else if (directionX.equals("none")) {
                 image = standingImages;
-            }
+            } 
         }
         else if (Jumping) {
             if (directionX.equals("right")) {
