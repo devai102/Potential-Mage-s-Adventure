@@ -11,11 +11,11 @@ public class AssetSetter {
     }
 
     public void setObject(){
-        // gp.obj[0] = new Teddy(gp);
-        // gp.obj[0].setLocation(23*gp.tileSize, 7*gp.tileSize);
+        gp.obj[0] = new Teddy(gp);
+        gp.obj[0].setLocation(23*gp.tileSize, 5*gp.tileSize);
 
-        gp.obj[0] = new Chest(gp);
-        gp.obj[0].setLocation(23*gp.tileSize, 7*gp.tileSize);
+        gp.obj[1] = new Chest(gp);
+        gp.obj[1].setLocation(23*gp.tileSize, 7*gp.tileSize);
     }
 
     public void setMonster(){
