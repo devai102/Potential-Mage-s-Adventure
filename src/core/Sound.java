@@ -13,6 +13,10 @@ public class Sound {
     public Sound(){
         soundURL[0] = getClass().getResource("/res/sound/Play_Song.wav");
         soundURL[1] = getClass().getResource("/res/sound/Intro_Song.wav");
+        soundURL[2] = getClass().getResource("res/sound/Bùm.wav");
+        soundURL[3] = getClass().getResource("/res/sound/Mở.wav");
+        soundURL[4] = getClass().getResource("res/sound/Thắng.wav");
+        soundURL[5] = getClass().getResource("/res/sound/Thua.wav");
     }
 
     public void setFile(int i){
