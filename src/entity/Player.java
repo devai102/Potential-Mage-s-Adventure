@@ -44,8 +44,10 @@ public class Player extends Entity{
         health = maxHealth;
         attack = 1;
         // can set up lai vi tri spawn
+
         worldX = gp.tileSize * 11;
         worldY = gp.tileSize * 8;
+
         speed = 4;
         directionX = "none";
         directionY = "none";
