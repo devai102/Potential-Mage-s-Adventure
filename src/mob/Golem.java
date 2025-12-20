@@ -4,8 +4,6 @@ import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.util.Random;
 
-import javax.imageio.ImageIO;
-
 import core.GamePanel;
 import entity.Entity;
 
@@ -39,17 +37,13 @@ public class Golem extends Entity{
     }
 
     public void setImage(){
-        try{
-            for(int i = 0; i < 5; i++){
-                leftImages[i] = ImageIO.read(getClass().getResourceAsStream("/res/image/mob/golem/left/" + (i+1) + ".png"));
-                rightImages[i] = ImageIO.read(getClass().getResourceAsStream("/res/image/mob/golem/right/" + (i+1) + ".png"));
-                // dieImages[i] = ImageIO.read(getClass().getResourceAsStream("/res/image/mob/golem/die/" + (i+1) + ".png"));
-            }
-            for(int i = 0 ; i < 2; i++){
-                skillImages[i] = ImageIO.read(getClass().getResourceAsStream("/res/image/mob/golem/skill/" + (i+1) + ".png"));
-            }
-        }catch(Exception e){
-            e.getStackTrace();
+        for(int i = 0; i < 5; i++){
+            leftImages[i] = setup("/res/image/mob/golem/left/" + (i+1), gp.tileSize, gp.tileSize);
+            rightImages[i] = setup("/res/image/mob/golem/right/" + (i+1), gp.tileSize, gp.tileSize);
+            // dieImages[i] = setup("/res/image/mob/golem/die/" + (i+1));
+        }
+        for(int i = 0 ; i < 2; i++){
+            skillImages[i] = setup("/res/image/mob/golem/skill/" + (i+1), gp.tileSize, gp.tileSize);
         }
     }
 

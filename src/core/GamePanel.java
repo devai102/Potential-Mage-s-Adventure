@@ -50,7 +50,7 @@ public class GamePanel extends JPanel implements Runnable {
     public AssetSetter aSetter = new AssetSetter(this);
 
     Thread gameThread;
-
+    public UtilityTool uTool = new UtilityTool();
     public Player player = new Player(this, keyH);
     public Entity[] obj = new Entity[20];
     public Entity[] monsters = new Entity[20];
