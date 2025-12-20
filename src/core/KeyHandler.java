@@ -5,7 +5,7 @@ import java.awt.event.KeyListener;
 
 public class KeyHandler implements KeyListener{    
     public boolean upPressed, downPressed, leftPressed, rightPressed;
-    
+    public boolean attackPressed;
     private GamePanel gp;
 
     public KeyHandler(GamePanel gp){
@@ -40,7 +40,8 @@ public class KeyHandler implements KeyListener{
             if(code == KeyEvent.VK_ENTER){
                 if(gp.ui.commandNumber == 0){
                     gp.gameState = gp.playState;
-                    gp.playTime = 0; // reset timer at start
+                    gp.playTime = 0;
+                    gp.player.setDefaultValues();
                 }
                 if(gp.ui.commandNumber == 1){
                     gp.gameState = gp.leaderboardState;
@@ -56,7 +57,9 @@ public class KeyHandler implements KeyListener{
                 }
             }
         }
-
+        if(code == KeyEvent.VK_J){
+            attackPressed = true;
+        }
         if(code == KeyEvent.VK_W){
             upPressed = true;
         }

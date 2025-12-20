@@ -9,7 +9,7 @@ public class CollisionChecker {
         this.gp = gp;
     }
 
-    public void checkTile(Entity entity){
+    public boolean checkTile(Entity entity){
         entity.collisionOn = false;
         
         int entityLeftWorldX = entity.worldX + entity.solidArea.x;
@@ -20,7 +20,7 @@ public class CollisionChecker {
         int entityLeftCol = entityLeftWorldX / gp.tileSize;
         int entityRightCol = entityRightWorldX / gp.tileSize;
         int entityTopRow = entityTopWorldY / gp.tileSize;
-        int entityBottomRow = entityBottomWorldY / gp.tileSize;
+        int entityBottomRow = (entityBottomWorldY) / gp.tileSize;
 
         int tileNum1, tileNum2;
 
@@ -32,9 +32,10 @@ public class CollisionChecker {
                    entityBottomRow >= 0 && entityBottomRow < gp.maxWorldRow){
                     tileNum1 = gp.tileM.mapTileNum[entityLeftCol][entityTopRow];
                     tileNum2 = gp.tileM.mapTileNum[entityLeftCol][entityBottomRow];
-                    if((tileNum1 >= 0 && tileNum1 < gp.tileM.tile.length && gp.tileM.tile[tileNum1] != null && gp.tileM.tile[tileNum1].collision) ||
-                       (tileNum2 >= 0 && tileNum2 < gp.tileM.tile.length && gp.tileM.tile[tileNum2] != null && gp.tileM.tile[tileNum2].collision)){
-                        entity.collisionOn = true;
+                    boolean collision1 = (tileNum1 >= 0 && tileNum1 < gp.tileM.tile.length && gp.tileM.tile[tileNum1] != null && gp.tileM.tile[tileNum1].collision);
+                    boolean collision2 = (tileNum2 >= 0 && tileNum2 < gp.tileM.tile.length && gp.tileM.tile[tileNum2] != null && gp.tileM.tile[tileNum2].collision);
+                    if(collision1 || collision2){
+                        return true;
                     }
                 }
                 break;
@@ -45,9 +46,10 @@ public class CollisionChecker {
                    entityBottomRow >= 0 && entityBottomRow < gp.maxWorldRow){
                     tileNum1 = gp.tileM.mapTileNum[entityRightCol][entityTopRow];
                     tileNum2 = gp.tileM.mapTileNum[entityRightCol][entityBottomRow];
-                    if((tileNum1 >= 0 && tileNum1 < gp.tileM.tile.length && gp.tileM.tile[tileNum1] != null && gp.tileM.tile[tileNum1].collision) ||
-                       (tileNum2 >= 0 && tileNum2 < gp.tileM.tile.length && gp.tileM.tile[tileNum2] != null && gp.tileM.tile[tileNum2].collision)){
-                        entity.collisionOn = true;
+                    boolean collision1 = (tileNum1 >= 0 && tileNum1 < gp.tileM.tile.length && gp.tileM.tile[tileNum1] != null && gp.tileM.tile[tileNum1].collision);
+                    boolean collision2 = (tileNum2 >= 0 && tileNum2 < gp.tileM.tile.length && gp.tileM.tile[tileNum2] != null && gp.tileM.tile[tileNum2].collision);
+                    if(collision1 || collision2){
+                        return true;
                     }
                 }
                 break;
@@ -61,9 +63,10 @@ public class CollisionChecker {
                    entityTopRow >= 0 && entityTopRow < gp.maxWorldRow){
                     tileNum1 = gp.tileM.mapTileNum[entityLeftCol][entityTopRow];
                     tileNum2 = gp.tileM.mapTileNum[entityRightCol][entityTopRow];
-                    if((tileNum1 >= 0 && tileNum1 < gp.tileM.tile.length && gp.tileM.tile[tileNum1] != null && gp.tileM.tile[tileNum1].collision) ||
-                       (tileNum2 >= 0 && tileNum2 < gp.tileM.tile.length && gp.tileM.tile[tileNum2] != null && gp.tileM.tile[tileNum2].collision)){
-                        entity.collisionOn = true;
+                    boolean collision1 = (tileNum1 >= 0 && tileNum1 < gp.tileM.tile.length && gp.tileM.tile[tileNum1] != null && gp.tileM.tile[tileNum1].collision);
+                    boolean collision2 = (tileNum2 >= 0 && tileNum2 < gp.tileM.tile.length && gp.tileM.tile[tileNum2] != null && gp.tileM.tile[tileNum2].collision);
+                    if(collision1 || collision2){
+                        return true;
                     }
                 }
                 break;
@@ -74,47 +77,43 @@ public class CollisionChecker {
                    entityBottomRow >= 0 && entityBottomRow < gp.maxWorldRow){
                     tileNum1 = gp.tileM.mapTileNum[entityLeftCol][entityBottomRow];
                     tileNum2 = gp.tileM.mapTileNum[entityRightCol][entityBottomRow];
-                    if((tileNum1 >= 0 && tileNum1 < gp.tileM.tile.length && gp.tileM.tile[tileNum1] != null && gp.tileM.tile[tileNum1].collision) ||
-                       (tileNum2 >= 0 && tileNum2 < gp.tileM.tile.length && gp.tileM.tile[tileNum2] != null && gp.tileM.tile[tileNum2].collision)){
-                        entity.collisionOn = true;
+                    boolean collision1 = (tileNum1 >= 0 && tileNum1 < gp.tileM.tile.length && gp.tileM.tile[tileNum1] != null && gp.tileM.tile[tileNum1].collision);
+                    boolean collision2 = (tileNum2 >= 0 && tileNum2 < gp.tileM.tile.length && gp.tileM.tile[tileNum2] != null && gp.tileM.tile[tileNum2].collision);
+                    if(collision1 || collision2){
+                        return true;
                     }
                 }
                 break;
             case "none":
                 break;
         }
+        return false;
     }
 
     public void isFalling(Entity entity){
-        int entityLeftWorldX = gp.player.worldX + gp.player.solidArea.x;
-        int entityRightWorldX = gp.player.worldX + gp.player.solidArea.x + gp.player.solidArea.width;
-        int entityBottomWorldY = gp.player.worldY + gp.player.solidArea.y + gp.player.solidArea.height;
+        int entityLeftWorldX = entity.worldX + entity.solidArea.x;
+        int entityRightWorldX = entity.worldX + entity.solidArea.x + entity.solidArea.width;
+        int entityBottomWorldY = entity.worldY + entity.solidArea.y + entity.solidArea.height;
 
         int entityLeftCol = entityLeftWorldX / gp.tileSize;
         int entityRightCol = entityRightWorldX / gp.tileSize;
-        int entityBottomRow = (entityBottomWorldY + 4) / gp.tileSize;
+        int entityBottomRow = (entityBottomWorldY + 8) / gp.tileSize;
 
         if(entityLeftCol >= 0 && entityLeftCol < gp.maxWorldCol &&
            entityRightCol >= 0 && entityRightCol < gp.maxWorldCol &&
            entityBottomRow >= 0 && entityBottomRow < gp.maxWorldRow){
-            
             int tileNum1 = gp.tileM.mapTileNum[entityLeftCol][entityBottomRow];
             int tileNum2 = gp.tileM.mapTileNum[entityRightCol][entityBottomRow];
-
             boolean collision1 = (tileNum1 >= 0 && tileNum1 < gp.tileM.tile.length && 
                                  gp.tileM.tile[tileNum1] != null && gp.tileM.tile[tileNum1].collision);
             boolean collision2 = (tileNum2 >= 0 && tileNum2 < gp.tileM.tile.length && 
                                  gp.tileM.tile[tileNum2] != null && gp.tileM.tile[tileNum2].collision);
-
             if(collision1 || collision2){
-                gp.player.setFalling(false);
+                entity.setFalling(false);
             } else {
-                gp.player.setFalling(true);
-                gp.player.collisionOn = false;
+                entity.setFalling(true);
+                entity.collisionOn = false;
             }
-        } else {
-            gp.player.setFalling(true);
-            gp.player.collisionOn = false;
         }
     }
 
