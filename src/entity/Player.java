@@ -14,7 +14,7 @@ public class Player extends Entity{
     private int jumpPower = 20;
     private boolean Jumping = false;
     private int currentJumpSpeed = jumpPower;
-
+    private int buffNumber = 0;
     private boolean defenseOn = false;
 
     public final int screenX , screenY;
@@ -44,7 +44,7 @@ public class Player extends Entity{
         health = maxHealth;
         attack = 1;
         type = 0;
-        
+
         worldX = gp.tileSize * 11;
         worldY = gp.tileSize * 8;
 
@@ -106,6 +106,7 @@ public class Player extends Entity{
         // Check monster collision
         int monsterIndex = gp.cChecker.checkEntity(this, gp.monsters);
         contactMonster(monsterIndex);
+
         isAlive();
         if (invincible){
             invincibleCounter++;
@@ -217,16 +218,30 @@ public class Player extends Entity{
         if(i != 999) {
             switch (gp.obj[i].name) {
                 case "Teddy":
-                    gp.playSE(1);
                     gp.obj[i] = null;
                     gp.gameState = gp.winState;
                     gp.winSession.start(gp.playTime);
                     break;
                 case "Chest":
-                    gp.playSE(2);
+                    buffNumber = ((object.Chest)gp.obj[i]).open();
+                    switch(buffNumber){
+                        case 1:
+                            if(health < maxHealth)
+                                health++;
+                                gp.ui.showMessage("Healing!");
+                            break;
+                        case 2:
+                            speed ++;
+                            gp.ui.showMessage("Speed Up!");
+                            break;
+                        case 3:
+                            attack ++;
+                            gp.ui.showMessage("Attack Up!");
+                            break;
+                    }
                     gp.obj[i] = null;
                     break;
-            }
+            } 
         }
     }
 

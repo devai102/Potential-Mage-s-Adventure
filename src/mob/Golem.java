@@ -14,7 +14,6 @@ public class Golem extends Entity{
     private BufferedImage[] leftImages = new BufferedImage[5];
     private BufferedImage[] rightImages = new BufferedImage[5];
     private BufferedImage[] skillImages = new BufferedImage[2];
-    private BufferedImage[] dieImages = new BufferedImage[5];
     private boolean skillOn = false;
     private int skillDuration = 0;
     private int rdImageNum = 0;

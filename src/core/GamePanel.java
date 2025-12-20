@@ -8,6 +8,7 @@ import java.util.Comparator;
 
 import entity.Entity;
 import entity.Player;
+import potion.Potion;
 import tile.TileManager;
 
 public class GamePanel extends JPanel implements Runnable {
@@ -33,7 +34,7 @@ public class GamePanel extends JPanel implements Runnable {
     Sound musicSound = new Sound();
     Sound se = new Sound();
 
-    UI ui = new UI(this);
+    public UI ui = new UI(this);
     public LeaderboardStorage leaderboard = new LeaderboardManager();
     public WinSession winSession = new WinSession();
     public double playTime = 0;
@@ -55,6 +56,7 @@ public class GamePanel extends JPanel implements Runnable {
     public Player player = new Player(this, keyH);
     public Entity[] obj = new Entity[20];
     public Entity[] monsters = new Entity[20];
+    public ArrayList<Potion> potionList = new ArrayList<>();
     ArrayList<Entity> entityList= new ArrayList<>();
 
     public GamePanel() {
@@ -107,7 +109,7 @@ public class GamePanel extends JPanel implements Runnable {
                     monsters[i].update();
                 }
             }
-
+            
         }
         if(gameState == pauseState){
         }
@@ -155,8 +157,15 @@ public class GamePanel extends JPanel implements Runnable {
                 entityList.remove(i);
             }
 
-            ui.draw(g2);
+            // draw potions
+            if(potionList.size() > 0){
+                for(int i = 0; i < potionList.size(); i++) {
+                    potionList.get(i).draw(g2);
+                }
+            }
         }
+        ui.draw(g2);
+
         g2.dispose();
     }
 
