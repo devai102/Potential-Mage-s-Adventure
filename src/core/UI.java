@@ -323,7 +323,7 @@ public class UI {
       g20002 = 64 * 12;
       Objects.requireNonNull(this.gp);
       g2.drawString("Time (s)", g20002, 64 * 4);
-      List var5 = this.gp.leaderboard.top(5);
+      List<LeaderboardEntry> var5 = this.gp.leaderboard.top(5);
       Objects.requireNonNull(this.gp);
       int var6 = 64 * 5;
       byte var7 = 36;

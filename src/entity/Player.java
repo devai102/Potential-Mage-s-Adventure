@@ -43,8 +43,8 @@ public class Player extends Entity{
         maxHealth = 6;
         health = maxHealth;
         attack = 1;
-        // can set up lai vi tri spawn
-
+        type = 0;
+        
         worldX = gp.tileSize * 11;
         worldY = gp.tileSize * 8;
 
@@ -161,7 +161,7 @@ public class Player extends Entity{
     }
 
     @Override
-    public void draw(Graphics2D g2, GamePanel gp) {
+    public void draw(Graphics2D g2) {
         BufferedImage image = null;
         if(!Falling && !Jumping) {
             if (defenseOn) {

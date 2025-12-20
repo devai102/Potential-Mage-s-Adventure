@@ -46,14 +46,10 @@ public class Entity {
         return this.speed;
     }
 
-    public void draw(Graphics2D g2, GamePanel gp){
+    public void draw(Graphics2D g2){
     }
 
     public void update(){
-        gp.cChecker.checkTile(this);
-        gp.cChecker.checkObject(this, false);
-        gp.cChecker.checkEntity(this, gp.monsters);
-        gp.cChecker.checkPlayer(this);
     }
 
     public void setAction(){

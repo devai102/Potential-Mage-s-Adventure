@@ -66,10 +66,10 @@ public class GamePanel extends JPanel implements Runnable {
     }
 
     public void setupGame(){
+        gameState = tileScreenState;
+        playMusic(1);
         aSetter.setObject();
         aSetter.setMonster();
-        gameState = 4;
-        playMusic(1);
     }
 
     public void startGameThread() {
@@ -101,6 +101,13 @@ public class GamePanel extends JPanel implements Runnable {
         if(gameState == playState){
             playTime += (double)1/60;
             player.update();
+            
+            for(int i = 0; i < monsters.length; i++) {
+                if(monsters[i] != null) {
+                    monsters[i].update();
+                }
+            }
+
         }
         if(gameState == pauseState){
         }
@@ -141,7 +148,7 @@ public class GamePanel extends JPanel implements Runnable {
             });
 
             for(int i = 0; i < entityList.size(); i++) {
-                entityList.get(i).draw(g2, this);
+                entityList.get(i).draw(g2);
             }   
 
             for(int i = 0; i < entityList.size(); i++) {

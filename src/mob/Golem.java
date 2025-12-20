@@ -9,9 +9,7 @@ import javax.imageio.ImageIO;
 import core.GamePanel;
 import entity.Entity;
 
-public class Golem extends Entity{
-    GamePanel gp;
-    
+public class Golem extends Entity{ 
     private int actionLockCounter;
     private BufferedImage[] leftImages = new BufferedImage[5];
     private BufferedImage[] rightImages = new BufferedImage[5];
@@ -19,6 +17,7 @@ public class Golem extends Entity{
     private BufferedImage[] dieImages = new BufferedImage[5];
     private boolean skillOn = false;
     private int skillDuration = 0;
+    private int rdImageNum = 0;
 
     public Golem(GamePanel gp){
         super(gp);
@@ -27,16 +26,17 @@ public class Golem extends Entity{
     }
 
     public void setDefaultValues(){
-        this.health = 3;
-        this.attack = 1;
-        this.speed = gp.tileSize / 12;
-        this.name = "Golem";
+        name = "Golem";
+        health = 3;
+        attack = 1;
+        speed = 2;
         type = 2;
         directionX = "left";
         solidArea.x = 8;
         solidArea.y = 16;
         solidArea.width = 32;
         solidArea.height = 32;
+
     }
 
     public void setImage(){
@@ -44,7 +44,7 @@ public class Golem extends Entity{
             for(int i = 0; i < 5; i++){
                 leftImages[i] = ImageIO.read(getClass().getResourceAsStream("/res/image/mob/golem/left/" + (i+1) + ".png"));
                 rightImages[i] = ImageIO.read(getClass().getResourceAsStream("/res/image/mob/golem/right/" + (i+1) + ".png"));
-                dieImages[i] = ImageIO.read(getClass().getResourceAsStream("/res/image/mob/golem/die/" + (i+1) + ".png"));
+                // dieImages[i] = ImageIO.read(getClass().getResourceAsStream("/res/image/mob/golem/die/" + (i+1) + ".png"));
             }
             for(int i = 0 ; i < 2; i++){
                 skillImages[i] = ImageIO.read(getClass().getResourceAsStream("/res/image/mob/golem/skill/" + (i+1) + ".png"));
@@ -69,13 +69,17 @@ public class Golem extends Entity{
                         worldX += speed;
                         break;
                 }
+            } else{
+                directionX = (directionX == "left") ? "right" : "left";
+                spriteNum = 1;
             }
         }
+
         gp.cChecker.checkPlayer(this);
         gp.cChecker.checkObject(this, false);
-    
+
         spriteCounter++;
-        if(spriteCounter > 12 && skillOn == false){
+        if(spriteCounter > 15 && skillOn == false){
             if(spriteNum == 1){
                 spriteNum = 2;
             }
@@ -96,11 +100,10 @@ public class Golem extends Entity{
     }
 
     @Override
-    public void draw(Graphics2D g2, GamePanel gp){
+    public void draw(Graphics2D g2){
         BufferedImage image = null;
-        if(skillOn){
-            int rd = new Random().nextInt(2);
-            image = skillImages[rd];
+        if(skillOn == true){
+            image = skillImages[rdImageNum];
         }else{
             if(directionX == "left"){
                 image = leftImages[spriteNum -1];
@@ -109,7 +112,15 @@ public class Golem extends Entity{
                 image = rightImages[spriteNum -1];
             }
         }
-        g2.drawImage(image, worldX, worldY, gp.tileSize, gp.tileSize, null);
+        
+        int screenX = worldX - gp.player.worldX + gp.player.screenX;
+        int screenY = worldY - gp.player.worldY + gp.player.screenY;
+        if(worldX + gp.tileSize > gp.player.worldX - gp.player.screenX &&
+           worldX - gp.tileSize < gp.player.worldX + gp.player.screenX &&
+           worldY + gp.tileSize > gp.player.worldY - gp.player.screenY &&
+           worldY - gp.tileSize < gp.player.worldY + gp.player.screenY){
+        }
+        g2.drawImage(image, screenX, screenY, gp.tileSize, gp.tileSize, null);
     }
 
     @Override
@@ -119,20 +130,25 @@ public class Golem extends Entity{
             int rd = new Random().nextInt(100)+1;
             if (rd <=50) {
                 directionX = "left";
+                spriteNum = 1;
             }
             else {
                 directionX = "right";
+                spriteNum = 1;
             }
 
             int rd2 = new Random().nextInt(100)+1;
             if (rd2 > 90 && skillOn == false) {
                 skillOn = true;
+                spriteNum = 1;
+                rdImageNum = new Random().nextInt(2);
             }
             actionLockCounter = 0;
         }
+
         if(skillOn == true){
             skillDuration++;
-            if (skillDuration > 90){
+            if (skillDuration > 120){
                 skillOn = false;
                 skillDuration = 0;
                 spriteNum = 1;
