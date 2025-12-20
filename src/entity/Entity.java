@@ -29,6 +29,7 @@ public class Entity {
     public int solidAreaDefaultX = solidArea.x;
     public int solidAreaDefaultY = solidArea.y;
     protected int type; // 1 = player, 2 = mob, 3 = object
+    public boolean collision = false;
 
     public Entity(GamePanel gp){
         this.gp = gp;

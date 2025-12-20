@@ -2,6 +2,7 @@
 package core;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.awt.image.ImageObserver;
@@ -12,6 +13,7 @@ import javax.imageio.ImageIO;
 
 public class UI {
    GamePanel gp;
+   Font TNR_40 = new Font("Times New Roman", Font.PLAIN, 40);
    boolean messageOn = false;
    String message = "";
    int delta = 20;
@@ -49,8 +51,8 @@ public class UI {
 
    }
 
-   public void showMessage(String g2) {
-      this.message = g2;
+   public void showMessage(String text) {
+      this.message = text;
       this.messageOn = true;
    }
 
@@ -200,13 +202,24 @@ public class UI {
       int y = 64;
       Objects.requireNonNull(this.gp);
       g2.drawString(text, x, y);
+
+      if(this.messageOn) {
+         g2.setFont(g2.getFont().deriveFont(1, 20));
+         g2.setColor(Color.black);
+         g2.drawString(this.message, gp.player.screenX , gp.player.screenY - 10);
+         this.spriteCounter++;
+         if(this.spriteCounter > 120) {
+            this.spriteCounter = 0;
+            this.messageOn = false;
+         }
+      }
    }
 
-   int getXForCenteredText(String g2) {
-      int var2 = (int)this.g2.getFontMetrics().getStringBounds(g2, this.g2).getWidth();
+   int getXForCenteredText(String text) {
       Objects.requireNonNull(this.gp);
-      int var3 = 1280 / 2 - var2 / 2;
-      return var3;
+      int length = (int)g2.getFontMetrics().getStringBounds(text, g2).getWidth();
+      int x = 1280 / 2 - length / 2;
+      return x;
    }
 
    void drawTitleScreen(Graphics2D g2) {

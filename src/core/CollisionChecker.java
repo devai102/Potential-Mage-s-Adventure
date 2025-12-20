@@ -1,7 +1,6 @@
 package core;
 
 import entity.Entity;
-import potion.Potion;
 
 public class CollisionChecker {
     GamePanel gp;
