@@ -43,7 +43,27 @@ public class Chest extends Entity{
         g2.drawImage(image, screenX, screenY, gp.tileSize, gp.tileSize, null);
         }
     }
-    void loot(){
 
+    public void open(){
+        int rd = new java.util.Random().nextInt(3);
+        potion.Potion potion = null;
+        
+        switch(rd){
+            case 0:
+                potion = new potion.HealingPotion(gp);
+                break;
+            case 1:
+                potion = new potion.AttackPotion(gp);
+                break;
+            case 2:
+                potion = new potion.SpeedPotion(gp);
+                break;
+        }
+        
+        if(potion != null) {
+            potion.worldX = this.worldX;
+            potion.worldY = this.worldY;
+            gp.potionList.add(potion);
+        }
     }
 }
