@@ -54,7 +54,7 @@ public class UI {
       this.messageOn = true;
    }
 
-   public void draw(Graphics2D g2) {
+   public void draw(Graphics2D g2){
       this.g2 = g2;
       g2.setFont(g2.getFont().deriveFont(0, 30.0F));
       int g20000 = this.gp.gameState;
@@ -341,7 +341,6 @@ public class UI {
          Objects.requireNonNull(this.gp);
          g2.drawString(g21, 64 * 12, g20);
       }
-
    }
 
    void drawHelpScreen(Graphics2D g2) {

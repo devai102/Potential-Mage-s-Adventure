@@ -2,6 +2,9 @@ package core;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 import entity.Entity;
 import entity.Player;
@@ -16,8 +19,8 @@ public class GamePanel extends JPanel implements Runnable {
     public final int screenWidth = tileSize * maxScreenCol; 
     public final int screenHeight = tileSize * maxScreenRow; 
 
-    public final int maxWorldCol = 74;
-    public final int maxWorldRow = 50;
+    public final int maxWorldCol = 82;
+    public final int maxWorldRow = 45;
 
     int screenHeight2 = screenHeight;
     int screenWidth2 = screenWidth;
@@ -52,6 +55,7 @@ public class GamePanel extends JPanel implements Runnable {
     public Player player = new Player(this, keyH);
     public Entity[] obj = new Entity[20];
     public Entity[] monsters = new Entity[20];
+    ArrayList<Entity> entityList= new ArrayList<>();
 
     public GamePanel() {
         this.setPreferredSize(new Dimension(screenWidth, screenHeight));
@@ -97,7 +101,6 @@ public class GamePanel extends JPanel implements Runnable {
         if(gameState == playState){
             playTime += (double)1/60;
             player.update();
-            checkWinCondition();
         }
         if(gameState == pauseState){
         }
@@ -106,40 +109,47 @@ public class GamePanel extends JPanel implements Runnable {
         }
     }
 
-    private void checkWinCondition(){
-        int targetX = tileSize * 63;
-        int targetY = tileSize * 8;
-        java.awt.Rectangle targetTile = new java.awt.Rectangle(targetX, targetY, tileSize, tileSize);
-        java.awt.Rectangle playerRect = new java.awt.Rectangle(
-            player.worldX + player.solidArea.x,
-            player.worldY + player.solidArea.y,
-            player.solidArea.width,
-            player.solidArea.height
-        );
-        if(playerRect.intersects(targetTile)){
-            if(gameState != winState){
-                gameState = winState;
-                winSession.start(playTime);
-            }
-        }
-    }
-
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g;
         // draw objects
-        for(int i = 0; i < obj.length; i++){
-            if(obj[i] != null){
-                obj[i].draw(g2, this);
-            }
+        if (gameState == tileScreenState) {
+            ui.draw(g2);
         }
+        else {
+            tileM.draw(g2);
+            entityList.add(player);
 
-        tileM.draw(g2);
+            for(int i = 0; i < obj.length; i++) {
+                if(obj[i] != null) {
+                    entityList.add(obj[i]);
+                }
+            }
 
-        player.draw(g2,this);
+            for(int i = 0; i < monsters.length; i++) {
+                if(monsters[i] != null) {
+                    entityList.add(monsters[i]);
+                }
+            }
 
-        ui.draw(g2);
+            Collections.sort(entityList, new Comparator<Entity>() {
+                @Override
+                public int compare(Entity e1, Entity e2) {
+                    return Integer.compare(e1.worldY, e2.worldY);
+                }
+            });
+
+            for(int i = 0; i < entityList.size(); i++) {
+                entityList.get(i).draw(g2, this);
+            }   
+
+            for(int i = 0; i < entityList.size(); i++) {
+                entityList.remove(i);
+            }
+
+            ui.draw(g2);
+        }
         g2.dispose();
     }
 

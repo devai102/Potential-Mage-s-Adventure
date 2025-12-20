@@ -17,7 +17,7 @@ public class Player extends Entity{
 
     private boolean defenseOn = false;
 
-    public final int screenX, screenY; 
+    public final int screenX , screenY;
 
     // image
     private BufferedImage[] rightImages = new BufferedImage[5];
@@ -44,8 +44,8 @@ public class Player extends Entity{
         health = maxHealth;
         attack = 1;
         // can set up lai vi tri spawn
-        worldX = gp.tileSize * 7;
-        worldY = gp.tileSize * 9;
+        worldX = gp.tileSize * 11;
+        worldY = gp.tileSize * 8;
         speed = 4;
         directionX = "none";
         directionY = "none";
@@ -104,6 +104,7 @@ public class Player extends Entity{
         // Check monster collision
         int monsterIndex = gp.cChecker.checkEntity(this, gp.monsters);
         contactMonster(monsterIndex);
+        isAlive();
         if (invincible){
             invincibleCounter++;
             if (invincibleCounter > 60){
@@ -199,6 +200,14 @@ public class Player extends Entity{
                 if(health < 0) health = 0;
                 invincible = true;
             }
+        }
+    }
+
+    private void isAlive(){
+        if(health <= 0){
+            gp.playSE(3);
+            gp.gameState = gp.gameOverState;
+            gp.stopMusic();
         }
     }
 

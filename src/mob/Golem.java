@@ -31,6 +31,12 @@ public class Golem extends Entity{
         this.attack = 1;
         this.speed = gp.tileSize / 12;
         this.name = "Golem";
+        type = 2;
+        directionX = "left";
+        solidArea.x = 8;
+        solidArea.y = 16;
+        solidArea.width = 32;
+        solidArea.height = 32;
     }
 
     public void setImage(){
@@ -48,6 +54,7 @@ public class Golem extends Entity{
         }
     }
 
+    @Override
     public void update(){
         setAction();
 
@@ -88,7 +95,8 @@ public class Golem extends Entity{
         }
     }
 
-    public void draw(Graphics2D g2){
+    @Override
+    public void draw(Graphics2D g2, GamePanel gp){
         BufferedImage image = null;
         if(skillOn){
             int rd = new Random().nextInt(2);
@@ -104,6 +112,7 @@ public class Golem extends Entity{
         g2.drawImage(image, worldX, worldY, gp.tileSize, gp.tileSize, null);
     }
 
+    @Override
     public void setAction(){
         actionLockCounter++;
         if(actionLockCounter >= 120 && skillOn == false){

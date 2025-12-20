@@ -22,36 +22,38 @@ public class TileManager {
     }
 
     void loadMap(String filePath) {
-        try {
-            InputStream is = getClass().getResourceAsStream(filePath);
-            BufferedReader br = new BufferedReader(new InputStreamReader(is));
+        try (InputStream is = getClass().getResourceAsStream(filePath)) {
+            if (is == null) {
+                throw new IllegalStateException("Map file not found: " + filePath);
+            }
 
-            int col = 0;
-            int row = 0;
+            try (BufferedReader br = new BufferedReader(new InputStreamReader(is))) {
+                int col = 0;
+                int row = 0;
 
-            while (row < gp.maxWorldRow) {
-                String line = br.readLine();
+                while (row < gp.maxWorldRow) {
+                    String line = br.readLine();
 
-                if (line == null) {
-                    break;
-                }
-
-                String numbers[] = line.trim().split("\\s+");
-
-                while (col < gp.maxWorldCol) {
-                    if (col < numbers.length) {
-                        int num = Integer.parseInt(numbers[col]);
-                        mapTileNum[col][row] = num;
+                    if (line == null) {
+                        break;
                     }
-                    col++;
-                }
 
-                if (col == gp.maxWorldCol) {
-                    col = 0;
-                    row++;
+                    String numbers[] = line.trim().split("\\s+");
+
+                    while (col < gp.maxWorldCol) {
+                        if (col < numbers.length) {
+                            int num = Integer.parseInt(numbers[col]);
+                            mapTileNum[col][row] = num;
+                        }
+                        col++;
+                    }
+
+                    if (col == gp.maxWorldCol) {
+                        col = 0;
+                        row++;
+                    }
                 }
             }
-            br.close();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -143,12 +145,13 @@ public class TileManager {
                worldX - gp.tileSize < gp.player.worldX + gp.player.screenX &&
                worldY + gp.tileSize > gp.player.worldY - gp.player.screenY &&
                worldY - gp.tileSize < gp.player.worldY + gp.player.screenY){
-                if (tile[tileNum] == null) {
-                    System.out.println("LỖI: Tìm thấy số tile chưa được khởi tạo: " + tileNum);
+                if (tileNum < 0 || tileNum >= tile.length || tile[tileNum] == null) {
+                    System.err.println("Missing tile definition for index: " + tileNum);
+                } else {
+                    g2.drawImage(tile[tileNum].image, screenX, screenY, gp.tileSize, gp.tileSize, null);
                 }
-            g2.drawImage(tile[tileNum].image, screenX, screenY, gp.tileSize, gp.tileSize, null);
             }
-
+                    
             worldCol++;
             if(worldCol == gp.maxWorldCol){
                 worldCol = 0;
