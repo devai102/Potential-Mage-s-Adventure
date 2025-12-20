@@ -5,7 +5,7 @@ import java.awt.Rectangle;
 
 import core.GamePanel;
 
-public class Entity {
+public abstract class Entity {
     protected GamePanel gp;
 
     public int worldX;
