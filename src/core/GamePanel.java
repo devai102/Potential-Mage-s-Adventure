@@ -25,8 +25,6 @@ public class GamePanel extends JPanel implements Runnable {
     int screenHeight2 = screenHeight;
     int screenWidth2 = screenWidth;
 
-    private final int FPS = 60;
-
     TileManager tileM = new TileManager(this);
     KeyHandler keyH = new KeyHandler(this);
 
@@ -79,6 +77,7 @@ public class GamePanel extends JPanel implements Runnable {
     
     @Override
     public void run() {
+        int FPS = 60;
         double drawInterval = (double) 1000000000 / FPS;
         double delta = 0;
         long lastTime = System.nanoTime();
@@ -101,7 +100,11 @@ public class GamePanel extends JPanel implements Runnable {
         if(gameState == playState){
             playTime += (double)1/60;
             player.update();
-            
+            for (int i = 0; i < obj.length;i ++){
+                if(obj[i] != null) {
+                    obj[i].update();
+                }
+            }
             for(int i = 0; i < monsters.length; i++) {
                 if(monsters[i] != null) {
                     monsters[i].update();
