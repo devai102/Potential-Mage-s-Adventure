@@ -5,10 +5,8 @@ import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
-import java.awt.image.ImageObserver;
 import java.text.DecimalFormat;
 import java.util.List;
-import java.util.Objects;
 import javax.imageio.ImageIO;
 
 public class UI {
@@ -16,30 +14,32 @@ public class UI {
     Font TNR_40 = new Font("Times New Roman", Font.PLAIN, 40);
     boolean messageOn = false;
     String message = "";
-    int delta = 20; // Độ phóng to khi hover
+    int delta = 20;
     int spriteCounter = 0;
     int spriteNum = 0;
     DecimalFormat dFormat = new DecimalFormat("#0.00");
     Graphics2D g2;
 
-    final int charSize = 250;  // Kích thước nhân vật (250x250 pixels)
+    final int charSize = 250;
     final int arrowSize = 64;
 
-    //HÌNH ẢNH
+    // HÌNH ẢNH
     BufferedImage[] playerImages = new BufferedImage[5];
     BufferedImage[] heartImages = new BufferedImage[3];
-    BufferedImage bgImage, btnPlay, btnChar, btnLeader, btnAbout, btnSettings;
+    BufferedImage bgImage, bgLeaderboard, btnPlay, btnChar, btnLeader, btnAbout, btnSettings;
 
     public int commandNumber = 0;
 
-    //MÀM HÌNH CHARACTER
+    // MÀN HÌNH CHARACTER & LEADERBOARD
     BufferedImage charBg, arrowLeft, arrowRight, btnBack;
-    BufferedImage[] charPortraits = new BufferedImage[3]; // Giả sử có 3 nhân vật
+    BufferedImage[] charPortraits = new BufferedImage[3];
     String[] charNames = {"Annie", "Vi", "Jinx"};
     int charIndex = 0;
-    //VÙNG VA CHẠM (HITBOX) CHO CHUỘT
+
+    // HITBOX
     Rectangle playRect, charRect, leaderRect, aboutRect, settingsRect;
     Rectangle leftArrowRect, rightArrowRect, backRect;
+
     public UI(GamePanel g2) {
         this.gp = g2;
         this.setImages();
@@ -57,6 +57,7 @@ public class UI {
         } catch (Exception e) {
             System.out.println("Lỗi load Player/Heart: " + e.getMessage());
         }
+
         try {
             bgImage = ImageIO.read(getClass().getResourceAsStream("/res/image/map/background/HomePage.jpg"));
             btnPlay = ImageIO.read(getClass().getResourceAsStream("/res/image/object/button/play.png"));
@@ -67,30 +68,25 @@ public class UI {
         } catch (Exception e) {
             System.out.println("Lỗi load ảnh Menu chính: " + e.getMessage());
         }
-        // --- LOAD ẢNH CHARACTER SCREEN ---
-        try {
-            // Ảnh nền
-            charBg = ImageIO.read(getClass().getResourceAsStream("/res/image/map/background/CharacterPage.png"));
 
-            // Nút mũi tên và nút Back
+        try {
+            charBg = ImageIO.read(getClass().getResourceAsStream("/res/image/map/background/CharacterPage.png"));
+            bgLeaderboard = ImageIO.read(getClass().getResourceAsStream("/res/image/map/background/LeaderboardPage.png"));
             arrowLeft = ImageIO.read(getClass().getResourceAsStream("/res/image/object/button/arrow_left.png"));
             arrowRight = ImageIO.read(getClass().getResourceAsStream("/res/image/object/button/arrow_right.png"));
             btnBack = ImageIO.read(getClass().getResourceAsStream("/res/image/object/button/back.png"));
 
-            // Ảnh chân dung nhân vật (Annie, Vi, Jinx)
             charPortraits[0] = ImageIO.read(getClass().getResourceAsStream("/res/image/player/forCharacterPage/Annie.png"));
             charPortraits[1] = ImageIO.read(getClass().getResourceAsStream("/res/image/player/forCharacterPage/Unknown1.png"));
             charPortraits[2] = ImageIO.read(getClass().getResourceAsStream("/res/image/player/forCharacterPage/Unknown2.png"));
         } catch (Exception e) {
-            System.out.println("Lỗi load ảnh Menu: " + e.getMessage());
-            e.printStackTrace();
+            System.out.println("Lỗi load ảnh phụ: " + e.getMessage());
         }
     }
 
     public void showMessage(String text) {
         this.message = text;
         this.messageOn = true;
-
     }
 
     public void draw(Graphics2D g2) {
@@ -107,14 +103,13 @@ public class UI {
             drawWinScreen(g2);
         } else if (gp.gameState == 3) { // Game Over
             drawGameOverScreen(g2);
-        } else if (gp.gameState == 4) { // Title (Menu Chính)
+        } else if (gp.gameState == 4) { // Title
             drawTitleScreen(g2);
         } else if (gp.gameState == 5) { // Leaderboard
             drawLeaderboardScreen(g2);
         } else if (gp.gameState == 6) { // Help
             drawHelpScreen(g2);
-        }
-        else if (gp.gameState == 7) { // Character
+        } else if (gp.gameState == 7) { // Character
             drawCharacterScreen(g2);
         }
     }
@@ -127,16 +122,16 @@ public class UI {
         }
     }
 
+    // --- CÁC HÀM VẼ MÀN HÌNH ---
+
     void drawTitleScreen(Graphics2D g2) {
-        // 1. Vẽ hình nền
         if(bgImage != null) {
             g2.drawImage(bgImage, 0, 0, gp.screenWidth, gp.screenHeight, null);
         } else {
-            g2.setColor(new Color(70, 120, 80)); // Màu nền tạm nếu thiếu ảnh
+            g2.setColor(new Color(70, 120, 80));
             g2.fillRect(0, 0, gp.screenWidth, gp.screenHeight);
         }
 
-        // 2. Tính toán vị trí (Layout: 3 dưới, 2 góc trên)
         int mainBtnSize = 80;
         int cornerBtnSize = 80;
         int spacing = 30;
@@ -145,54 +140,40 @@ public class UI {
         int playX = (gp.screenWidth - mainBtnSize) / 2;
         int charX = playX - spacing - mainBtnSize;
         int leaderX = playX + mainBtnSize + spacing;
-
         int aboutX = 20;
         int cornerY = 20;
         int settingsX = gp.screenWidth - cornerBtnSize - 20;
 
-        // 3. Khởi tạo vùng va chạm chuột (Hitbox)
-        // Cập nhật liên tục để phòng trường hợp resize cửa sổ
         playRect = new Rectangle(playX, bottomY, mainBtnSize, mainBtnSize);
         charRect = new Rectangle(charX, bottomY, mainBtnSize, mainBtnSize);
         leaderRect = new Rectangle(leaderX, bottomY, mainBtnSize, mainBtnSize);
         aboutRect = new Rectangle(aboutX, cornerY, cornerBtnSize, cornerBtnSize);
         settingsRect = new Rectangle(settingsX, cornerY, cornerBtnSize, cornerBtnSize);
 
-        // 4. Xử lý Logic Chuột (Hover & Click)
-        // Giả sử cậu đã thêm MouseHandler vào GamePanel như Mimi dặn
-        if(gp.mouseH != null) {
-            checkMouseInput();
-        }
+        if(gp.mouseH != null) checkMouseInput();
 
-        // 5. Vẽ tiêu đề Game
         g2.setFont(g2.getFont().deriveFont(Font.BOLD, 80F));
         String title = "POTENTIAL MAGE";
         int titleX = getXForCenteredText(title);
         int titleY = gp.screenHeight / 3;
 
-        // Vẽ bóng chữ
         g2.setColor(Color.gray);
         g2.drawString(title, titleX + 5, titleY + 5);
-        // Vẽ chữ chính
         g2.setColor(Color.white);
         g2.drawString(title, titleX, titleY);
 
-        // 6. Vẽ nhân vật trang trí
         if(playerImages[spriteNum] != null) {
             g2.drawImage(playerImages[spriteNum], gp.screenWidth/2 - 60, titleY + 20, 120, 120, null);
         }
 
-        // 7. Vẽ các Nút
-        // Command Mapping: 0:Play, 1:Char, 2:Leader, 3:About, 4:Settings
-        drawButtonHelper(g2, btnPlay, playX, bottomY, mainBtnSize, 0);       // Play
-        drawButtonHelper(g2, btnChar, charX, bottomY, mainBtnSize, 1);       // Character
-        drawButtonHelper(g2, btnLeader, leaderX, bottomY, mainBtnSize, 2);   // Leaderboard
-        drawButtonHelper(g2, btnAbout, aboutX, cornerY, cornerBtnSize, 3);   // About/Help
-        drawButtonHelper(g2, btnSettings, settingsX, cornerY, cornerBtnSize, 4); // Settings
+        drawButtonHelper(g2, btnPlay, playX, bottomY, mainBtnSize, 0);
+        drawButtonHelper(g2, btnChar, charX, bottomY, mainBtnSize, 1);
+        drawButtonHelper(g2, btnLeader, leaderX, bottomY, mainBtnSize, 2);
+        drawButtonHelper(g2, btnAbout, aboutX, cornerY, cornerBtnSize, 3);
+        drawButtonHelper(g2, btnSettings, settingsX, cornerY, cornerBtnSize, 4);
     }
 
     void drawCharacterScreen(Graphics2D g2) {
-        // 1. Vẽ nền
         if (charBg != null) {
             g2.drawImage(charBg, 0, 0, gp.screenWidth, gp.screenHeight, null);
         } else {
@@ -200,13 +181,9 @@ public class UI {
             g2.fillRect(0, 0, gp.screenWidth, gp.screenHeight);
         }
 
-        // 2. Tính toán vị trí trung tâm
         int centerX = gp.screenWidth / 2;
         int centerY = gp.screenHeight / 2;
-        int charSize = 200; // Kích thước ảnh nhân vật
-        int arrowSize = 64; // Kích thước mũi tên
 
-        // 3. Khởi tạo Hitbox (Cập nhật liên tục để đảm bảo đúng vị trí)
         int leftX = centerX - charSize/2 - 100;
         int rightX = centerX + charSize/2 + 50;
         int arrowY = centerY - arrowSize/2;
@@ -217,32 +194,24 @@ public class UI {
         rightArrowRect = new Rectangle(rightX, arrowY, arrowSize, arrowSize);
         backRect = new Rectangle(backX, backY, 50, 50);
 
-        // 4. Xử lý Chuột (Click)
-        if (gp.mouseH != null) {
-            checkCharacterInput();
-        }
+        if (gp.mouseH != null) checkCharacterInput();
 
-        // 5. Vẽ Nhân vật đang chọn
         if (charPortraits[charIndex] != null) {
             g2.drawImage(charPortraits[charIndex], centerX - charSize/2, centerY - charSize/2, charSize, charSize, null);
         } else {
-            // Vẽ tạm ô vuông nếu thiếu ảnh
             g2.setColor(Color.gray);
             g2.fillRect(centerX - charSize/2, centerY - charSize/2, charSize, charSize);
         }
 
-        // 6. Vẽ Tên nhân vật
         g2.setFont(g2.getFont().deriveFont(Font.BOLD, 40F));
         g2.setColor(Color.ORANGE);
         String name = charNames[charIndex];
         int nameX = getXForCenteredText(name);
         g2.drawString(name, nameX, centerY + charSize/2 + 50);
 
-        // 7. Vẽ Mũi tên (Có hiệu ứng hover đơn giản)
         g2.drawImage(arrowLeft, leftX, arrowY, arrowSize, arrowSize, null);
         g2.drawImage(arrowRight, rightX, arrowY, arrowSize, arrowSize, null);
 
-        // 8. Vẽ nút Back/Exit
         if (btnBack != null) {
             g2.drawImage(btnBack, backX, backY, 50, 50, null);
         } else {
@@ -251,54 +220,68 @@ public class UI {
         }
     }
 
-    // Logic xử lý click trong màn hình Character
-    private void checkCharacterInput() {
-        int mx = gp.mouseH.x;
-        int my = gp.mouseH.y;
-        boolean clicked = gp.mouseH.mouseLeftPressed;
-
-        // Click Mũi tên TRÁI
-        if (leftArrowRect.contains(mx, my) && clicked) {
-            charIndex--;
-            if (charIndex < 0) charIndex = charNames.length - 1;
-            gp.playSE(2);
-            gp.mouseH.mouseLeftPressed = false; // Reset click
-        }
-
-        // Click Mũi tên PHẢI
-        else if (rightArrowRect.contains(mx, my) && clicked) {
-            charIndex++;
-            if (charIndex >= charNames.length) charIndex = 0;
-            gp.playSE(2);
-            gp.mouseH.mouseLeftPressed = false;
-        }
-
-        // Click nút BACK (Về Menu)
-        else if (backRect.contains(mx, my) && clicked) {
-            gp.gameState = 4;
-            gp.playSE(2);
-            gp.mouseH.mouseLeftPressed = false;
-        }
-    }
-
-    // Hàm phụ để vẽ nút với hiệu ứng phóng to
-    private void drawButtonHelper(Graphics2D g2, BufferedImage img, int x, int y, int size, int btnID) {
-        if(img == null) return; // Không vẽ nếu chưa load được ảnh
-
-        if (commandNumber == btnID) {
-            // Hiệu ứng HOVER: Vẽ ảnh to hơn (size + delta) và dịch sang trái/lên một chút
-            g2.drawImage(img, x - delta/2, y - delta/2, size + delta, size + delta, null);
-
-            // Vẽ thêm viền trắng mỏng để người dùng biết đang chọn
-            g2.setColor(Color.white);
-            g2.drawRoundRect(x - delta/2, y - delta/2, size + delta, size + delta, 10, 10);
+    void drawLeaderboardScreen(Graphics2D g2) {
+        if (bgLeaderboard != null) {
+            g2.drawImage(bgLeaderboard, 0, 0, gp.screenWidth, gp.screenHeight, null);
         } else {
-            // Vẽ bình thường
-            g2.drawImage(img, x, y, size, size, null);
+            g2.setColor(new Color(30, 30, 60));
+            g2.fillRect(0, 0, gp.screenWidth, gp.screenHeight);
+        }
+
+        g2.setColor(Color.WHITE);
+        g2.setFont(g2.getFont().deriveFont(0, 28.0F));
+        g2.drawString("Rank", 192, 256);
+        g2.drawString("Name", 384, 256);
+        g2.drawString("Time (s)", 768, 256);
+
+        if(gp.leaderboard != null) {
+            List<LeaderboardEntry> list = this.gp.leaderboard.top(5);
+            int startY = 320;
+            for(int i = 0; i < list.size(); ++i) {
+                LeaderboardEntry e = list.get(i);
+                int y = startY + i * 36;
+                g2.drawString(String.valueOf(i + 1), 192, y);
+                g2.drawString(e.getName(), 384, y);
+                g2.drawString(this.dFormat.format(e.getTimeSeconds()), 768, y);
+            }
+        }
+
+        if (backRect == null) {
+            backRect = new Rectangle(gp.screenWidth - 80, 20, 50, 50);
+        }
+
+        if (btnBack != null) {
+            g2.drawImage(btnBack, backRect.x, backRect.y, backRect.width, backRect.height, null);
+        } else {
+            g2.setColor(Color.RED);
+            g2.setFont(g2.getFont().deriveFont(Font.BOLD, 40F));
+            g2.drawString("X", backRect.x + 10, backRect.y + 40);
+        }
+
+        if (gp.mouseH != null) {
+            checkLeaderboardInput();
         }
     }
 
-    // Hàm xử lý logic chuột trong Menu
+    void drawHelpScreen(Graphics2D g2) {
+        g2.setColor(Color.black);
+        g2.fillRect(0, 0, gp.screenWidth, gp.screenHeight);
+        g2.setColor(Color.white);
+        g2.fillRoundRect(64, 64, gp.screenWidth - 128, gp.screenHeight - 128, 25, 25);
+        g2.setColor(Color.black);
+        g2.fillRoundRect(69, 69, gp.screenWidth - 138, gp.screenHeight - 138, 25, 25);
+
+        g2.setFont(g2.getFont().deriveFont(1, 50.0F));
+        String title = "INSTRUCTIONS";
+        g2.setColor(Color.white);
+        g2.drawString(title, getXForCenteredText(title), 124);
+
+        g2.setFont(g2.getFont().deriveFont(0, 30.0F));
+        g2.drawString("Have a good moment!", 192, 256);
+    }
+
+    // --- CÁC HÀM XỬ LÝ CLICK ---
+
     private void checkMouseInput() {
         int mx = gp.mouseH.x;
         int my = gp.mouseH.y;
@@ -307,10 +290,9 @@ public class UI {
         if (playRect.contains(mx, my)) {
             commandNumber = 0;
             if (clicked) {
-                gp.gameState = 0; // Vào game
+                gp.gameState = 0;
                 gp.stopMusic();
                 gp.playMusic(0);
-
                 gp.mouseH.mouseLeftPressed = false;
             }
         }
@@ -324,14 +306,14 @@ public class UI {
         else if (leaderRect.contains(mx, my)) {
             commandNumber = 2;
             if (clicked) {
-                gp.gameState = 5; // Leaderboard State cũ là 5
+                gp.gameState = 5;
                 gp.mouseH.mouseLeftPressed = false;
             }
         }
         else if (aboutRect.contains(mx, my)) {
             commandNumber = 3;
             if (clicked) {
-                gp.gameState = 6; // Help State cũ là 6
+                gp.gameState = 6;
                 gp.mouseH.mouseLeftPressed = false;
             }
         }
@@ -342,6 +324,60 @@ public class UI {
                 gp.mouseH.mouseLeftPressed = false;
             }
         }
+    }
+
+    private void checkCharacterInput() {
+        int mx = gp.mouseH.x;
+        int my = gp.mouseH.y;
+        boolean clicked = gp.mouseH.mouseLeftPressed;
+
+        if (leftArrowRect != null && leftArrowRect.contains(mx, my) && clicked) {
+            charIndex--;
+            if (charIndex < 0) charIndex = charNames.length - 1;
+            gp.playSE(2);
+            gp.mouseH.mouseLeftPressed = false;
+        }
+        else if (rightArrowRect != null && rightArrowRect.contains(mx, my) && clicked) {
+            charIndex++;
+            if (charIndex >= charNames.length) charIndex = 0;
+            gp.playSE(2);
+            gp.mouseH.mouseLeftPressed = false;
+        }
+        else if (backRect != null && backRect.contains(mx, my) && clicked) {
+            gp.gameState = 4;
+            gp.playSE(2);
+            gp.mouseH.mouseLeftPressed = false;
+        }
+    }
+
+    private void checkLeaderboardInput() {
+        int mx = gp.mouseH.x;
+        int my = gp.mouseH.y;
+        boolean clicked = gp.mouseH.mouseLeftPressed;
+
+        if (backRect != null && backRect.contains(mx, my) && clicked) {
+            gp.gameState = 4;
+            gp.playSE(2);
+            gp.mouseH.mouseLeftPressed = false;
+        }
+    }
+
+    // --- CÁC HÀM PHỤ ---
+
+    private void drawButtonHelper(Graphics2D g2, BufferedImage img, int x, int y, int size, int btnID) {
+        if(img == null) return;
+        if (commandNumber == btnID) {
+            g2.drawImage(img, x - delta/2, y - delta/2, size + delta, size + delta, null);
+            g2.setColor(Color.white);
+            g2.drawRoundRect(x - delta/2, y - delta/2, size + delta, size + delta, 10, 10);
+        } else {
+            g2.drawImage(img, x, y, size, size, null);
+        }
+    }
+
+    int getXForCenteredText(String text) {
+        int length = (int)g2.getFontMetrics().getStringBounds(text, g2).getWidth();
+        return gp.screenWidth / 2 - length / 2;
     }
 
     private void drawPauseScreen(Graphics2D g2) {
@@ -377,7 +413,6 @@ public class UI {
         String timeText = "Time: " + this.dFormat.format(this.gp.playTime) + "s";
         g2.drawString(timeText, this.getXForCenteredText(timeText), y + 50);
 
-        // Phần nhập tên (Giữ nguyên logic cũ)
         String namePrompt = "Enter your name:";
         g2.drawString(namePrompt, 64 * 3, 64 * 7);
         int rectX = 64 * 3;
@@ -398,7 +433,6 @@ public class UI {
 
     void drawPlayScreen(Graphics2D g2) {
         g2.setColor(Color.white);
-        // Hiển thị thời gian chơi
         String text = "Time: " + this.dFormat.format(this.gp.playTime);
         int x = gp.screenWidth - 250;
         int y = 50;
@@ -416,72 +450,15 @@ public class UI {
         }
     }
 
-    int getXForCenteredText(String text) {
-        int length = (int)g2.getFontMetrics().getStringBounds(text, g2).getWidth();
-        return gp.screenWidth / 2 - length / 2;
-    }
-
-    void drawLeaderboardScreen(Graphics2D g2) {
-        // Giữ nguyên logic vẽ bảng xếp hạng
-        g2.setColor(Color.black);
-        g2.fillRect(0, 0, gp.screenWidth, gp.screenHeight);
-        g2.setColor(Color.white);
-        g2.fillRoundRect(64, 64, gp.screenWidth - 128, gp.screenHeight - 128, 25, 25);
-        g2.setColor(Color.black);
-        g2.fillRoundRect(69, 69, gp.screenWidth - 138, gp.screenHeight - 138, 25, 25);
-
-        g2.setColor(Color.white);
-        g2.setFont(g2.getFont().deriveFont(1, 50.0F));
-        String title = "LEADERBOARD";
-        g2.drawString(title, getXForCenteredText(title), 124);
-
-        g2.setFont(g2.getFont().deriveFont(0, 28.0F));
-        g2.drawString("Rank", 192, 256);
-        g2.drawString("Name", 384, 256);
-        g2.drawString("Time (s)", 768, 256);
-
-        if(gp.leaderboard != null) {
-            List<LeaderboardEntry> list = this.gp.leaderboard.top(5);
-            int startY = 320;
-            for(int i = 0; i < list.size(); ++i) {
-                LeaderboardEntry e = list.get(i);
-                int y = startY + i * 36;
-                g2.drawString(String.valueOf(i + 1), 192, y);
-                g2.drawString(e.getName(), 384, y);
-                g2.drawString(this.dFormat.format(e.getTimeSeconds()), 768, y);
-            }
-        }
-    }
-
-    void drawHelpScreen(Graphics2D g2) {
-        g2.setColor(Color.black);
-        g2.fillRect(0, 0, gp.screenWidth, gp.screenHeight);
-        g2.setColor(Color.white);
-        g2.fillRoundRect(64, 64, gp.screenWidth - 128, gp.screenHeight - 128, 25, 25);
-        g2.setColor(Color.black);
-        g2.fillRoundRect(69, 69, gp.screenWidth - 138, gp.screenHeight - 138, 25, 25);
-
-        g2.setFont(g2.getFont().deriveFont(1, 50.0F));
-        String title = "INSTRUCTIONS";
-        g2.setColor(Color.white);
-        g2.drawString(title, getXForCenteredText(title), 124);
-
-        g2.setFont(g2.getFont().deriveFont(0, 30.0F));
-        g2.drawString("Have a good moment!", 192, 256);
-        // Cậu có thể thêm hướng dẫn chi tiết ở đây
-    }
-
     void drawPlayerLife() {
         int x = 64 / 2;
         int y = 64 / 2;
         int i = 0;
-        // Vẽ tim trống (Max HP)
         while(i < gp.player.getMaxHp() / 2) {
             g2.drawImage(heartImages[0], x, y, 64, 64, null);
             i++;
             x += 64;
         }
-        // Vẽ tim đỏ (Current HP)
         x = 64 / 2;
         i = 0;
         while(i < gp.player.getHp()) {
