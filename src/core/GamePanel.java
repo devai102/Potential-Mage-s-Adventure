@@ -17,8 +17,8 @@ public class GamePanel extends JPanel implements Runnable {
     public final int tileSize = originalTile * scale;
     public final int maxScreenCol = 20;
     public final int maxScreenRow = 12;
-    public final int screenWidth = tileSize * maxScreenCol; 
-    public final int screenHeight = tileSize * maxScreenRow; 
+    public final int screenWidth = tileSize * maxScreenCol;
+    public final int screenHeight = tileSize * maxScreenRow;
 
     public final int maxWorldCol = 82;
     public final int maxWorldRow = 45;
@@ -29,7 +29,10 @@ public class GamePanel extends JPanel implements Runnable {
     private final int FPS = 60;
 
     TileManager tileM = new TileManager(this);
+
+    // --- KHU VỰC ĐIỀU KHIỂN ---
     KeyHandler keyH = new KeyHandler(this);
+    public MouseHandler mouseH = new MouseHandler();
 
     Sound musicSound = new Sound();
     Sound se = new Sound();
@@ -63,7 +66,12 @@ public class GamePanel extends JPanel implements Runnable {
         this.setPreferredSize(new Dimension(screenWidth, screenHeight));
         this.setBackground(Color.white);
         this.setDoubleBuffered(true);
+
         this.addKeyListener(keyH);
+
+        this.addMouseListener(mouseH);
+        this.addMouseMotionListener(mouseH);
+
         this.setFocusable(true);
     }
 
@@ -78,7 +86,7 @@ public class GamePanel extends JPanel implements Runnable {
         gameThread = new Thread(this);
         gameThread.start();
     }
-    
+
     @Override
     public void run() {
         double drawInterval = (double) 1000000000 / FPS;
@@ -103,13 +111,13 @@ public class GamePanel extends JPanel implements Runnable {
         if(gameState == playState){
             playTime += (double)1/60;
             player.update();
-            
+
             for(int i = 0; i < monsters.length; i++) {
                 if(monsters[i] != null) {
                     monsters[i].update();
                 }
             }
-            
+
         }
         if(gameState == pauseState){
         }
@@ -151,11 +159,9 @@ public class GamePanel extends JPanel implements Runnable {
 
             for(int i = 0; i < entityList.size(); i++) {
                 entityList.get(i).draw(g2);
-            }   
-
-            for(int i = 0; i < entityList.size(); i++) {
-                entityList.remove(i);
             }
+
+            entityList.clear();
 
             // draw potions
             if(potionList.size() > 0){
@@ -169,14 +175,23 @@ public class GamePanel extends JPanel implements Runnable {
         g2.dispose();
     }
 
-    public void playMusic(int i){
+    int currentMusicId = -1;
+
+    public void playMusic(int i) {
+        if (currentMusicId == i) {
+            return;
+        }
+
+        stopMusic();
         musicSound.setFile(i);
         musicSound.play();
         musicSound.loop();
+        currentMusicId = i;
     }
 
-    public void stopMusic(){
+    public void stopMusic() {
         musicSound.stop();
+        currentMusicId = -1; // Reset lại trạng thái
     }
 
     public void playSE(int i){

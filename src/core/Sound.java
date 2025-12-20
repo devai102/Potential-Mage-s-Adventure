@@ -13,28 +13,41 @@ public class Sound {
     public Sound(){
         soundURL[0] = getClass().getResource("/res/sound/Play_Song.wav");
         soundURL[1] = getClass().getResource("/res/sound/Intro_Song.wav");
+        soundURL[2] = getClass().getResource("/res/sound/click.mp3");
     }
 
-    public void setFile(int i){
-        try{
+    public void setFile(int i) {
+        try {
             AudioInputStream ais = AudioSystem.getAudioInputStream(soundURL[i]);
+
+            if (clip != null) {
+                clip.stop();
+                clip.close();
+            }
+
             clip = AudioSystem.getClip();
             clip.open(ais);
-        }catch(Exception e){
+        } catch(Exception e) {
             e.printStackTrace();
         }
     }
 
-    public void play(){
-        clip.start();
+    public void stop() {
+        if (clip != null) {
+            clip.stop();
+        }
     }
 
-    public void stop(){
-        clip.stop();
+    public void play(){
+        if(clip != null) {
+            clip.start();
+        }
     }
 
     public void loop(){
-        clip.loop(Clip.LOOP_CONTINUOUSLY);
+        if(clip != null) {
+            clip.loop(Clip.LOOP_CONTINUOUSLY);
+        }
     }
 
     
