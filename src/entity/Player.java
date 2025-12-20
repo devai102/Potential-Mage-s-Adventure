@@ -207,7 +207,7 @@ public class Player extends Entity{
 
     private void isAlive(){
         if(health <= 0){
-            gp.playSE(3);
+            gp.playSE(5);
             gp.gameState = gp.gameOverState;
             gp.stopMusic();
         }
@@ -217,13 +217,13 @@ public class Player extends Entity{
         if(i != 999) {
             switch (gp.obj[i].name) {
                 case "Teddy":
-                    gp.playSE(1);
+                    gp.playSE(4);
                     gp.obj[i] = null;
                     gp.gameState = gp.winState;
                     gp.winSession.start(gp.playTime);
                     break;
                 case "Chest":
-                    gp.playSE(2);
+                    gp.playSE(3);
                     gp.obj[i] = null;
                     break;
             }
