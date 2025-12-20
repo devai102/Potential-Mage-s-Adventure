@@ -1,6 +1,7 @@
 package core;
 
 import entity.Entity;
+import potion.Potion;
 
 public class CollisionChecker {
     GamePanel gp;
@@ -272,10 +273,11 @@ public class CollisionChecker {
         if(entity.solidArea.intersects(gp.player.solidArea)){
             entity.collisionOn = true;
         }
-
+        
         entity.solidArea.x = entitySolidAreaX;
         entity.solidArea.y = entitySolidAreaY;
         gp.player.solidArea.x = playerSolidAreaX;
         gp.player.solidArea.y = playerSolidAreaY;
     }
+
 }
