@@ -46,10 +46,13 @@ public class Player extends Entity{
         attack = 1;
         type = 0;
         worldX = gp.tileSize * 11;
-        worldY = gp.tileSize * 8;
+        worldY = gp.tileSize * 50;
         speed = 4;
         directionX = "none";
         directionY = "none";
+        solidArea = new Rectangle(8,16,32,32);
+        solidAreaDefaultX = this.solidArea.x;
+        solidAreaDefaultY = this.solidArea.y;
     }
 
     @Override
@@ -96,15 +99,18 @@ public class Player extends Entity{
             }
         }
 
-        if(keyH.leftPressed) {
-            directionX = "left";
+        if(!defenseOn && !attackOn){
+            if(keyH.leftPressed) {
+                directionX = "left";
+            }
+            if(keyH.rightPressed) {
+                directionX = "right";
+            }
+            if(!keyH.leftPressed && !keyH.rightPressed) {
+                directionX = "none";
+            }
         }
-        if(keyH.rightPressed) {
-            directionX = "right";
-        }
-        if(!keyH.leftPressed && !keyH.rightPressed) {
-            directionX = "none";
-        }
+        
 
         if (attackOn || defenseOn || Jumping || Falling){
             setAction();
@@ -162,7 +168,9 @@ public class Player extends Entity{
     @Override
     public void draw(Graphics2D g2) {
         BufferedImage image = null;
-        if(!Falling && !Jumping) {
+        if(attackOn) {
+            image = attackImages[spriteNum - 1];
+        } else if(!Falling && !Jumping) {
             if (defenseOn) {
                 image = defenseOnImage;
             } else if (directionX.equals("right")) {
@@ -189,8 +197,6 @@ public class Player extends Entity{
             } else {
                 image = standingImages;
             }
-        } else if (attackOn) {
-            image = attackImages[spriteNum - 1];
         }
         g2.drawImage(image, screenX, screenY, gp.tileSize, gp.tileSize, null);
     }
@@ -218,7 +224,6 @@ public class Player extends Entity{
         if(i != 999) {
             switch (gp.obj[i].name) {
                 case "Teddy":
-                    gp.playSE(4);
                     gp.obj[i] = null;
                     gp.gameState = gp.winState;
                     gp.winSession.start(gp.playTime);

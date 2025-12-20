@@ -21,7 +21,7 @@ public class GamePanel extends JPanel implements Runnable {
     public final int screenHeight = tileSize * maxScreenRow; 
 
     public final int maxWorldCol = 82;
-    public final int maxWorldRow = 50;
+    public final int maxWorldRow = 55;
 
     int screenHeight2 = screenHeight;
     int screenWidth2 = screenWidth;
@@ -68,8 +68,6 @@ public class GamePanel extends JPanel implements Runnable {
     public void setupGame(){
         gameState = tileScreenState;
         playMusic(1);
-        aSetter.setObject();
-        aSetter.setMonster();
     }
 
     public void startGameThread() {
@@ -185,5 +183,13 @@ public class GamePanel extends JPanel implements Runnable {
     public void playSE(int i){
         se.setFile(i);
         se.play();
+    }
+
+    public void resetGame(){
+            player.setDefaultValues();
+            aSetter.setObject();
+            aSetter.setMonster();
+            potionList.clear();
+            playTime = 0;
     }
 }

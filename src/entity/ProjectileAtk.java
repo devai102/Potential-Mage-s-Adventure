@@ -15,5 +15,4 @@ public class ProjectileAtk extends Entity{
     public void update(){
 
     }
-    
 }

@@ -29,6 +29,6 @@ public class Heart extends Entity{
     public void setDefaultValues(){
         name = "Heart";
         type = 3;
-        collisionOn = false;
+        collision = false;
     }
 }

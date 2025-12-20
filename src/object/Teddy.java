@@ -1,11 +1,9 @@
 package object;
 
-import java.awt.image.BufferedImage;
 import core.GamePanel;
 import entity.Entity;
 
 public class Teddy extends Entity{
-    BufferedImage image;
     public Teddy(GamePanel gp){
         super(gp);
         setDefaultValues();
@@ -16,15 +14,14 @@ public class Teddy extends Entity{
     public void setDefaultValues(){
         name = "Teddy";
         type = 3;
-        collisionOn = true;
+        collision = true;
+        solidArea = new java.awt.Rectangle(0,0,gp.tileSize,gp.tileSize);
+        solidAreaDefaultX = 0;
+        solidAreaDefaultY = 0;
     }
 
     @Override
     public void setImage(){
-        try{
-            image = javax.imageio.ImageIO.read(getClass().getResourceAsStream("/res/image/object/teddy.png"));
-        }catch(Exception e){
-            e.getStackTrace();
-        }
-    }
+        image = setup("/res/image/object/Teddy", gp.tileSize, gp.tileSize);    
+    }   
 }

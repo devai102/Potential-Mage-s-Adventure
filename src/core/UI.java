@@ -64,6 +64,7 @@ public class UI {
       if (g20000 == 0) {
          this.drawPlayerLife();
          this.drawPlayScreen(g2);
+         
       } else {
          g20000 = this.gp.gameState;
          Objects.requireNonNull(this.gp);
@@ -141,7 +142,7 @@ public class UI {
       g2.drawString(text, x + 5, y + 5);
    }
 
-   void drawGameOverScreen(Graphics2D g2) {
+   private void drawGameOverScreen(Graphics2D g2) {
       String var2 = "GAME OVER";
       int var3 = this.getXForCenteredText(var2);
       Objects.requireNonNull(this.gp);
@@ -155,7 +156,7 @@ public class UI {
       this.gp.gameThread = null;
    }
 
-   void drawWinScreen(Graphics2D g2) {
+   private void drawWinScreen(Graphics2D g2) {
       g2.setColor(new Color(0, 0, 0, 200));
       Objects.requireNonNull(this.gp);
       Objects.requireNonNull(this.gp);
@@ -194,7 +195,7 @@ public class UI {
       g2.drawString(g21, this.getXForCenteredText(g21), var8 + 90);
    }
 
-   void drawPlayScreen(Graphics2D g2) {
+   private void drawPlayScreen(Graphics2D g2) {
       g2.setColor(Color.white);
       String text = "Time: " + this.dFormat.format(this.gp.playTime);
       Objects.requireNonNull(this.gp);
@@ -208,7 +209,7 @@ public class UI {
          g2.setColor(Color.black);
          g2.drawString(this.message, gp.player.screenX , gp.player.screenY - 10);
          this.spriteCounter++;
-         if(this.spriteCounter > 120) {
+         if(this.spriteCounter > 60) {
             this.spriteCounter = 0;
             this.messageOn = false;
          }
@@ -222,7 +223,7 @@ public class UI {
       return x;
    }
 
-   void drawTitleScreen(Graphics2D g2) {
+   private void drawTitleScreen(Graphics2D g2) {
       g2.setColor(Color.white);
       Objects.requireNonNull(this.gp);
       Objects.requireNonNull(this.gp);
@@ -291,7 +292,7 @@ public class UI {
       g2.drawImage(g20001, g20002, g20003, g20004, 64 * 4, (ImageObserver)null);
    }
 
-   void drawLeaderboardScreen(Graphics2D g2) {
+   private void drawLeaderboardScreen(Graphics2D g2) {
       g2.setColor(Color.black);
       Objects.requireNonNull(this.gp);
       Objects.requireNonNull(this.gp);
@@ -356,7 +357,7 @@ public class UI {
       }
    }
 
-   void drawHelpScreen(Graphics2D g2) {
+   private void drawHelpScreen(Graphics2D g2) {
       g2.setColor(Color.black);
       Objects.requireNonNull(this.gp);
       Objects.requireNonNull(this.gp);
@@ -395,7 +396,7 @@ public class UI {
       g2.drawString("Have a good moment!", g20002, 64 * 4);
    }
 
-   void drawPlayerLife() {
+   private void drawPlayerLife() {
       Objects.requireNonNull(this.gp);
       int g2 = 64 / 2;
       Objects.requireNonNull(this.gp);

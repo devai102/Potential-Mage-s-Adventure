@@ -40,8 +40,7 @@ public class KeyHandler implements KeyListener{
             if(code == KeyEvent.VK_ENTER){
                 if(gp.ui.commandNumber == 0){
                     gp.gameState = gp.playState;
-                    gp.playTime = 0;
-                    gp.player.setDefaultValues();
+                    gp.resetGame();
                 }
                 if(gp.ui.commandNumber == 1){
                     gp.gameState = gp.leaderboardState;

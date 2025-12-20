@@ -29,10 +29,9 @@ public class Golem extends Entity{
         speed = 2;
         type = 2;
         directionX = "left";
-        solidArea.x = 8;
-        solidArea.y = 16;
-        solidArea.width = 32;
-        solidArea.height = 32;
+        solidArea = new java.awt.Rectangle(8,16,32,32);
+        solidAreaDefaultX = this.solidArea.x;
+        solidAreaDefaultY = this.solidArea.y;
 
     }
 
@@ -52,7 +51,7 @@ public class Golem extends Entity{
         setAction();
 
         if(!skillOn){
-            gp.cChecker.checkTile(this);
+            collisionOn = gp.cChecker.checkTile(this);
             if(collisionOn == false){
                 switch(directionX){
                     case "left":

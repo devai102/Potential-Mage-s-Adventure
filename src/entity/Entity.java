@@ -32,18 +32,29 @@ public abstract class Entity {
     public boolean collisionOn = false;
     protected boolean invincible = false;
     protected int invincibleCounter = 0;
-    public Rectangle solidArea = new Rectangle(8,16,32,32);
-    public int solidAreaDefaultX = solidArea.x;
-    public int solidAreaDefaultY = solidArea.y;
+    public Rectangle solidArea;
+    public int solidAreaDefaultX;
+    public int solidAreaDefaultY;
     protected int type; // 1 = player, 2 = mob, 3 = object
     public boolean collision = false;
     protected boolean Falling = false;
+    protected BufferedImage image;
 
     public Entity(GamePanel gp){
         this.gp = gp;
     }
 
-    public void draw(Graphics2D g2){}
+    public void draw(Graphics2D g2){
+        int screenX = worldX - gp.player.worldX + gp.player.screenX;
+        int screenY = worldY - gp.player.worldY + gp.player.screenY;
+
+        if(worldX + gp.tileSize > gp.player.worldX - gp.player.screenX &&
+            worldX - gp.tileSize < gp.player.worldX + gp.player.screenX &&
+            worldY + gp.tileSize > gp.player.worldY - gp.player.screenY &&
+            worldY - gp.tileSize < gp.player.worldY + gp.player.screenY){
+        g2.drawImage(image, screenX, screenY, gp.tileSize, gp.tileSize, null);
+        }
+    }
     public void update(){}
     public void setAction(){}
     public void setDefaultValues(){}
