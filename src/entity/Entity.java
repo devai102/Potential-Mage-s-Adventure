@@ -42,6 +42,7 @@ public abstract class Entity {
     protected BufferedImage image;
     public boolean alive = true;
     protected ProjectileAtk projectile;
+    protected boolean skillOn = false;
 
     public Entity(GamePanel gp){
         this.gp = gp;

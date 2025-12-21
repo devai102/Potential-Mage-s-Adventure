@@ -143,6 +143,7 @@ public class UI {
    }
 
    private void drawGameOverScreen(Graphics2D g2) {
+      g2.setFont(g2.getFont().deriveFont(1, 75.0F));
       String var2 = "GAME OVER";
       int var3 = this.getXForCenteredText(var2);
       Objects.requireNonNull(this.gp);
@@ -153,7 +154,6 @@ public class UI {
       g2.fillRect(0, 0, 1280, 768);
       g2.setColor(Color.white);
       g2.drawString(var2, var3, var4);
-      this.gp.gameThread = null;
    }
 
    private void drawWinScreen(Graphics2D g2) {
@@ -203,7 +203,6 @@ public class UI {
       int y = 64;
       Objects.requireNonNull(this.gp);
       g2.drawString(text, x, y);
-
       if(this.messageOn) {
          g2.setFont(g2.getFont().deriveFont(1, 20));
          g2.setColor(Color.black);

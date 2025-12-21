@@ -11,6 +11,7 @@ public class ProjectileAtk extends Entity{
     }
 
     public void set(int worldX, int worldY, String directionX, boolean alive, Entity user){
+        maxHealth = 3;
         this.worldX = worldX;
         this.worldY = worldY;
         this.directionX = directionX;
@@ -25,9 +26,8 @@ public class ProjectileAtk extends Entity{
         if(user == gp.player){
             int monsterIndex = gp.cChecker.checkEntity(this, gp.monsters);
             if(monsterIndex != 999){
-                gp.player.damageMonster(monsterIndex, this.attack);
+                gp.player.damageMonster(monsterIndex, this.health);
                 alive = false;
-                return;
             }
         }
         

@@ -47,8 +47,8 @@ public class Player extends Entity{
         health = maxHealth;
         attack = 1;
         type = 0;
-        worldX = gp.tileSize * 11;
-        worldY = gp.tileSize * 50;
+        worldX = gp.tileSize * 10;
+        worldY = gp.tileSize * 8;
         speed = 4;
         directionX = "none";
         directionY = "none";
@@ -300,15 +300,15 @@ public class Player extends Entity{
             }
         } else if (defenseOn){
             spriteCounter++;
-            if(spriteCounter < 12) {
+            if(spriteCounter < 20) {
                 spriteNum = 1;
-            } else if(spriteCounter < 24) {
+            } else if(spriteCounter < 40) {
                 spriteNum = 2;
-            } else if(spriteCounter < 36) {
-                spriteNum = 3;
-            } else if(spriteCounter < 48) {
-                spriteNum = 4;
             } else if(spriteCounter < 60) {
+                spriteNum = 3;
+            } else if(spriteCounter < 80) {
+                spriteNum = 4;
+            } else if(spriteCounter < 100) {
                 spriteNum = 5;
             } else {
                 spriteNum = 1;
@@ -320,12 +320,11 @@ public class Player extends Entity{
 
     public void damageMonster(int i, int attack){
         if(i != 999){
-            if(gp.monsters[i].invincible == false){
+            if(gp.monsters[i].invincible == false && gp.monsters[i].skillOn == false){
                 gp.monsters[i].health -= attack;
-                gp.monsters[i].invincible = true;
-                gp.monsters[i].dying = true;
                 if(gp.monsters[i].health <= 0){
                     gp.monsters[i].alive = false;
+                    gp.entityList.remove(gp.monsters[i]);
                 }
             }
         }

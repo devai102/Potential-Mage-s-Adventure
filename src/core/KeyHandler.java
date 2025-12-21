@@ -51,10 +51,10 @@ public class KeyHandler implements KeyListener{
                 if(gp.ui.commandNumber == 3){
                     System.exit(0);
                 }
-                if(gp.gameState == gp.winState || gp.gameState == gp.gameOverState){
-                    gp.setupGame();
-                }
+                
             }
+        } else if(gp.gameState == gp.winState || gp.gameState == gp.gameOverState){
+            gp.setupGame();
         }
         if(code == KeyEvent.VK_J){
             attackPressed = true;
