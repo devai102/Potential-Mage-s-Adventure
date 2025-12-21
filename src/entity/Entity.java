@@ -23,6 +23,7 @@ public abstract class Entity {
     protected int attack;
     protected int speed;
     protected String name;
+    public boolean dying = false;
 
     //counters
     protected int spriteCounter = 0;
@@ -39,6 +40,8 @@ public abstract class Entity {
     public boolean collision = false;
     protected boolean Falling = false;
     protected BufferedImage image;
+    public boolean alive = true;
+    protected ProjectileAtk projectile;
 
     public Entity(GamePanel gp){
         this.gp = gp;

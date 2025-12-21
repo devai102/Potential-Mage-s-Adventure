@@ -8,7 +8,6 @@ import java.util.Comparator;
 
 import entity.Entity;
 import entity.Player;
-import potion.Potion;
 import tile.TileManager;
 
 public class GamePanel extends JPanel implements Runnable {
@@ -54,8 +53,8 @@ public class GamePanel extends JPanel implements Runnable {
     public Player player = new Player(this, keyH);
     public Entity[] obj = new Entity[20];
     public Entity[] monsters = new Entity[20];
-    public ArrayList<Potion> potionList = new ArrayList<>();
-    ArrayList<Entity> entityList= new ArrayList<>();
+    public ArrayList<Entity> entityList= new ArrayList<>();
+    public ArrayList<Entity> projectileList= new ArrayList<>();
 
     public GamePanel() {
         this.setPreferredSize(new Dimension(screenWidth, screenHeight));
@@ -105,9 +104,30 @@ public class GamePanel extends JPanel implements Runnable {
                     obj[i].update();
                 }
             }
+
+            for (int i = 0; i < projectileList.size(); ) {
+                Entity proj = projectileList.get(i);
+                if (proj != null) {
+                    if (proj.alive) {
+                        proj.update();
+                        i++;
+                    } else {
+                        projectileList.remove(i);
+                    }
+                } else {
+                    projectileList.remove(i);
+                }
+            }
+
+            // update monsters
             for(int i = 0; i < monsters.length; i++) {
                 if(monsters[i] != null) {
-                    monsters[i].update();
+                    if(monsters[i].alive == true && monsters[i].dying == false){
+                        monsters[i].update();
+                    }
+                    if(monsters[i].alive == false){
+                        monsters[i] = null;
+                    }
                 }
             }
             
@@ -143,6 +163,12 @@ public class GamePanel extends JPanel implements Runnable {
                 }
             }
 
+            for(int i = 0; i < projectileList.size(); i++) {
+                if(projectileList.get(i) != null) {
+                    entityList.add(projectileList.get(i));
+                }
+            }
+
             Collections.sort(entityList, new Comparator<Entity>() {
                 @Override
                 public int compare(Entity e1, Entity e2) {
@@ -158,12 +184,8 @@ public class GamePanel extends JPanel implements Runnable {
                 entityList.remove(i);
             }
 
-            // draw potions
-            if(potionList.size() > 0){
-                for(int i = 0; i < potionList.size(); i++) {
-                    potionList.get(i).draw(g2);
-                }
-            }
+            
+
         }
         ui.draw(g2);
 
@@ -189,7 +211,6 @@ public class GamePanel extends JPanel implements Runnable {
             player.setDefaultValues();
             aSetter.setObject();
             aSetter.setMonster();
-            potionList.clear();
             playTime = 0;
     }
 }
