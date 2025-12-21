@@ -75,6 +75,7 @@ public class GamePanel extends JPanel implements Runnable {
     public void setupGame(){
         gameState = tileScreenState;
         playMusic(1);
+        this.resetGame();
     }
 
     public void startGameThread() {
